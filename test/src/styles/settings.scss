@@ -1,0 +1,20 @@
+/**
+ * src/styles/settings.scss
+ *
+ * Configures SASS variables and Vuetify overwrites
+ */
+
+// https://next.vuetifyjs.com/features/sass-variables/`
+// @use 'vuetify' with (
+//   $color-pack: false
+// );
+
+
+.container {
+    width: 100%;
+  }
+
+/*
+.row {
+    color: $color-main; // 변수 사용
+}*/
