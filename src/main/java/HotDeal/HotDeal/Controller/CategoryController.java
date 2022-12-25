@@ -11,7 +11,7 @@ import javax.validation.Valid;
 import java.util.Map;
 
 @RestController
-@RequestMapping("api/category")
+@RequestMapping("category")
 @RequiredArgsConstructor
 public class CategoryController {
 
