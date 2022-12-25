@@ -11,12 +11,17 @@ import javax.validation.Valid;
 import java.util.Map;
 
 @RestController
-@RequestMapping("category")
+@RequestMapping("api/category")
 @RequiredArgsConstructor
 public class CategoryController {
 
     private final ProductService productService;
     private final CategoryService categoryService;
+
+    @GetMapping("test")
+    public ResponseEntity<String> test() {
+        return ResponseEntity.ok("Deploy success");
+    }
 
     @GetMapping("all")
     public ResponseEntity<Map<String, Object>> getAllProducts() {

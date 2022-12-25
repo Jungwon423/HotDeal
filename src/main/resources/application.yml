@@ -4,3 +4,5 @@ spring:
       host: localhost
       port: 27017
       database: hotdeal
+server:
+  port: 3000
