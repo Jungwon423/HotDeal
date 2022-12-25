@@ -6,6 +6,6 @@ spring:
       database: hotdeal
 
 server:
-  port: 3000
+  port: 8080
   servlet:
     context-path: "/api"
