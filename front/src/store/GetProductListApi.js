@@ -40,9 +40,12 @@ export default {
 
       try {
         // 로컬에서 개발할 경우
-        let res = await axios.get('http://localhost:8080/api/category/'+context.state.currentCategory+'/list')
+//        let res = await axios.get('http://localhost:8080/api/category/'+context.state.currentCategory+'/list')
 
         //let res = await axios.get('http://3.38.92.76:8080/api/category/'+context.state.currentCategory+'/list')
+
+         let res = await axios.get('http://43.200.252.191:8080/api/category/'+context.state.currentCategory+'/list')
+
 
 
         console.log('FETCH_PRODUCTLIST_API 성공')
