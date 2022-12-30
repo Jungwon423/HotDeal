@@ -23,3 +23,12 @@ export default {
   },
 }
 </script>
+
+<style>
+@font-face {
+  font-family:'dream';
+  src: url('./assets/fonts/SCDream6.ttf') format('truetype');
+  font-weight: 700;
+}
+
+</style>
