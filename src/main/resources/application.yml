@@ -4,14 +4,11 @@ spring:
       host: localhost
       port: 27017
       database: hotdeal
-      username: dba
-      password: test1001
-      authentication-database: admin
 
 #      아래는 배포할 때만
-      username: taptorestart
-      password: thisispass
-      authentication-database: admin
+#      username: taptorestart
+#      password: thisispass
+#      authentication-database: admin
 
 server:
   port: 8080
