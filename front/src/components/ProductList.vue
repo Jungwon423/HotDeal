@@ -1,4 +1,7 @@
 <template>
+  <v-text-area>
+    <v-card-text style="font-family:dream">오늘의 핫딜</v-card-text>
+  </v-text-area>
   <ProductContainer
     v-for="product in productList"
     :key="product.id"
