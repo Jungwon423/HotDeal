@@ -1,12 +1,13 @@
 package HotDeal.HotDeal.Controller;
 
+import HotDeal.HotDeal.Domain.ExchangeRate;
+import HotDeal.HotDeal.Domain.Product;
 import HotDeal.HotDeal.Service.ExchangeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Map;
 
 @RestController
@@ -16,7 +17,11 @@ public class ExchangeController {
 
     private final ExchangeService exchangeService;
 
-    @GetMapping()
+    @GetMapping("save")
+    public ResponseEntity<Map<String, Object>> saveExchangeRate(ExchangeRate exchangeRate) {
+        return exchangeService.saveExchangeRate(exchangeRate);
+    }
+    @GetMapping("/")
     public ResponseEntity<Map<String, Object>> getAllExchangeRate() {
         return exchangeService.getAllExchangeRate();
     }
