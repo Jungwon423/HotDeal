@@ -10,8 +10,8 @@
       grow
     >
       <v-tab 
-        v-for="item in items"
-        :key="item"
+        v-for="categoryName in categoryNames"
+        :key="categoryName"
         :value="item"
         style="font-size:12px; font-family:dream"
       >

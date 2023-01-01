@@ -1,6 +1,14 @@
 <template>
-  <router-link to="/info" @click="gopage">info</router-link>
-  <v-card-text class="mx-4" style="font-family:dream">
+  <router-link
+    to="/info"
+    @click="gopage"
+  >
+    info
+  </router-link>
+  <v-card-text
+    class="mx-4"
+    style="font-family:dream"
+  >
     오늘의 핫딜
   </v-card-text>
   <ProductContainer
@@ -29,11 +37,6 @@ export default {
         return this.$store.state.GetProductListApi.currentCategory
       }
     },
-    methods:{
-      gopage(){
-        this.$router.push('/info')
-      }
-    },
 
     watch: {
       currentCategory(val) {
@@ -43,6 +46,11 @@ export default {
 
     async created() {
       await this.$store.dispatch('GetProductListApi/FETCH_PRODUCTLIST_API')
+    },
+    methods:{
+      gopage(){
+        this.$router.push('/info')
+      }
     }
     
 }
