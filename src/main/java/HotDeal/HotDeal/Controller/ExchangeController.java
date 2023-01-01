@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Map;
 
 @RestController
@@ -16,7 +17,7 @@ public class ExchangeController {
     private final ExchangeService exchangeService;
 
     @GetMapping("update")
-    public ResponseEntity<Map<String, Object>> updateExchangeRate(ExchangeRate exchangeRate) {
+    public ResponseEntity<Map<String, Object>> updateExchangeRate(@Valid ExchangeRate exchangeRate) {
         return exchangeService.updateExchangeRate(exchangeRate);
     }
 

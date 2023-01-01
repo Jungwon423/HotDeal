@@ -25,5 +25,4 @@ public class ProductController {
     public ResponseEntity<Map<String, Object>> clickProduct(@PathVariable String productId) {
         return productService.clickProduct(productId);
     }
-
 }
