@@ -4,15 +4,14 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.Size;
 
 @Data
-@Document(collection = "exchangeRate")
-public class ExchangeRate {
+@Document(collection = "translate")
+public class Translate {
 
     @Id
     private String id;
-    private String name;
-    @PositiveOrZero
-    private Double exchangeRate;
+    @Size(min = 2)
+    private String sentence;
 }
