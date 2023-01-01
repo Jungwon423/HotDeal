@@ -20,14 +20,14 @@
 
     <div class="d-flex align-center flex-grow-1 ">
       <v-text-field
-        class="flex-grow-1 text-align-center px-8"
+        class="flex-grow-1 text-align-center pa-9"
+        label="상품 검색"
         variant="outlined"
         bg-color="white"
         density="comfortable"
         hide-details="auto"
         append-inner-icon="mdi-magnify"
       />
-      <!-- </v-responsive> -->
     </div>
   </v-app-bar>
 

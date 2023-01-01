@@ -1,8 +1,8 @@
 <template>
   <v-container
-    align="left"
-    class="border=5px"
+    class="pa-0"
   >
+    <!-- 위에 있는 탭 -->
     <v-tabs
       v-model="tab"
       bg-color="transparent"
@@ -18,8 +18,11 @@
         {{ item }}
       </v-tab>
     </v-tabs>
+
+    <!-- 홍보 배너 -->
     <v-carousel
-      hide-delimiters
+      :show-arrows="false"
+      hide-delimiters="true"
       height="auto"
     > 
       <v-carousel-item
@@ -45,9 +48,7 @@ export default {
     data () {
       return {
         tab: 'Appetizers',
-        items: [
-          '패션/뷰티', '가전', '자동차', '가구',
-        ],
+        categoryNames: ['fashion_beauty', 'furniture_living', 'homeAppliances_computers', 'travel_car']
       }
     },
 }
