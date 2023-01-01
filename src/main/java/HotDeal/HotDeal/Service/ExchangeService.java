@@ -21,10 +21,8 @@ import java.util.Map;
 public class ExchangeService {
 
     private final ExchangeRepository exchangeRepository;
-    //private ExchangeRate exchangeRate;
 
-    public static void crawling(){
-        ExchangeRate exchangeRate;
+    public void crawling(ExchangeRate exchangeRate){
         final String crawlingUrl = "https://search.naver.com/search.naver?sm=tab_hty.top&where=nexearch&query=%EB%8B%AC%EB%9F%AC+%ED%99%98%EC%9C%A8&oquery=%ED%99%98%EC%9C%A8&tqi=hI8yWsp0YihssdfcMcZssssssgN-226712";
         Connection conn = Jsoup.connect(crawlingUrl);
 
@@ -32,22 +30,58 @@ public class ExchangeService {
             Document doc = conn.get();
             Elements elements = doc.getElementsByClass("spt_con dw");
             Elements ele = elements.get(0).getElementsByTag("strong");
-            String text = ele.text();
-            System.out.println(text);
-            //exchangeRate.setExchangeRate(Double.valueOf(text));
+            Double todayExchangeRate = elementToDouble(ele);
+            exchangeRate.setName("오늘의 환율");
+            exchangeRate.setExchangeRate(todayExchangeRate);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public ResponseEntity<Map<String, Object>> saveExchangeRate(ExchangeRate exchangeRate) {
+    public Double elementToDouble(Elements ele){
+        String text = ele.text();
+        String regexText = text.replaceAll(",", "");
+        return Double.parseDouble(regexText);
+    }
+
+    public ResponseEntity<Map<String, Object>> updateExchangeRate(ExchangeRate exchangeRate) {
         Map<String, Object> responseJson = new HashMap<>();
-        responseJson.put("Message", "DB에 환율 추가 성공");
-        exchangeRepository.save(exchangeRate);
+        crawling(exchangeRate);
+
+        if (exchangeRepository.findByName("오늘의 환율").isEmpty()){
+            exchangeRepository.save(exchangeRate);
+        }
+        else if(exchangeRepository.findByName("오늘의 환율").size()==1){
+            ExchangeRate updateExchange = exchangeRepository.findByName("오늘의 환율").get(0);
+            updateExchange.setExchangeRate(exchangeRate.getExchangeRate());
+            //updateExchange.setExchangeRate(1000d); //테스트용
+            exchangeRepository.save(updateExchange);
+        }
+        else{
+            responseJson.put("errorMessage", "DB에 오늘의 환율 정보가 여러개 있습니다.");
+            return ResponseEntity.status(HttpStatus.MULTI_STATUS).body(responseJson);
+        }
+        responseJson.put("Message", "DB에 오늘의 환율 업데이트");
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
 
+    public ResponseEntity<Map<String, Object>> getTodayExchangeRate() {
+        Map<String, Object> responseJson = new HashMap<>();
+        if (exchangeRepository.findByName("오늘의 환율").isEmpty()){
+            responseJson.put("errorMessage", "DB에 환율 정보가 없습니다");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseJson);
+        }
+        else if(exchangeRepository.findByName("오늘의 환율").size()==1){
+            ExchangeRate todayExchangeRate = exchangeRepository.findByName("오늘의 환율").get(0);
+            responseJson.put("result", todayExchangeRate);
+            return ResponseEntity.status(HttpStatus.OK).body(responseJson);
+        }
+        else{
+            responseJson.put("errorMessage", "DB에 오늘의 환율 정보가 여러개 있습니다.");
+            return ResponseEntity.status(HttpStatus.MULTI_STATUS).body(responseJson);
+        }
+    }
 
     public ResponseEntity<Map<String, Object>> getAllExchangeRate() {
 
@@ -59,7 +93,7 @@ public class ExchangeService {
             responseJson.put("errorMessage", "DB에 환율 정보가 없습니다");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseJson);
         } else {
-            responseJson.put("result", exchangeRates); //Product 페이지 정보를 가져온다. (link 가져오고 상품디테일)
+            responseJson.put("result", exchangeRates);
             return ResponseEntity.status(HttpStatus.OK).body(responseJson);
         }
     }
