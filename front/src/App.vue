@@ -2,6 +2,7 @@
   <v-app>
     <v-main>
       <TitleHeader />
+      <CategorySlider />
       <CategoryList />
       <ProductList />
     </v-main>
@@ -9,15 +10,17 @@
 </template>
 
 <script>
-import TitleHeader from './components/TitleHeader.vue';
-import CategoryList from './components/CategoryList.vue';
-import ProductList from './components/ProductList.vue';
+import TitleHeader from './components/organisms/TitleHeader.vue';
+import CategorySlider from './components/organisms/CategorySlider.vue';
+import CategoryList from './components/organisms/CategoryList.vue';
+import ProductList from './components/organisms/ProductList.vue';
 
 export default {
   name: 'App',
 
   components: {
     TitleHeader,
+    CategorySlider,
     CategoryList,
     ProductList
   },

@@ -13,12 +13,12 @@
       </v-col>
     </v-row>
   </v-container>
-  <!-- <h1> {{ currentCategory }}</h1> -->
+  <h1> {{ currentCategory }}</h1>
 </template>
 
   
 <script>
-import CategoryButton from './CategoryButton.vue'
+import CategoryButton from '../molecules/CategoryButton.vue'
 
 export default {
   name: 'CategoryList',
@@ -32,11 +32,5 @@ export default {
       categoryNames: ['fashion_beauty', 'furniture_living', 'homeAppliances_computers', 'travel_car']
     }
   },
-  
-  // computed: {
-  //   currentCategory() {
-  //     return this.$store.state.GetProductListApi.currentCategory
-  //   }
-  // },
 }
 </script>

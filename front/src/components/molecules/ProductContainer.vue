@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="pa-5">
     <v-row>
       <v-col
         :cols="5"
@@ -18,7 +18,7 @@
         :cols="6"
         class="ma-0 pa-0"
       >
-        <v-text> {{ productName }}</v-text>
+        <h5> {{ productName }}</h5>
         <p />
         <h5>&nbsp; ${{ productPrice }} {{ discountRate }}%</h5>
         <p />
@@ -26,6 +26,7 @@
       </v-col>
     </v-row>
   </v-container>
+  <v-divider class="mx-5" />
 </template>
 
 <script>

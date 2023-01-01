@@ -1,7 +1,7 @@
 <template>
-  <v-text-area>
-    <v-card-text style="font-family:dream">오늘의 핫딜</v-card-text>
-  </v-text-area>
+  <v-card-text style="font-family:dream">
+    오늘의 핫딜
+  </v-card-text>
   <ProductContainer
     v-for="product in productList"
     :key="product.id"
@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import ProductContainer from './ProductContainer.vue';
+import ProductContainer from '../molecules/ProductContainer.vue';
 
 export default {
     components: { ProductContainer }, 
@@ -25,7 +25,6 @@ export default {
       },
 
       currentCategory: function() {
-        console.log(this.$store.state.GetProductListApi.currentCategory)
         return this.$store.state.GetProductListApi.currentCategory
       }
     },

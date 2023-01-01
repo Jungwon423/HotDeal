@@ -25,7 +25,7 @@ export default {
   
   computed: {
     imagePath() {
-      return require('../assets/'+this.categoryName+'.png')
+      return require('../../assets/'+this.categoryName+'.png')
     },
 
     categoryNameSub() { //categoryNameSubstitution
