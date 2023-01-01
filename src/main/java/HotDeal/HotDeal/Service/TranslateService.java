@@ -1,8 +1,13 @@
 package HotDeal.HotDeal.Service;
 
 import HotDeal.HotDeal.Domain.Translate;
+import lombok.RequiredArgsConstructor;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -13,31 +18,38 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
+@Service
+@RequiredArgsConstructor
 public class TranslateService {
 
-    public ResponseEntity<Map<String, Object>> translateSentence(Translate translate) {
+    public ResponseEntity<Map<String, Object>> translateSentence(Translate translate) throws ParseException {
         Map<String, Object> responseJson = new HashMap<>();
-
         String clientId = "lFJbCyQgGPhrSLj2qOdX";//애플리케이션 클라이언트 아이디값";
         String clientSecret = "ifU2pLAcrc";//애플리케이션 클라이언트 시크릿값";
 
         String apiURL = "https://openapi.naver.com/v1/papago/n2mt";
-        String text;
         String postText = translate.getSentence();
-        text = URLEncoder.encode(postText, StandardCharsets.UTF_8);
+        String text = URLEncoder.encode(postText, StandardCharsets.UTF_8);
 
         Map<String, String> requestHeaders = new HashMap<>();
         requestHeaders.put("X-Naver-Client-Id", clientId);
         requestHeaders.put("X-Naver-Client-Secret", clientSecret);
 
         String responseBody = post(apiURL, requestHeaders, text);
-        System.out.println(responseBody);
+        responseJson.put("result", StringToObj(responseBody));
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
+    }
+
+    private Object StringToObj(String responseBody) throws ParseException {
+        JSONParser parser = new JSONParser();
+        JSONObject JsonBodyFirstLevel = (JSONObject) parser.parse(responseBody);
+        JSONObject JsonBodySecondLevel = (JSONObject) JsonBodyFirstLevel.get("message");
+        return JsonBodySecondLevel.get("result");
     }
 
     private String post(String apiUrl, Map<String, String> requestHeaders, String text){
         HttpURLConnection con = connect(apiUrl);
-        String postParams = "source=ko&target=en&text=" + text; //원본언어: 한국어 (ko) -> 목적언어: 영어 (en)
+        String postParams = "source=en&target=ko&text=" + text; // en -> ko
         try {
             con.setRequestMethod("POST");
             for(Map.Entry<String, String> header :requestHeaders.entrySet()) {
