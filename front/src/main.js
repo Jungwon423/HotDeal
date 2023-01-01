@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-// import router from './router'
+import router from './router'
 import vuetify from './plugins/vuetify'
 import { loadFonts } from './plugins/webfontloader'
 import store from './store/index.js';
@@ -19,6 +19,6 @@ categoryMap.set('travel_car', '여행 / 자동차')
 app.config.globalProperties.$categoryMap = categoryMap
 
 app.use(vuetify)
-  // .use(router)
+  .use(router)
   .use(store)
   .mount('#app')

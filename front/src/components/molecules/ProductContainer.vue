@@ -1,32 +1,49 @@
 <template>
-  <v-container class="pa-5">
-    <v-row>
-      <v-col
-        :cols="5"
-        class="ma-1 pa-1"
+  <v-container class="pl-5">
+    <v-card
+    class="mx-auto"
+    max-width="450"
+    max-height="370"
+  >
+    <v-img
+      height="250"
+      :src="imgUrl"
+    ></v-img>
+    <v-divider class="mx-4"></v-divider>
+
+    <span class="discount">{{ discountRate }}% </span> 
+    <span class ="price"> {{ productPrice }}원 </span>
+    <span class="original"> {{ productPrice }}원 </span>
+    <v-card-title>{{ productName }}</v-card-title>
+
+    <v-card-text>
+      <v-row
+        align="center"
+        class="mx-0"
       >
-        <a :href="link">
-          <v-img 
-            style="display: block"
-            class="bg-white rounded-sm"
-            max-height="100"
-            :src="imgUrl"
-          />
-        </a>
-      </v-col>
-      <v-col
-        :cols="6"
-        class="ma-0 pa-0"
-      >
-        <h5> {{ productName }}</h5>
-        <p />
-        <h5>&nbsp; ${{ productPrice }} {{ discountRate }}%</h5>
-        <p />
-        <h5>~133,145₩</h5>
-      </v-col>
-    </v-row>
+        <v-rating
+          value = "3.5"
+          color="#FFB300"
+          empty-icon="mdi-star-outline"
+          full-icon="mdi-star"
+          half-icon="mdi-star-half"
+          density="comfortable"
+          half-increments
+          readonly
+          size="14"
+        ></v-rating>
+
+        <div class="rating" style="font-weight: bolder;">
+          3.5 (6504)
+        </div>
+      </v-row>
+
+      <div class="my-4">
+        Amazon
+      </div>
+    </v-card-text>
+  </v-card>
   </v-container>
-  <v-divider class="mx-5" />
 </template>
 
 <script>
@@ -56,3 +73,7 @@ export default {
   },
 }
 </script>
+
+<style>
+@import '@/assets/styles/ProductContainer.css';
+</style>
