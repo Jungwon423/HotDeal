@@ -28,7 +28,8 @@ public class ExchangeService {
 
         try {
             Document doc = conn.get();
-            Elements elements = doc.getElementsByClass("spt_con dw");
+            Elements elements = doc.getElementsByClass("spt_con up");
+//            Elements elements = doc.getElementsByClass("spt_con dw");
             Elements ele = elements.get(0).getElementsByTag("strong");
             Double todayExchangeRate = elementToDouble(ele);
             exchangeRate.setName("오늘의 환율");
