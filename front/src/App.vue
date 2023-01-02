@@ -1,28 +1,16 @@
 <template>
   <v-app>
     <v-main>
-      <TitleHeader />
-      <CategorySlider />
-      <CategoryList />
-      <ProductList />
+      <router-view />
     </v-main>
   </v-app>
 </template>
 
 <script>
-import TitleHeader from './components/organisms/TitleHeader.vue';
-import CategorySlider from './components/organisms/CategorySlider.vue';
-import CategoryList from './components/organisms/CategoryList.vue';
-import ProductList from './components/organisms/ProductList.vue';
-
 export default {
   name: 'App',
 
   components: {
-    TitleHeader,
-    CategorySlider,
-    CategoryList,
-    ProductList
   },
 }
 </script>
