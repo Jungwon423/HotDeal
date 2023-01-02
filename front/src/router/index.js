@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import HomeView from '../App.vue';
+import HomeView from '@/components/organisms/HomePage.vue';
 import InfoView from '@/components/organisms/InfoView.vue';
 
 //Vue.use(VueRouter)
@@ -18,7 +18,7 @@ const routes = [
 ]
 
 const router = new createRouter({
-    history : createWebHistory(process.env.BASE_URL),
+    history : createWebHistory(), //process.env.BASE_URL
     routes : routes
 })
 

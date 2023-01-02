@@ -47,7 +47,7 @@
 export default {
     data () {
       return {
-        tab: 'Appetizers',
+        tab: 'Category',
         categoryNames: ['fashion_beauty', 'furniture_living', 'homeAppliances_computers', 'travel_car']
       }
     },
