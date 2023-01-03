@@ -1,10 +1,4 @@
 <template>
-  <router-link
-    to="/info"
-    @click="gopage"
-  >
-    info
-  </router-link>
   <v-card-text
     class="mx-4"
     style="font-family:dream"

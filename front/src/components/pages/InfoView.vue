@@ -4,12 +4,17 @@
     elevation="1"
     height="55"
   >
-    <span class="pt-2"><v-btn rounded>
-      <v-icon
-        color="black"
-        size="xx-large"
-      > mdi-arrow-left-thin</v-icon>
-    </v-btn></span>
+    <span class="pt-2">
+      <v-btn
+        rounded
+        @click="$router.go(-1)"
+      >
+        <v-icon
+          color="black"
+          size="xx-large"
+        > mdi-arrow-left-thin</v-icon>
+      </v-btn>
+    </span>
     <template #append>
       <span class="pt-2">
         <v-btn icon="mdi-magnify">

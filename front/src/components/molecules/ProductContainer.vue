@@ -1,52 +1,54 @@
 <template>
-  <v-container class="pl-5">
-    <v-card
-      class="mx-auto"
-      max-width="450"
-      max-height="370"
-    >
-      <v-img
-        height="250"
-        :src="imgUrl"
-      />
-      <v-divider class="mx-4" />
+  <router-link :to="{name: 'productInfo', params: { productId: productName }}">
+    <v-container class="pl-5">
+      <v-card
+        class="mx-auto"
+        max-width="450"
+        max-height="370"
+      >
+        <v-img
+          height="250"
+          :src="imgUrl"
+        />
+        <v-divider class="mx-4" />
 
-      <span class="discount">{{ discountRate }}% </span> 
-      <span class="price"> {{ productPrice }}원 </span>
-      <span class="original"> {{ productPrice }}원 </span>
-      <v-card-title>{{ productName }}</v-card-title>
+        <span class="discount">{{ discountRate }}% </span> 
+        <span class="price"> {{ productPrice }}원 </span>
+        <span class="original"> {{ productPrice }}원 </span>
+        <v-card-title>{{ productName }}</v-card-title>
 
-      <v-card-text>
-        <v-row
-          align="center"
-          class="mx-0"
-        >
-          <v-rating
-            value="3.5"
-            color="#FFB300"
-            empty-icon="mdi-star-outline"
-            full-icon="mdi-star"
-            half-icon="mdi-star-half"
-            density="comfortable"
-            half-increments
-            readonly
-            size="14"
-          />
-
-          <div
-            class="rating"
-            style="font-weight: bolder;"
+        <v-card-text>
+          <v-row
+            align="center"
+            class="mx-0"
           >
-            3.5 (6504)
-          </div>
-        </v-row>
+            <v-rating
+              value="3.5"
+              color="#FFB300"
+              empty-icon="mdi-star-outline"
+              full-icon="mdi-star"
+              half-icon="mdi-star-half"
+              density="comfortable"
+              half-increments
+              readonly
+              size="14"
+            />
 
-        <div class="my-4">
-          Amazon
-        </div>
-      </v-card-text>
-    </v-card>
-  </v-container>
+            <div
+              class="rating"
+              style="font-weight: bolder;"
+            >
+              3.5 (6504)
+            </div>
+          </v-row>
+
+          <div class="my-4">
+            Amazon
+          </div>
+        </v-card-text>
+      </v-card>
+    </v-container>
+  </router-link>
 </template>
 
 <script>

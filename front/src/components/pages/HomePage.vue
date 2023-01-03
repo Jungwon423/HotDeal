@@ -3,7 +3,7 @@
     <v-main>
       <TitleHeader />
       <CategorySlider />
-      <CategoryList />
+      <!-- <CategoryList /> -->
       <ProductList />
     </v-main>
   </v-app>
@@ -12,7 +12,7 @@
   <script>
   import TitleHeader from '@/components/organisms/TitleHeader.vue';
   import CategorySlider from '@//components/organisms/CategorySlider.vue';
-  import CategoryList from '@//components/organisms/CategoryList.vue';
+  // import CategoryList from '@//components/organisms/CategoryList.vue';
   import ProductList from '@//components/organisms/ProductList.vue';
   
   export default {
@@ -21,7 +21,7 @@
     components: {
       TitleHeader,
       CategorySlider,
-      CategoryList,
+      // CategoryList,
       ProductList
     },
   }

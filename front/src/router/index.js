@@ -11,8 +11,8 @@ const routes = [
       component: HomeView
     },
     {
-      path: '/info',
-      name: 'info',
+      path: '/productInfo/:productId',
+      name: 'productInfo',
       component: InfoView
     }
 ]

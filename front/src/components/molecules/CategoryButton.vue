@@ -1,13 +1,19 @@
 <template>
-  <div class="text-center">
-    <v-card @click="onClick">
-      <v-img  
-        class="bg-white"
-        :aspect-ratio="1"
-        :src="imagePath"
-      />
-      <h4 v-text="categoryNameSub" />
-    </v-card>
+  <div
+    class="d-flex flex-column align-center"
+    @click="onClick"
+  >
+    <v-img  
+      class="bg-white"
+      :aspect-ratio="1"
+      :src="imagePath"
+      :width="33"
+    />
+    <span
+      style="font-size: smaller;
+  font-family: 'dream'"
+      v-text="categoryNameSub"
+    />
   </div>
 </template>
 

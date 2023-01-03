@@ -10,12 +10,12 @@
       grow
     >
       <v-tab 
-        v-for="categoryName in categoryNames"
+        v-for="(categoryName, i) in categoryNames"
         :key="categoryName"
-        :value="item"
+        :value="categoryName"
         style="font-size:12px; font-family:dream"
       >
-        {{ item }}
+        {{ categoryNameSub[i] }}
       </v-tab>
     </v-tabs>
 
@@ -51,5 +51,11 @@ export default {
         categoryNames: ['fashion_beauty', 'furniture_living', 'homeAppliances_computers', 'travel_car']
       }
     },
+
+    computed: {
+      categoryNameSub() { //categoryNameSubstitution
+        return this.categoryNames.map(categoryName => this.$categoryMap.get(categoryName))
+      },
+  },
 }
 </script>
