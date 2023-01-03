@@ -1,13 +1,13 @@
 <template>
-    <v-app>
-      <v-main>
-        <TitleHeader />
-        <CategorySlider />
-        <CategoryList />
-        <ProductList />
-      </v-main>
-    </v-app>
-  </template>
+  <v-app>
+    <v-main>
+      <TitleHeader />
+      <CategorySlider />
+      <CategoryList />
+      <ProductList />
+    </v-main>
+  </v-app>
+</template>
   
   <script>
   import TitleHeader from '@/components/organisms/TitleHeader.vue';

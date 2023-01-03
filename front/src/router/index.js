@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import HomeView from '@/components/organisms/HomePage.vue';
-import InfoView from '@/components/organisms/InfoView.vue';
+import HomeView from '@/components/pages/HomePage.vue';
+import InfoView from '@/components/pages/InfoView.vue';
 
 //Vue.use(VueRouter)
 
