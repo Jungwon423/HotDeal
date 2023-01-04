@@ -21,6 +21,7 @@ public class Product {
     private Double discountRate;
     private String imageUrl;
     private String categoryName;
+    private String marketName;
     private String link;
     private int clickCount;
 }
