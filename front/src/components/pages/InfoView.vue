@@ -1,11 +1,20 @@
 <template>
-  <v-system-bar elevation="0" height="8" color="#F5F5F5" />
-  <v-app-bar color="white" elevation="1" height="55">
-    <span class="pt-2"
-      ><v-btn rounded>
-        <v-icon color="black" size="xx-large"> mdi-arrow-left-thin</v-icon>
-      </v-btn></span
-    >
+  <v-system-bar
+    elevation="0"
+    height="8"
+    color="#F5F5F5"
+  />
+  <v-app-bar
+    color="white"
+    elevation="1"
+    height="55"
+  >
+    <span class="pt-2"><v-btn rounded>
+      <v-icon
+        color="black"
+        size="xx-large"
+      > mdi-arrow-left-thin</v-icon>
+    </v-btn></span>
     <template #append>
       <span class="pt-2">
         <v-btn icon="mdi-magnify">
@@ -20,20 +29,47 @@
   </v-app-bar>
 
   <v-container class="pa-0">
-    <v-sheet class="d-flex mx-0" color="white">
-      <v-avatar class="mx-4" color="white" size="40">
-        <v-img max-height="40" max-width="40" src="@/assets/amazon.jpg" />
+    <v-sheet
+      class="d-flex mx-0"
+      color="white"
+    >
+      <v-avatar
+        class="mx-4"
+        color="white"
+        size="40"
+      >
+        <v-img
+          max-height="40"
+          max-width="40"
+          src="@/assets/amazon.jpg"
+        />
       </v-avatar>
-      <div style="font-size: small" class="my-3">Amazon</div>
+      <div
+        style="font-size: small"
+        class="my-3"
+      >
+        Amazon
+      </div>
       <div class="num">
         6005
-        <v-btn flat color="transparent" icon="mdi-heart">
-          <v-icon size="small" color="#757575" />
+        <v-btn
+          flat
+          color="transparent"
+          icon="mdi-heart"
+        >
+          <v-icon
+            size="small"
+            color="#757575"
+          />
         </v-btn>
       </div>
     </v-sheet>
     <div class="box">
-      <v-img width="100%" height="100%" src="@/assets/example.png" />
+      <v-img
+        width="100%"
+        height="100%"
+        src="@/assets/example.png"
+      />
     </div>
     <v-sheet class="d-flex pa-2 grow-1">
       <div class="productName">
@@ -63,7 +99,11 @@
     </v-sheet>
 
     <v-row dense>
-      <v-col v-for="card in cards" :key="card.title" :cols="card.flex">
+      <v-col
+        v-for="card in cards"
+        :key="card.title"
+        :cols="card.flex"
+      >
         <v-card>
           <v-img
             :src="card.src"
@@ -73,12 +113,20 @@
             cover
             append-icon="mdi-heart"
           >
-            <v-btn size="small" color="white" variant="text" icon="mdi-heart">
+            <v-btn
+              size="small"
+              color="white"
+              variant="text"
+              icon="mdi-heart"
+            >
               <v-icon>
                 {{ active ? 'mdi-heart' : 'mdi-heart-outline' }}
               </v-icon>
             </v-btn>
-            <v-card-title class="text-white" v-text="card.title" />
+            <v-card-title
+              class="text-white"
+              v-text="card.title"
+            />
           </v-img>
         </v-card>
       </v-col>
@@ -86,7 +134,12 @@
   </v-container>
   <footer fixed>
     <v-sheet class="footer">
-      <v-btn color="#FF4081" class="buy"> 구매하기 </v-btn>
+      <v-btn
+        color="#FF4081"
+        class="buy"
+      >
+        구매하기
+      </v-btn>
     </v-sheet>
   </footer>
 </template>

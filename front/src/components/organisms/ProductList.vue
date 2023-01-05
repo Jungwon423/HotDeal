@@ -17,12 +17,16 @@
     </v-col>
   </v-row>
   <div id="app">
-      <router-link to="apple">apple</router-link>
-      <router-link to="google">google</router-link>
-      <router-view></router-view>
-    </div>
+    <router-link to="category">
+      Go to Category Page
+    </router-link>
+    <router-view />
+  </div>
 
-  <v-card-text class="mx-3 pa-0 mt-4" style="font-family: dream">
+  <v-card-text
+    class="mx-3 pa-0 mt-4"
+    style="font-family: dream"
+  >
     오늘의 핫딜 Top 5!
   </v-card-text>
   <ProductContainer
