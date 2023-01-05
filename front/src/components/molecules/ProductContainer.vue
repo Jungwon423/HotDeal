@@ -4,7 +4,12 @@
   >
     <v-container class="pl-5">
       <v-card class="mx-auto" max-width="450" max-height="370">
-        <v-img height="250" :src="imgUrl" />
+        <div class="image-container pa-2">
+          <v-img
+            height="250"
+            :src="imgUrl"
+          />
+        </div>
         <v-divider class="mx-4" />
 
         <span class="discount">{{ discountRate }}% </span>
@@ -65,5 +70,12 @@ export default {
 </script>
 
 <style>
+.image-container{
+    height:300;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: white;
+}
 @import '@/assets/styles/ProductContainer.css';
 </style>

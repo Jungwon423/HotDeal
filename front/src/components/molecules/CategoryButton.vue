@@ -1,5 +1,8 @@
 <template>
-  <div class="d-flex flex-column align-center" @click="onClick">
+  <div
+    class="d-flex flex-column align-center"
+    @click="onClick"
+  >
     <v-avatar color="red">
       <span class="white--text text-">{{ categoryNameSub }}</span>
     </v-avatar>
