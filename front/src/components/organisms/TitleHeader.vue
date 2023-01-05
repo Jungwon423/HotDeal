@@ -1,10 +1,22 @@
 <template>
-  <v-app-bar color="white" elevation="0">
-    <v-avatar color="white" size="56">
-      <v-img max-height="50" max-width="50" src="@/assets/kamua.png" />
+  <v-app-bar
+    color="white"
+    elevation="0"
+  >
+    <v-avatar
+      color="white"
+      size="56"
+    >
+      <v-img
+        max-height="50"
+        max-width="50"
+        src="@/assets/kamua.png"
+      />
     </v-avatar>
 
-    <div style="font-size: large; font-family: dream">&nbsp; Kagu</div>
+    <div style="font-size: large; font-family: dream">
+      &nbsp; Kagu
+    </div>
 
     <div class="d-flex align-center flex-grow-1">
       <v-text-field
@@ -19,7 +31,11 @@
     </div>
   </v-app-bar>
 
-  <v-system-bar elevation="0" height="1" color="#F5F5F5" />
+  <v-system-bar
+    elevation="0"
+    height="1"
+    color="#F5F5F5"
+  />
 </template>
 
 <script>
