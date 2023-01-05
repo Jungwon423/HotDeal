@@ -19,7 +19,7 @@
     </div>
   </v-app-bar>
 
-  <v-system-bar elevation="0" height="8" color="#F5F5F5" />
+  <v-system-bar elevation="0" height="1" color="#F5F5F5" />
 </template>
 
 <script>
