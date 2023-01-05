@@ -11,7 +11,7 @@
       </v-col>
     </v-row>
   </v-container>
-  <h1>{{ currentCategory }}</h1>
+  <!-- <h1>{{ currentCategory }}</h1> -->
 </template>
 
 <script>
@@ -27,7 +27,7 @@ export default {
   data() {
     return {
       categoryNames: [
-        'fashion_beauty',
+        'fashion_beaut',
         'furniture_living',
         'homeAppliances_computers',
         'travel_car',
