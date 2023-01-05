@@ -6,8 +6,8 @@ export default {
 
   // state : 실제로 취급해야하는 데이터
   state: {
-    currentCategory: "all",
     currentMarket: "all",
+    currentCategory: "all",
     isCategory: true,
     productList: [],
   },

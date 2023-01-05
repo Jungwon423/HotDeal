@@ -23,7 +23,7 @@ export default {
   methods: {
     onClick: function (evt) {
       this.$store.commit(
-        'GetProductListApi/SET_PRODUCTLISTBYCMARKET',
+        'GetProductListApi/SET_PRODUCTLISTBYMARKET',
         this.marketName
       )
     },

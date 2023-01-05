@@ -64,16 +64,5 @@ export default {
 a {
   text-decoration: none;
 }
-.today{
-  width: auto;
-  height: 80px;
-  background-image: url("@/assets/todayshot.png");
-}
-.hot{
-  font-family: "dream";
-  font-size: large;
-  font-weight: bold;
-  color : white;
-  text-align: center;
-}
+
 </style>
