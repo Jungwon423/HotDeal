@@ -38,8 +38,6 @@ export default {
 <style>
 table{
     display:flex;
-    display: -webkit-box;
-    display: -ms-flexbox;
     overflow-x: auto;
     overflow-y: hidden;
 }

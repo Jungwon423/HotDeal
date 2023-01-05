@@ -36,32 +36,12 @@
       </v-card>
     </v-col>
   </v-row>
-  <carousel
-    :autoplay="true"
-    :nav="false"
-    :dots="false"
-    class="marginTop50"
-  >
-    <img src="https://placeimg.com/200/200/any?1">
-    <img src="https://placeimg.com/200/200/any?2">
-    <img src="https://placeimg.com/200/200/any?3">
-    <img src="https://placeimg.com/200/200/any?4">
-  </carousel>
 </template>
   
   <script>
-  import carousel from 'vue-owl-carousel2'
   export default {
-    components :{carousel},
     data() {
     return {
-        plugin:null,
-        options:{
-            autoplay:false,
-            items:1,
-            startPosition:2,
-            autoplayTimeout:1000,
-        },
         cards: [
         {
             title: 'Favorite road trips',
