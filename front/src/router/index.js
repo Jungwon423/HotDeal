@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomePage from '@/components/pages/HomePage.vue';
 import ProductInfoPage from '@/components/pages/ProductInfoPage.vue';
 import CategoryPage from '@/components/pages/CategoryPage.vue';
+import SearchPage from '@/components/pages/SearchPage.vue';
 
 //Vue.use(VueRouter)
 
@@ -20,6 +21,11 @@ const routes = [
       path: '/category',
       name: 'category',
       component: CategoryPage
+    },
+    {
+      path: '/search',
+      name: 'search',
+      component: SearchPage
     }
 ]
 
