@@ -1,11 +1,11 @@
 <template>
   <v-container class="pa-0">
-    <v-card-text
+    <!-- <v-card-text
       class="mx-1"
       style="font-family: dream"
     >
       사이트 별 Top 5를 확인해보세요!
-    </v-card-text>
+    </v-card-text> -->
     <v-tabs
       v-model="tab"
       bg-color="transparent"

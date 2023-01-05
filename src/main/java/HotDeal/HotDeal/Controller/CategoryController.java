@@ -18,16 +18,6 @@ public class CategoryController {
     private final ProductService productService;
     private final CategoryService categoryService;
 
-    @GetMapping("test")
-    public  ResponseEntity<String> test() {
-        return ResponseEntity.ok("Deploy Success");
-    }
-
-    @PostMapping("save")
-    public ResponseEntity<Map<String, Object>> saveCategory(@RequestBody @Valid Category category) {
-        return categoryService.saveCategory(category);
-    }
-
     @GetMapping("{categoryName}/list")
     public ResponseEntity<Map<String, Object>> getProductsByCategory(@PathVariable("categoryName") String categoryName) {
         if (categoryName.equals("all")) return productService.getAllProducts();
