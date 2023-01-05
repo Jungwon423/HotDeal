@@ -28,6 +28,16 @@ public class ProductService {
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
 
+    public ResponseEntity<Map<String,Object>> getProductsByMarketName(String marketName){
+        Map<String, Object> responseJson = new HashMap<>();
+        List<Product> productList = productRepository.findByMarketName(marketName);
+        if (productList == null) {
+            responseJson.put("result", "MarketName = " + marketName + "를 가지는 category가 없습니다");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseJson);
+        }
+        else responseJson.put("result", productList);
+        return ResponseEntity.status(HttpStatus.OK).body(responseJson);
+    }
     public ResponseEntity<Map<String, Object>> getProductsByCategoryName(String categoryName) {
         Map<String, Object> responseJson = new HashMap<>();
         List<Product> productList = productRepository.findByCategoryName(categoryName);

@@ -34,6 +34,12 @@ public class CategoryController {
         else return productService.getProductsByCategoryName(categoryName);
     }
 
+    @GetMapping("{marketName}/listMarket")
+    public ResponseEntity<Map<String, Object>> getProductsByMarket(@PathVariable("marketName") String marketName) {
+        if (marketName.equals("All")) return productService.getAllProducts();
+        else return productService.getProductsByMarketName(marketName);
+    }
+
     @PostMapping("{categoryId}/click")
     public ResponseEntity<Map<String, Object>> clickCategory(@PathVariable String categoryId) {
         return categoryService.clickCategory(categoryId);
