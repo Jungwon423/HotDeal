@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import HomeView from '@/components/pages/HomePage.vue';
-import InfoView from '@/components/pages/InfoView.vue';
+import HomePage from '@/components/pages/HomePage.vue';
+import ProductInfoPage from '@/components/pages/ProductInfoPage.vue';
 import CategoryPage from '@/components/pages/CategoryPage.vue';
 
 //Vue.use(VueRouter)
@@ -9,12 +9,12 @@ const routes = [
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: HomePage
     },
     {
       path: '/productInfo/:productId',
       name: 'productInfo',
-      component: InfoView
+      component: ProductInfoPage
     },
     {
       path: '/category',

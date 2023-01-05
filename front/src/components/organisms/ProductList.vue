@@ -1,21 +1,5 @@
 <template>
-  <v-row
-    class="text-center"
-    justify="center"
-  >
-    <v-col
-      cols="12"
-      md="3"
-    >
-      <div class="today">
-        <div
-          class="pa-4 secondary text-no-wrap rounded-pill grow-1"
-        >
-          <span class="hot">Today's Hot</span>
-        </div>
-      </div>
-    </v-col>
-  </v-row>
+  <BannerBox />
   <div id="app">
     <router-link to="category">
       Go to Category Page
@@ -41,10 +25,14 @@
 </template>
 
 <script>
+import BannerBox from './BannerBox.vue'
 import ProductContainer from '../molecules/ProductContainer.vue'
 
 export default {
-  components: { ProductContainer },
+  components: { 
+    BannerBox,
+    ProductContainer
+  },
 
   computed: {
     productList: function () {
