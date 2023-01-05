@@ -94,123 +94,69 @@
     <span class="discount2">30% </span>
     <span> 60000원 </span>
     <v-divider />
-    <v-sheet class="d-flex pa-1 my-2">
-      <div>함께 보면 좋은 상품</div>
-    </v-sheet>
+    <RelatedProduct />
 
-    <v-row dense>
-      <v-col
-        v-for="card in cards"
-        :key="card.title"
-        :cols="card.flex"
+    <v-tabs
+      v-model="tab"
+      justify="center"
+      bg-color="transparent"
+      color="black"
+      grow
+    >
+      <v-tab
+        v-for="tab in info"
+        :key="tab"
       >
-        <v-card>
-          <v-img
-            :src="card.src"
-            class="align-end"
-            gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-            height="200px"
-            cover
-            append-icon="mdi-heart"
-          >
-            <v-btn
-              size="small"
-              color="white"
-              variant="text"
-              icon="mdi-heart"
-            >
-              <v-icon>
-                {{ active ? 'mdi-heart' : 'mdi-heart-outline' }}
-              </v-icon>
-            </v-btn>
-            <v-card-title
-              class="text-white"
-              v-text="card.title"
-            />
-          </v-img>
-        </v-card>
-      </v-col>
-    </v-row>
+        {{ tab }}
+      </v-tab>
+    </v-tabs>
+    <v-img src="https://m.media-amazon.com/images/W/WEBP_402378-T2/images/S/aplus-media-library-service-media/baf925ef-8d72-4b5e-9f8e-45268757be6f.__CR0,0,1464,600_PT0_SX1464_V1___.jpg" />
+    <v-img src="https://m.media-amazon.com/images/W/WEBP_402378-T2/images/S/aplus-media-library-service-media/78ec524a-3178-4a16-bd7c-94492654f62e.__CR0,0,1464,600_PT0_SX1464_V1___.jpg" />
+    <v-img src="https://m.media-amazon.com/images/W/WEBP_402378-T2/images/S/aplus-media-library-service-media/0b1a01a0-d5c2-465a-941d-cd8e0e17b04c.__CR0,0,1464,600_PT0_SX1464_V1___.jpg" />
+
+    <ProductDetail />
   </v-container>
-  <footer fixed>
-    <v-sheet class="footer">
-      <v-btn
-        color="#FF4081"
-        class="buy"
-      >
-        구매하기
-      </v-btn>
-    </v-sheet>
-  </footer>
+  <v-sheet class="sticky d-flex grow-1">
+    <v-btn
+      color="#FF4081"
+      class="buy"
+    >
+      구매하기
+    </v-btn>
+  </v-sheet>
+  <PageFooter />
 </template>
 
 <script>
+import PageFooter from '@/components/organisms/PageFooter.vue'
+import ProductDetail from '@/components/organisms/ProductDetail.vue'
+import RelatedProduct from '@/components/organisms/RelatedProduct.vue'
+
 export default {
+  components: {
+    // CategoryList,
+    RelatedProduct,
+    ProductDetail,
+    PageFooter,
+  },
   data() {
     return {
-      tab: 'Category',
-      cards: [
-        {
-          title: 'Favorite road trips',
-          src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg',
-          flex: 6,
-        },
-        {
-          title: 'Best airlines',
-          src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg',
-          flex: 6,
-        },
+      info: ["제품사진","상세정보","문의"],
+      links: [
+        'Home',
+        'About Us',
+        'Services',
+        'Contact Us',
       ],
-      categoryNames: ['패션', '컴퓨터', '가구', '여행'],
     }
   },
 }
 </script>
 
-<style scoped>
-.box {
-  object-fit: contain;
-  padding: 0%;
-}
-.footer {
-  bottom: 10%;
-  position: sticky;
-  height: auto;
-}
-.buy {
-  position: fixed;
-  width: 300px;
-  position: absolute;
-  left: 6%;
-  border-radius: 50%;
-  text-align: center;
-  background-color: #ff4081;
-  color: white;
-}
-.productName {
-  font-size: medium;
-  font-family: 'dream';
-}
-.discount2 {
-  padding: 6px;
-  font-size: large;
-  font-family: 'dream';
-  color: #ff4081;
-}
-.review {
-  font-weight: bolder;
-  font-family: 'dream';
-  font-size: smaller;
-  text-decoration-line: underline;
-  color: #cfd8dc;
-}
-div {
-  font-family: 'dream';
-}
-.num {
-  position: relative;
-  left: 40%;
-  font-size: small;
-  color: #757575;
+<style>
+@import '@/assets/styles/InfoView.css';
+.line{
+  background-color:grey;
+  height:1px;
 }
 </style>
