@@ -1,9 +1,6 @@
 <template>
-  <v-card-text
-    class="mx-4"
-    style="font-family:dream"
-  >
-    오늘의 핫딜
+  <v-card-text class="mx-3 pa-0 mt-4" style="font-family: dream">
+    오늘의 핫딜 Top 5!
   </v-card-text>
   <ProductContainer
     v-for="product in productList"
@@ -17,35 +14,34 @@
 </template>
 
 <script>
-import ProductContainer from '../molecules/ProductContainer.vue';
+import ProductContainer from '../molecules/ProductContainer.vue'
 
 export default {
-    components: { ProductContainer }, 
-    
-    computed: {
-      productList: function() {
-        return this.$store.state.GetProductListApi.productList
-      },
+  components: { ProductContainer },
 
-      currentCategory: function() {
-        return this.$store.state.GetProductListApi.currentCategory
-      }
+  computed: {
+    productList: function () {
+      return this.$store.state.GetProductListApi.productList
     },
 
-    watch: {
-      currentCategory(val) {
-        this.$store.dispatch('GetProductListApi/FETCH_PRODUCTLIST_API')
-      }
+    currentCategory: function () {
+      return this.$store.state.GetProductListApi.currentCategory
     },
+  },
 
-    async created() {
-      await this.$store.dispatch('GetProductListApi/FETCH_PRODUCTLIST_API')
+  watch: {
+    currentCategory(val) {
+      this.$store.dispatch('GetProductListApi/FETCH_PRODUCTLIST_API')
     },
-    methods:{
-      gopage(){
-        this.$router.push('/info')
-      }
-    }
-    
+  },
+
+  async created() {
+    await this.$store.dispatch('GetProductListApi/FETCH_PRODUCTLIST_API')
+  },
+  methods: {
+    gopage() {
+      this.$router.push('/info')
+    },
+  },
 }
 </script>

@@ -25,9 +25,11 @@ export default {
     },
 
     SET_PRODUCTLISTBYCATEGORY(state, payload) {
+      state.isCategory = true;
       state.productList = payload;
     },
     SET_PRODUCTLISTBYCMARKET(state, payload) {
+      state.isCategory = false;
       state.productList = payload;
     },
   },
