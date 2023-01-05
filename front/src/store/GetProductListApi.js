@@ -8,7 +8,7 @@ export default {
   state: {
     currentCategory: "all",
     currentMarket: "All",
-    isCategory: false,
+    isCategory: true,
     productList: [],
   },
 
@@ -38,7 +38,7 @@ export default {
   actions: {
     async FETCH_PRODUCTLIST_API(context) {
       try {
-        if (isCategory) {
+        if (context.state.isCategory) {
           let res = await axios.get(
             "https://www.zigdeal.shop:8080/api/category/" +
               context.state.currentCategory +
