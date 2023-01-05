@@ -26,11 +26,12 @@ export default {
 
 <style scoped>
 
-
 .today{
   width: auto;
   height: 80px;
   background-image: url("@/assets/todayshot.png");
+  background-position: center;
+  background-size: 100%;
 }
 .hot{
   font-family: "dream";
