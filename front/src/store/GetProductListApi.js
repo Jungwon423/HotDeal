@@ -6,8 +6,8 @@ export default {
 
   // state : 실제로 취급해야하는 데이터
   state: {
+    currentMarket: "all",
     currentCategory: "all",
-    currentMarket: "All",
     isCategory: true,
     productList: [],
   },
@@ -28,7 +28,7 @@ export default {
       state.isCategory = true;
       state.productList = payload;
     },
-    SET_PRODUCTLISTBYCMARKET(state, payload) {
+    SET_PRODUCTLISTBYMARKET(state, payload) {
       state.isCategory = false;
       state.productList = payload;
     },

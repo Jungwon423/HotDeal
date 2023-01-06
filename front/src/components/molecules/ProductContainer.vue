@@ -3,8 +3,17 @@
     :to="{ name: 'productInfo', params: { productId: productName } }"
   >
     <v-container class="pl-5">
-      <v-card class="mx-auto" max-width="450" max-height="370">
-        <v-img height="250" :src="imgUrl" />
+      <v-card
+        class="mx-auto"
+        max-width="450"
+        max-height="370"
+      >
+        <div class="image-container pa-2">
+          <v-img
+            height="250"
+            :src="imgUrl"
+          />
+        </div>
         <v-divider class="mx-4" />
 
         <span class="discount">{{ discountRate }}% </span>
@@ -13,7 +22,10 @@
         <v-card-title>{{ productName }}</v-card-title>
 
         <v-card-text>
-          <v-row align="center" class="mx-0">
+          <v-row
+            align="center"
+            class="mx-0"
+          >
             <v-rating
               value="3.5"
               color="#FFB300"
@@ -26,10 +38,17 @@
               size="14"
             />
 
-            <div class="rating" style="font-weight: bolder">3.5 (6504)</div>
+            <div
+              class="rating"
+              style="font-weight: bolder"
+            >
+              3.5 (6504)
+            </div>
           </v-row>
 
-          <div class="my-4">Amazon</div>
+          <div class="my-4">
+            Amazon
+          </div>
         </v-card-text>
       </v-card>
     </v-container>
@@ -65,5 +84,12 @@ export default {
 </script>
 
 <style>
+.image-container{
+    height:300;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: white;
+}
 @import '@/assets/styles/ProductContainer.css';
 </style>

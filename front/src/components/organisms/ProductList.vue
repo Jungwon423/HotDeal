@@ -1,5 +1,16 @@
 <template>
-  <v-card-text class="mx-3 pa-0 mt-4" style="font-family: dream">
+  <BannerBox />
+  <div id="app">
+    <router-link to="category">
+      Go to Category Page
+    </router-link>
+    <router-view />
+  </div>
+
+  <v-card-text
+    class="mx-3 pa-0 mt-4"
+    style="font-family: dream"
+  >
     오늘의 핫딜 Top 5!
   </v-card-text>
   <ProductContainer
@@ -14,10 +25,14 @@
 </template>
 
 <script>
+import BannerBox from './BannerBox.vue'
 import ProductContainer from '../molecules/ProductContainer.vue'
 
 export default {
-  components: { ProductContainer },
+  components: { 
+    BannerBox,
+    ProductContainer
+  },
 
   computed: {
     productList: function () {
@@ -45,3 +60,9 @@ export default {
   },
 }
 </script>
+<style scoped>
+a {
+  text-decoration: none;
+}
+
+</style>
