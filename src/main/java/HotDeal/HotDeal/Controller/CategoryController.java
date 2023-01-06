@@ -28,16 +28,9 @@ public class CategoryController {
         return categoryService.saveCategory(category);
     }
 
-    @GetMapping("{categoryName}/list")
-    public ResponseEntity<Map<String, Object>> getProductsByCategory(@PathVariable("categoryName") String categoryName) {
-        if (categoryName.equals("all")) return productService.getAllProducts();
-        else return productService.getProductsByCategoryName(categoryName);
-    }
-
-    @GetMapping("{marketName}/listMarket")
-    public ResponseEntity<Map<String, Object>> getProductsByMarket(@PathVariable("marketName") String marketName) {
-        if (marketName.equals("All")) return productService.getAllProducts();
-        else return productService.getProductsByMarketName(marketName);
+    @GetMapping("{categoryName}/{marketName}/list")
+    public ResponseEntity<Map<String, Object>> getProductsByCategoryAndMarket(@PathVariable("categoryName")  String categoryName, @PathVariable("marketName") String marketName) {
+        return productService.getProductsByCategoryAndMarket(categoryName, marketName);
     }
 
     @PostMapping("{categoryId}/click")

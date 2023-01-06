@@ -28,8 +28,32 @@ public class ProductService {
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
 
+    public ResponseEntity<Map<String,Object>> getProductsByCategoryAndMarket(String categoryName, String marketName){
+        Map<String, Object> responseJson = new HashMap<>();
+        if (categoryName.equals("all")){
+            return getProductsByMarketName(marketName);
+        }
+        else{
+            if(marketName.equals("All")){
+                return getProductsByCategoryName(categoryName);
+            }
+            else {
+                List<Product> productList = productRepository.findByCategoryNameAndMarketName(categoryName, marketName);
+                if (productList == null) {
+                    responseJson.put("result", "CategoryName = " + categoryName +" 와 MarketName = " + marketName + "를 가지는 product가 없습니다");
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseJson);
+                }
+                else responseJson.put("result", productList);
+                return ResponseEntity.status(HttpStatus.OK).body(responseJson);
+            }
+        }
+    }
+
     public ResponseEntity<Map<String,Object>> getProductsByMarketName(String marketName){
         Map<String, Object> responseJson = new HashMap<>();
+        if (marketName.equals("All")){
+            return getAllProducts();
+        }
         List<Product> productList = productRepository.findByMarketName(marketName);
         if (productList == null) {
             responseJson.put("result", "MarketName = " + marketName + "를 가지는 category가 없습니다");
