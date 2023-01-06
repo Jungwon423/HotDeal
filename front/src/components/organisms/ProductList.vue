@@ -42,10 +42,19 @@ export default {
     currentCategory: function () {
       return this.$store.state.GetProductListApi.currentCategory
     },
+
+    currentMarket: function () {
+      return this.$store.state.GetProductListApi.currentMarket
+    },
+
+
   },
 
   watch: {
     currentCategory(val) {
+      this.$store.dispatch('GetProductListApi/FETCH_PRODUCTLIST_API')
+    },
+    currentMarket(val) {
       this.$store.dispatch('GetProductListApi/FETCH_PRODUCTLIST_API')
     },
   },

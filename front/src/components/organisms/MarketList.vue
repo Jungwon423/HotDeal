@@ -6,7 +6,12 @@
     >
       사이트 별 Top 5를 확인해보세요!
     </v-card-text> -->
-    <v-tabs v-model="tab" bg-color="transparent" color="#BCAAA4" grow>
+    <v-tabs
+      v-model="tab"
+      bg-color="transparent"
+      color="#BCAAA4"
+      grow
+    >
       <v-tab
         v-for="marketname in marketNames"
         :key="marketname"
