@@ -1,12 +1,6 @@
 <template>
-  <div
-    class="d-flex flex-column align-center h-25"
-    @click="onClick"
-  >
-    <span
-      style="font-size: 12px; font-family: 'dream'"
-      v-text="marketName"
-    />
+  <div class="d-flex flex-column align-center h-25" @click="onClick">
+    <span style="font-size: 12px; font-family: 'dream'" v-text="marketName" />
   </div>
 </template>
 
@@ -23,8 +17,9 @@ export default {
   methods: {
     onClick: function (evt) {
       this.$store.commit(
-        'GetProductListApi/SET_PRODUCTLISTBYMARKET',
-        this.marketName
+        'GetProductListApi/SET_CURRENTMARKET',
+        this.marketName,
+        { root: true }
       )
     },
   },
