@@ -17,7 +17,7 @@
     <div style="font-size: large; font-family: dream">
       &nbsp; Kagu
     </div>
-    <div
+    <!-- <div
       class="
         d-flex
         align-center
@@ -32,7 +32,7 @@
         append-inner-icon="mdi-magnify"
         @click="goSearchPage()"
       />
-    </div>
+    </div> -->
   </v-app-bar>
 
   <v-system-bar

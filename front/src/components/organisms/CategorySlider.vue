@@ -1,26 +1,5 @@
 <template>
   <v-container class="pa-0">
-    <!-- 홍보 배너 -->
-    <v-carousel
-      :show-arrows="false"
-      hide-delimiters
-      height="auto"
-    >
-      <v-carousel-item
-        src="@/assets/cate1.png"
-        cover
-      />
-
-      <v-carousel-item
-        src="@/assets/cate2.png"
-        cover
-      />
-
-      <v-carousel-item
-        src="@/assets/cate3.png"
-        cover
-      />
-    </v-carousel>
     <!-- 위에 있는 탭 -->
     <v-tabs
       v-model="tab"

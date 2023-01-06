@@ -2,8 +2,9 @@
   <v-app>
     <v-main>
       <TitleHeader />
-      <MarketList />
       <CategorySlider />
+      <AdvertisingBox />
+      <MarketList />
       <!-- <CategoryList /> -->
       <ProductList />
     </v-main>
@@ -11,8 +12,9 @@
 </template>
 
 <script>
-import MarketList from '../organisms/MarketList.vue'
 import TitleHeader from '@/components/organisms/TitleHeader.vue'
+import MarketList from '../organisms/MarketList.vue'
+import AdvertisingBox from '../organisms/AdvertisingBox.vue'
 import CategorySlider from '@//components/organisms/CategorySlider.vue'
 // import CategoryList from '@//components/organisms/CategoryList.vue';
 import ProductList from '@//components/organisms/ProductList.vue'
@@ -23,6 +25,7 @@ export default {
   components: {
     TitleHeader,
     MarketList,
+    AdvertisingBox,
     CategorySlider,
     // CategoryList,
     ProductList,
