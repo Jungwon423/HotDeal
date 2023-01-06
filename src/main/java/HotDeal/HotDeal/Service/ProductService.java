@@ -15,14 +15,7 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-    public ResponseEntity<Map<String, Object>> saveProduct(Product product) {
-        Map<String, Object> responseJson = new HashMap<>();
-        responseJson.put("Message", "DB에 Product 추가 성공");
-        productRepository.save(product);
-        return ResponseEntity.status(HttpStatus.OK).body(responseJson);
-    }
-
-    public ResponseEntity<Map<String, Object>> getAllProducts() {
+    public ResponseEntity<Map<String, Object>> getAllProducts() { // 모두 all
         Map<String, Object> responseJson = new HashMap<>();
         responseJson.put("result", productRepository.findAll());
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
@@ -34,7 +27,7 @@ public class ProductService {
             return getProductsByMarketName(marketName);
         }
         else{
-            if(marketName.equals("All")){
+            if(marketName.equals("all")){
                 return getProductsByCategoryName(categoryName);
             }
             else {
@@ -49,9 +42,9 @@ public class ProductService {
         }
     }
 
-    public ResponseEntity<Map<String,Object>> getProductsByMarketName(String marketName){
+    public ResponseEntity<Map<String,Object>> getProductsByMarketName(String marketName){ // categoryname이 all인 경우
         Map<String, Object> responseJson = new HashMap<>();
-        if (marketName.equals("All")){
+        if (marketName.equals("all")){
             return getAllProducts();
         }
         List<Product> productList = productRepository.findByMarketName(marketName);
@@ -62,7 +55,7 @@ public class ProductService {
         else responseJson.put("result", productList);
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
-    public ResponseEntity<Map<String, Object>> getProductsByCategoryName(String categoryName) {
+    public ResponseEntity<Map<String, Object>> getProductsByCategoryName(String categoryName) { // marketname이 all, cateogyrname이 all이 아닌 경우
         Map<String, Object> responseJson = new HashMap<>();
         List<Product> productList = productRepository.findByCategoryName(categoryName);
         if (productList == null) {
