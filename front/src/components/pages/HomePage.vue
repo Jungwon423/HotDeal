@@ -5,8 +5,8 @@
       <CategorySlider />
       <AdvertisingBox />
       <MarketList />
-      <!-- <CategoryList /> -->
       <ProductList />
+      <!-- <CategoryList /> -->
     </v-main>
   </v-app>
 </template>
