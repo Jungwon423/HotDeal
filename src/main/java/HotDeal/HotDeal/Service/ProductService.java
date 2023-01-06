@@ -15,21 +15,38 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-    public ResponseEntity<Map<String, Object>> saveProduct(Product product) {
-        Map<String, Object> responseJson = new HashMap<>();
-        responseJson.put("Message", "DB에 Product 추가 성공");
-        productRepository.save(product);
-        return ResponseEntity.status(HttpStatus.OK).body(responseJson);
-    }
-
-    public ResponseEntity<Map<String, Object>> getAllProducts() {
+    public ResponseEntity<Map<String, Object>> getAllProducts() { // 모두 all
         Map<String, Object> responseJson = new HashMap<>();
         responseJson.put("result", productRepository.findAll());
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
 
-    public ResponseEntity<Map<String,Object>> getProductsByMarketName(String marketName){
+    public ResponseEntity<Map<String,Object>> getProductsByCategoryAndMarket(String categoryName, String marketName){
         Map<String, Object> responseJson = new HashMap<>();
+        if (categoryName.equals("all")){
+            return getProductsByMarketName(marketName);
+        }
+        else{
+            if(marketName.equals("all")){
+                return getProductsByCategoryName(categoryName);
+            }
+            else {
+                List<Product> productList = productRepository.findByCategoryNameAndMarketName(categoryName, marketName);
+                if (productList == null) {
+                    responseJson.put("result", "CategoryName = " + categoryName +" 와 MarketName = " + marketName + "를 가지는 product가 없습니다");
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseJson);
+                }
+                else responseJson.put("result", productList);
+                return ResponseEntity.status(HttpStatus.OK).body(responseJson);
+            }
+        }
+    }
+
+    public ResponseEntity<Map<String,Object>> getProductsByMarketName(String marketName){ // categoryname이 all인 경우
+        Map<String, Object> responseJson = new HashMap<>();
+        if (marketName.equals("all")){
+            return getAllProducts();
+        }
         List<Product> productList = productRepository.findByMarketName(marketName);
         if (productList == null) {
             responseJson.put("result", "MarketName = " + marketName + "를 가지는 category가 없습니다");
@@ -38,7 +55,7 @@ public class ProductService {
         else responseJson.put("result", productList);
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
-    public ResponseEntity<Map<String, Object>> getProductsByCategoryName(String categoryName) {
+    public ResponseEntity<Map<String, Object>> getProductsByCategoryName(String categoryName) { // marketname이 all, cateogyrname이 all이 아닌 경우
         Map<String, Object> responseJson = new HashMap<>();
         List<Product> productList = productRepository.findByCategoryName(categoryName);
         if (productList == null) {

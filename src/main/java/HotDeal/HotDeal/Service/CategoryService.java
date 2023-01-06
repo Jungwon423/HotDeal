@@ -16,13 +16,6 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
-    public ResponseEntity<Map<String, Object>> saveCategory(Category category) {
-        Map<String, Object> responseJson = new HashMap<>();
-        categoryRepository.save(category);
-        responseJson.put("Message", "DB에 Category 추가 성공");
-        return ResponseEntity.status(HttpStatus.OK).body(responseJson);
-    }
-
     public ResponseEntity<Map<String, Object>> clickCategory(String categoryId) {
 
         Map<String, Object> responseJson = new HashMap<>();
