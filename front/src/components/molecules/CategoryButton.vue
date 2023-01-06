@@ -1,11 +1,8 @@
 <template>
-  <div
-    class="d-flex flex-column align-center"
-    @click="onClick"
-  >
-    <v-avatar color="red">
+  <div class="d-flex flex-column align-center" @click="onClick">
+    <!-- <v-avatar color="red">
       <span class="white--text text-">{{ categoryNameSub }}</span>
-    </v-avatar>
+    </v-avatar> -->
     <span
       style="font-size: 12px; font-family: 'dream'"
       v-text="categoryNameSub"

@@ -2,10 +2,10 @@
   <v-app>
     <v-main>
       <TitleHeader />
-      <MarketList />
       <CategorySlider />
-      <!-- <CategoryList /> -->
+      <MarketList />
       <ProductList />
+      <!-- <CategoryList /> -->
     </v-main>
   </v-app>
 </template>

@@ -6,9 +6,8 @@ export default {
 
   // state : 실제로 취급해야하는 데이터
   state: {
-    currentMarket: "all",
     currentCategory: "all",
-    isCategory: true,
+    currentMarket: "all",
     productList: [],
   },
 
@@ -24,12 +23,10 @@ export default {
       state.currentCategory = payload;
     },
 
-    SET_PRODUCTLISTBYCATEGORY(state, payload) {
-      state.isCategory = true;
-      state.productList = payload;
+    SET_CURRENTMARKET(state, payload) {
+      state.currentMarket = payload;
     },
-    SET_PRODUCTLISTBYMARKET(state, payload) {
-      state.isCategory = false;
+    SET_PRODUCTLISTBYCATEGORY(state, payload) {
       state.productList = payload;
     },
   },
@@ -40,23 +37,25 @@ export default {
   actions: {
     async FETCH_PRODUCTLIST_API(context) {
       try {
-        if (context.state.isCategory) {
-          let res = await axios.get(
-            "https://www.zigdeal.shop:8080/api/category/" +
-              context.state.currentCategory +
-              "/list"
-          );
-          console.log("FETCH_PRODUCTLIST_API 성공");
-          context.commit("SET_PRODUCTLISTBYCATEGORY", res.data["result"]);
-        } else {
-          let res = await axios.get(
-            "https://www.zigdeal.shop:8080/api/category/" +
-              context.state.currentMarket +
-              "/listMarket"
-          );
-          console.log("FETCH_PRODUCTLIST_API 성공");
-          context.commit("SET_PRODUCTLISTBYCMARKET", res.data["result"]);
-        }
+        let res = await axios.get(
+          "http://localhost:8080/api/category/" +
+            context.state.currentCategory +
+            "/" +
+            context.state.currentMarket +
+            "/list"
+        );
+        console.log("FETCH_PRODUCTLIST_API 성공");
+        context.commit("SET_PRODUCTLISTBYCATEGORY", res.data["result"]);
+
+        // let res = await axios.get(
+        //   "https://www.zigdeal.shop:8080/api/category/" +
+        //     context.state.currentCategory +
+        //     "/" +
+        //     context.state.currentMarket +
+        //     "/list"
+        // );
+        // console.log("FETCH_PRODUCTLIST_API 성공");
+        // context.commit("SET_PRODUCTLISTBYCATEGORY", res.data["result"]);
       } catch (error) {
         console.log("FETCH_PRODUCTLIST_API 실패");
         console.log(error);

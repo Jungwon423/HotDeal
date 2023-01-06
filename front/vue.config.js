@@ -1,21 +1,19 @@
-const { defineConfig } = require('@vue/cli-service')
+const { defineConfig } = require("@vue/cli-service");
 module.exports = defineConfig({
-
-  devServer:{
+  devServer: {
     port: 8081,
     proxy: {
-      '/api':{
-//         target: 'http://localhost:8080', // 로컬에서 개발할 경우
-         target: 'http://43.200.252.191:8080'
-      }
-    }
+      "/api": {
+        target: "http://43.200.252.191:8080",
+      },
+    },
   },
 
   transpileDependencies: true,
 
   pluginOptions: {
     vuetify: {
-			// https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vuetify-loader
-		}
-  }
-})
+      // https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vuetify-loader
+    },
+  },
+});
