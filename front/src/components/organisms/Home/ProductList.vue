@@ -10,7 +10,7 @@
     class="mx-3 pa-0 mt-4"
     style="font-family: dream"
   >
-    오늘의 핫딜 Top 5!
+    {{ dealText }}
   </v-card-text>
   <ProductContainer
     v-for="product in productList"
@@ -46,6 +46,11 @@ export default {
       return this.$store.state.GetProductListApi.currentMarket
     },
 
+    dealText: function() {
+      // TODO
+      return this.currentCategory+this.currentMarket
+    }
+
 
   },
 
@@ -60,6 +65,8 @@ export default {
 
   async created() {
     await this.$store.dispatch('GetProductListApi/FETCH_PRODUCTLIST_API')
+    
+    await this.$store.dispatch('GetProductListApi/FETCH_EXCHANGERATE_API')
   },
   methods: {
     gopage() {

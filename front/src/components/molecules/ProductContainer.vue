@@ -17,8 +17,8 @@
         <v-divider class="mx-4" />
 
         <span class="discount">{{ discountRate }}% </span>
-        <span class="price"> {{ productPrice }}원 </span>
-        <span class="original"> {{ productPrice }}원 </span>
+        <span class="price"> {{ discountedPrice }}원 </span>
+        <span class="original"> {{ originalPrice }}원 </span>
         <v-card-title>{{ productName }}</v-card-title>
 
         <v-card-text>
@@ -80,6 +80,18 @@ export default {
       required: true,
     },
   },
+  computed: {
+    discountedPrice: function() {
+      return Math.floor(this.$store.state.GetProductListApi.dollar*this.productPrice)
+    },
+    originalPrice: function() {
+      return Math.floor(this.$store.state.GetProductListApi.dollar*this.productPrice/(100-this.discountRate)*100)
+    },
+
+    dollar: function() {
+      return this.$store.state.GetProductListApi.dollar
+    }
+  }
 }
 </script>
 
