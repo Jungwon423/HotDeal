@@ -66,7 +66,7 @@ export default {
   methods: {
     goto(refName) {
       var element = this.$refs[refName];
-      var moveTo = element.offsetTop-50;
+      var moveTo = element.offsetTop-50; //-50해야 제자리 찾는듯
       //moveEle.scrollIntoView({block: "start", behavior: "smooth" });
       window.scrollTo({top : moveTo, behavior: "smooth"});
     }
