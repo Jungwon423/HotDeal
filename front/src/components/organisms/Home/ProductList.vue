@@ -1,11 +1,6 @@
 <template>
   <BannerBox />
-  <div id="app">
-    <router-link to="category">
-      Go to Category Page
-    </router-link>
-    <router-view />
-  </div>
+  <CategoryButton2 />
   <v-card-text
     class="mx-3 pa-0 mt-4"
     style="font-family: dream"
@@ -25,13 +20,16 @@
 
 <script>
 import BannerBox from '@/components/organisms/Home/BannerBox.vue'
+import CategoryButton2 from '@/components/molecules/CategoryButton2.vue'
 import ProductContainer from '@/components/molecules/ProductContainer.vue'
 
 export default {
   components: { 
     BannerBox,
-    ProductContainer
+    ProductContainer,
+    CategoryButton2
   },
+  
 
   computed: {
     productList: function () {
@@ -60,11 +58,6 @@ export default {
 
   async created() {
     await this.$store.dispatch('GetProductListApi/FETCH_PRODUCTLIST_API')
-  },
-  methods: {
-    gopage() {
-      this.$router.push('/info')
-    },
   },
 }
 </script>

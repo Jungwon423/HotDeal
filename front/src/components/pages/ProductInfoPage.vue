@@ -1,13 +1,13 @@
 <template>
   <ProductAppBar />
   <ProductTitle />
-  <RelatedProduct />
   <ProductTab />
-
+  <!-- <RelatedProduct /> -->
   
-  <v-sheet class="sticky d-flex grow-1">
+  <v-sheet
+    class="sticky d-flex grow-1"
+  >
     <v-btn
-      color="#FF4081"
       class="buy"
     >
       구매하기
@@ -27,7 +27,7 @@ export default {
   components: {
     ProductAppBar,
     ProductTitle,
-    RelatedProduct,
+    //RelatedProduct,
     ProductTab,
     PageFooter,
   },
@@ -46,7 +46,7 @@ export default {
 </script>
 
 <style>
-@import '@/assets/styles/InfoView.css';
+@import '@/assets/styles/ProductInfoPage.css';
 .line{
   background-color:grey;
   height:1px;
