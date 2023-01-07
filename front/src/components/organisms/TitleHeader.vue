@@ -6,6 +6,7 @@
     <v-avatar
       color="white"
       size="56"
+      @click="onClick"
     >
       <v-img
         max-height="50"
@@ -14,7 +15,10 @@
       />
     </v-avatar>
 
-    <div style="font-size: large; font-family: dream">
+    <div
+      style="font-size: large; font-family: dream"
+      @click="onClick"
+    >
       &nbsp; Kagu
     </div>
     <!-- <div
@@ -48,6 +52,9 @@ export default {
     goSearchPage() {
       this.$router.push('/search')
     },
+    onClick: function (evt) {
+      window.location.reload(true)
+    },
   },
 }
 </script>
@@ -59,11 +66,11 @@ $router.push()
   left: 30px;
   border: 3px solid #73ad21;
 }
-.search-box{
+.search-box {
   position: relative;
   left: 10%;
-  background-color :#ECEFF1;
-  height : 37px;
-  width : 250px;
+  background-color: #eceff1;
+  height: 37px;
+  width: 250px;
 }
 </style>
