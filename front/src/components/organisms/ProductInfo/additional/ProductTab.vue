@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import ProductDetail from './ProductDetail.vue';
+import ProductDetail from '@/components/organisms/ProductInfo/additional/ProductDetail.vue';
 
 export default {
   components: {

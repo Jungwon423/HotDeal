@@ -6,17 +6,17 @@
     height="auto"
   >
     <v-carousel-item
-      src="@/assets/cate1.png"
+      src="@/assets/carousel/cate1.png"
       cover
     />
 
     <v-carousel-item
-      src="@/assets/cate2.png"
+      src="@/assets/carousel/cate2.png"
       cover
     />
 
     <v-carousel-item
-      src="@/assets/cate3.png"
+      src="@/assets/carousel/cate3.png"
       cover
     />
   </v-carousel>

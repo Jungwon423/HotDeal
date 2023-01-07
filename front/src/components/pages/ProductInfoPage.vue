@@ -17,11 +17,11 @@
 </template>
 
 <script>
-import ProductAppBar from '@/components/organisms/ProductAppBar.vue'
-import ProductTitle from '@/components/organisms/ProductTitle.vue'
-import ProductTab from '@/components/organisms/ProductTab.vue'
-import PageFooter from '@/components/organisms/PageFooter.vue'
-import RelatedProduct from '@/components/organisms/RelatedProduct.vue'
+import ProductTitle from '@/components/organisms/ProductInfo/main/ProductTitle.vue'
+import ProductAppBar from '@/components/organisms/ProductInfo/bar/ProductAppBar.vue'
+import ProductTab from '@/components/organisms/ProductInfo/additional/ProductTab.vue'
+import PageFooter from '@/components/organisms/ProductInfo/footer/PageFooter.vue'
+import RelatedProduct from '@/components/organisms/ProductInfo/RelatedProduct.vue'
 
 export default {
   components: {
