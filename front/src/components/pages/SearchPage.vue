@@ -9,6 +9,7 @@
         size="xx-large"
       > mdi-home</v-icon>
     </v-btn></span>
+    
     <div
       class="
         d-flex
@@ -17,11 +18,13 @@
         rounded"
     >
       <v-text-field
-        class="flex-grow-1 text-align-center pa-9"
+        class="flex-grow-1 text-align-center pa-5"
         bg-color="white"
         density="comfortable"
         hide-details="auto"
         append-inner-icon="mdi-magnify"
+        prefix="검색어를 입력하세요"
+        outlined="false"
       />
     </div>
   </v-app-bar>

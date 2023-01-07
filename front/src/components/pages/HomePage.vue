@@ -2,9 +2,9 @@
   <v-app>
     <v-main>
       <TitleHeader />
-      <CategorySlider />
-      <AdvertisingBox />
       <MarketList />
+      <AdvertisingBox />
+      <CategorySlider />
       <ProductList />
       <!-- <CategoryList /> -->
     </v-main>

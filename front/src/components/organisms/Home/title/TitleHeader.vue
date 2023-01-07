@@ -16,17 +16,18 @@
     </v-avatar>
 
     <div
+      class="mx-1"
       style="font-size: large; font-family: dream"
       @click="onClick"
     >
-      &nbsp; Kagu
+      Kagu
     </div>
-    <!-- <div
+    <div
       class="
         d-flex
         align-center
         flex-grow-1
-        rounded"
+        rounded-xl"
     >
       <v-text-field
         class="flex-grow-1 text-align-center pa-9"
@@ -36,7 +37,7 @@
         append-inner-icon="mdi-magnify"
         @click="goSearchPage()"
       />
-    </div> -->
+    </div>
   </v-app-bar>
 
   <v-system-bar
@@ -58,8 +59,6 @@ export default {
   },
 }
 </script>
-
-$router.push()
 <style>
 #v-text-field.relative {
   position: relative;
