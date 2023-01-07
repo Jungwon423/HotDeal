@@ -9,10 +9,8 @@
 }
 .buy {
   position: sticky;
-  width: 300px;
-  left: 9%;
-  bottom:0%;
-  border-radius: 50%;
+  width: 98%;
+  bottom: 0%;
   text-align: center;
   background-color: #ff4081;
   color: white;
@@ -44,7 +42,8 @@ div {
   color: #757575;
 }
 .info{
-  font-size:small;
+  color :#757575;
+  font-size:x-small;
   text-align: center;
 }
 .btn{
