@@ -30,6 +30,7 @@ export default {
     return {
       tab: 'Category',
       categoryNames: [
+        'all',
         'fashion_beauty',
         'furniture_living',
         'homeAppliances_computers',

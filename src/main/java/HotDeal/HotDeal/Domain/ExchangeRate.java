@@ -11,7 +11,6 @@ import javax.validation.constraints.PositiveOrZero;
 public class ExchangeRate {
 
     @Id
-    private String id;
     private String name;
     @PositiveOrZero
     private Double exchangeRate;
