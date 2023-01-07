@@ -6,7 +6,6 @@
     </router-link>
     <router-view />
   </div>
-
   <v-card-text
     class="mx-3 pa-0 mt-4"
     style="font-family: dream"
@@ -25,8 +24,8 @@
 </template>
 
 <script>
-import BannerBox from './BannerBox.vue'
-import ProductContainer from '../molecules/ProductContainer.vue'
+import BannerBox from '@/components/organisms/Home/BannerBox.vue'
+import ProductContainer from '@/components/molecules/ProductContainer.vue'
 
 export default {
   components: { 
@@ -72,6 +71,14 @@ export default {
 <style scoped>
 a {
   text-decoration: none;
+}
+
+.test2{
+  width: auto;
+  height: 80px;
+  background-image: url("@/assets/ticket.png");
+  background-position: center;
+  background-size: 100%;
 }
 
 </style>

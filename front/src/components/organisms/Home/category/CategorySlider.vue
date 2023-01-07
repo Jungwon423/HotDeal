@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import CategoryButton from '../molecules/CategoryButton.vue'
+import CategoryButton from '@/components/molecules/CategoryButton.vue'
 export default {
   components: {
     CategoryButton,
