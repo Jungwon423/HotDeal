@@ -15,6 +15,7 @@
     :discount-rate="product.discountRate"
     :img-url="product.imageUrl"
     :link="product.link"
+    :market-name="product.marketName"
   />
 </template>
 
@@ -54,7 +55,7 @@ export default {
 
   watch: {
     currentCategory(val) {
-      this.$store.dispatch('GetProductListApi/FETCH_PRODUCTLIST_API')
+      this.$store.dispatch('GetProductListApi/FETCH_PRODUCTLIST_API') 
     },
     currentMarket(val) {
       this.$store.dispatch('GetProductListApi/FETCH_PRODUCTLIST_API')

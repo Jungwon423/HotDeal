@@ -11,14 +11,14 @@
       <v-img
         max-height="40"
         max-width="40"
-        src="@/assets/amazon.jpg"
+        :src="marketImg"
       />
     </v-avatar>
     <div
       style="font-size: small"
       class="my-3"
     >
-      Amazon
+      {{ marketName }}
     </div>
     <div class="num">
       6005
@@ -38,12 +38,12 @@
     <v-img
       width="100%"
       height="100%"
-      src="@/assets/example.png"
+      :src="imgUrl"
     />
   </div>
   <v-sheet class="d-flex pa-2 grow-1">
     <div class="productName">
-      Acer Nitro 5 AN515-55-53E5 Acer Nitro 5 AN515-55-53E5
+      {{ productName }}
     </div>
   </v-sheet>
   <v-sheet>
@@ -61,7 +61,44 @@
     />
     <span class="review"> 리뷰 30개 </span>
   </v-sheet>
-  <span class="discount2">30% </span>
-  <span> 60000원 </span>
+  <span class="discount2">{{ discountRate }}% </span>
+  <span> {{ addCommaPrice }}원 </span>
   <v-divider />
 </template>
+
+<script>
+export default {
+  name: 'ProductTitle',
+  props: {
+    productName: {
+      type: String,
+      required: true,
+    },
+    productPrice: {
+      type: Number,
+      required: true,
+    },
+    discountRate: {
+      type: Number,
+      required: true,
+    },
+    imgUrl: {
+      type: String,
+      required: true,
+    },
+    marketName: {
+      type: String,
+      requried: true,
+    },
+   },
+   computed: {
+      marketImg(){
+        let url = require("@/assets/" + this.marketName + ".png")
+        return url
+      },
+      addCommaPrice(){
+        return Number(this.productPrice).toLocaleString('en')
+      }
+   }
+  }
+</script>
