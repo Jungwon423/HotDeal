@@ -38,16 +38,16 @@ public class SearchService {
         System.out.println(krPrice);
         //double krPrice = 5;
 
+        if (objectList.isEmpty()){
+            responseJson.put("errorMessage","검색 결과가 없는듯");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseJson);
+        }
         for (Object li : objectList) {
             JSONObject JsonLi =  (JSONObject) li;
             //System.out.println(JsonLi.get("lprice"));
             Object objLi = JsonLi.get("lprice");
             int objInt = Integer.parseInt((String) objLi); //object -> int
             lpriceList.add(objInt);
-            if(objInt==0){
-                responseJson.put("errorMessage","검색 결과가 없는듯");
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseJson);
-            }
             if(krPrice > (double) objInt){
                 hot = false;
             }
@@ -109,7 +109,10 @@ public class SearchService {
             boolean hot = true;
             System.out.println(krPrice);
             //double krPrice = 5;
-
+            if (objectList.isEmpty()){
+                hot = false;
+                System.out.println("값이 없음!");
+            }
             for (Object li : objectList) {
                 JSONObject JsonLi = (JSONObject) li;
                 Object objLi = JsonLi.get("lprice");
