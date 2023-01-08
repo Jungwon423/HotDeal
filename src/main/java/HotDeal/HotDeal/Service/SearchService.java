@@ -1,5 +1,8 @@
 package HotDeal.HotDeal.Service;
 
+import HotDeal.HotDeal.Domain.Product;
+import HotDeal.HotDeal.Repository.ExchangeRepository;
+import HotDeal.HotDeal.Repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -12,10 +15,6 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.*;
 
-import org.json.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -23,7 +22,57 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class SearchService {
-    public ResponseEntity<Map<String,Object>> Search(String searchText) throws ParseException {
+    private final ProductRepository productRepository;
+    private final ExchangeRepository exchangeRepository;
+
+    public ResponseEntity<Map<String,Object>> SearchByName(String searchText) throws ParseException {
+        String responseBody = SearchAPI(searchText);
+        List<?> objectList = StringToList(responseBody);
+        Map<String, Object> responseJson = new HashMap<>();
+
+        List<Integer> lpriceList = new ArrayList<>();
+        double price = productRepository.findByName(searchText).getPrice();  //제품이름 가격 매칭
+        double dollarToWon = exchangeRepository.findByName("dollar").getExchangeRate(); //환율
+        double krPrice = dollarToWon * price* 10;
+        boolean hot = true;
+        System.out.println(krPrice);
+        //double krPrice = 5;
+
+        for (Object li : objectList) {
+            JSONObject JsonLi =  (JSONObject) li;
+            //System.out.println(JsonLi.get("lprice"));
+            Object objLi = JsonLi.get("lprice");
+            int objInt = Integer.parseInt((String) objLi); //object -> int
+            lpriceList.add(objInt);
+            if(objInt==0){
+                responseJson.put("errorMessage","검색 결과가 없는듯");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseJson);
+            }
+            if(krPrice > (double) objInt){
+                hot = false;
+            }
+        }
+        System.out.println(lpriceList);
+        if(hot){
+            System.out.println(searchText);
+            responseJson.put("result", searchText);
+            return ResponseEntity.status(HttpStatus.OK).body(responseJson);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseJson);
+    }
+    private List<?> StringToList(String responseBody) throws ParseException {
+        List<?> objectList = new ArrayList<>();
+        JSONParser parser = new JSONParser();
+        JSONObject JsonBodyFirstLevel = (JSONObject) parser.parse(responseBody);
+        Object obj1 = JsonBodyFirstLevel.get("items");
+        if (obj1.getClass().isArray()) {
+            objectList = Arrays.asList((Object[]) obj1);
+        } else if (obj1 instanceof Collection) {
+            objectList = new ArrayList<>((Collection<?>) obj1);
+        }
+        return objectList;
+    }
+    public String SearchAPI(String searchText){
         String clientId = "KhJZhJGtfYYqxV5srTNB"; //애플리케이션 클라이언트 아이디
         String clientSecret = "VKYxFd5kWN"; //애플리케이션 클라이언트 시크릿
 
@@ -41,46 +90,41 @@ public class SearchService {
         requestHeaders.put("X-Naver-Client-Id", clientId);
         requestHeaders.put("X-Naver-Client-Secret", clientSecret);
         String responseBody = get(apiURL, requestHeaders);
+        return responseBody;
+    }
 
-        //System.out.println(responseBody);
-        JSONParser parser = new JSONParser();
-        JSONObject JsonBodyFirstLevel = (JSONObject) parser.parse(responseBody);
-        //System.out.println(JsonBodyFirstLevel.get("items"));
-        Object obj1 = JsonBodyFirstLevel.get("items");
-        List<?> list = new ArrayList<>();
-        if (obj1.getClass().isArray()) {
-            list = Arrays.asList((Object[]) obj1);
-        } else if (obj1 instanceof Collection) {
-            list = new ArrayList<>((Collection<?>) obj1);
-        }
+    public ResponseEntity<Map<String,Object>> SearchAll() throws ParseException {
         Map<String, Object> responseJson = new HashMap<>();
-        int price = 5000;
-        boolean hot = true;
-        List<Integer> lpriceList = new ArrayList<>();
 
-        for (Object li : list) {
-            //System.out.println(li);
-            JSONObject JsonLi =  (JSONObject) li;
-            //System.out.println(JsonLi.get("lprice"));
-            Object objLi = JsonLi.get("lprice");
-            int i = Integer.parseInt((String) objLi); //object -> int
-            lpriceList.add(i);
-            if(i==0){
-                responseJson.put("errorMessage","검색 결과가 없는듯");
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseJson);
+        List<String> hotProductList = new ArrayList<>();
+        List<Product> productList = productRepository.findAll();
+        for(Product productEx : productList) {
+            String productName = productEx.getName();
+            String responseBody = SearchAPI(productName);
+            List<?> objectList = StringToList(responseBody);
+
+            double price = productEx.getPrice(); //제품이름 가격 매칭
+            double dollarToWon = exchangeRepository.findByName("dollar").getExchangeRate(); //환율
+            double krPrice = dollarToWon * price;
+            boolean hot = true;
+            System.out.println(krPrice);
+            //double krPrice = 5;
+
+            for (Object li : objectList) {
+                JSONObject JsonLi = (JSONObject) li;
+                Object objLi = JsonLi.get("lprice");
+                int objInt = Integer.parseInt((String) objLi); //object -> int
+                System.out.println(objInt);
+                if (krPrice > (double) objInt) {
+                    hot = false;
+                }
             }
-            if(price>i){
-                hot = false;
+            if (hot) {
+                hotProductList.add(productName);
             }
-            System.out.println(i);
         }
-        if(hot){
-            System.out.println(searchText);
-            responseJson.put("result", searchText);
-            return ResponseEntity.status(HttpStatus.OK).body(responseJson);
-        }
-        System.out.println(lpriceList);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseJson);
+        responseJson.put("result", hotProductList);
+        return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
 
     private String get(String apiUrl, Map<String, String> requestHeaders) {
@@ -90,7 +134,6 @@ public class SearchService {
             for (Map.Entry<String, String> header : requestHeaders.entrySet()) {
                 con.setRequestProperty(header.getKey(), header.getValue());
             }
-
             int responseCode = con.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) { // 정상 호출
                 return readBody(con.getInputStream());
