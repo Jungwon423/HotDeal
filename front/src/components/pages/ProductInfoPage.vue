@@ -1,6 +1,13 @@
 <template>
   <ProductAppBar />
-  <ProductTitle />
+  <ProductTitle 
+    :key="$route.params.productId"
+    :product-name="$route.query.productName"
+    :product-price="$route.query.productPrice"
+    :discount-rate="$route.query.discountRate"
+    :img-url="$route.query.imgUrl"
+    :market-name="$route.query.marketName"
+  />
   <ProductTab />
   <!-- <RelatedProduct /> -->
   
@@ -9,6 +16,7 @@
   >
     <v-btn
       class="buy"
+      :href="$route.query.link"
     >
       구매하기
     </v-btn>
@@ -42,6 +50,14 @@ export default {
       ],
     }
   },
+  // created(){
+  //   console.log("hi")
+  //   console.log(this.$route.query.marketName)
+  //   console.log(this.$route.params.productId)
+  //   console.log(this.$route.query.productName)
+  //   console.log(this.$route.query.productPrice)
+  //   console.log(this.$route.query.link)
+  // },
 }
 </script>
 

@@ -1,6 +1,6 @@
 <template>
   <router-link
-    :to="{ name: 'productInfo', params: { productId: productName } }"
+    :to="{ name: 'productInfo', params: { productId: productName}, query:{productName: productName, productPrice: discountedPrice, discountRate: discountRate, imgUrl: imgUrl, link: link, marketName: marketName} }"
   >
     <v-container class="pl-5">
       <v-card
@@ -79,6 +79,10 @@ export default {
       type: String,
       required: true,
     },
+    marketName: {
+      type: String,
+      required: true,
+    }
   },
   computed: {
     discountedPrice: function() {
@@ -91,7 +95,11 @@ export default {
     dollar: function() {
       return this.$store.state.GetProductListApi.dollar
     }
-  }
+  },
+  // created(){
+  //   console.log("test!!!!")
+  //   console.log(this.marketName)
+  // },
 }
 </script>
 
