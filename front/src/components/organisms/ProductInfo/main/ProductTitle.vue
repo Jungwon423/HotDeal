@@ -97,7 +97,7 @@ export default {
         return url
       },
       addCommaPrice(){
-        return Number(this.productPrice).toLocaleString('en')
+        return this.productPrice.toLocaleString('en')
       }
    }
   }
