@@ -63,6 +63,7 @@ export default {
       ],
     }
   },
+
   methods: {
     goto(refName) {
       var element = this.$refs[refName];
