@@ -46,7 +46,7 @@ export default {
 
     dealText: function() {
       // TODO
-      return this.currentCategory+this.currentMarket
+      return this.currentMarket+ '-' +this.currentCategory
     }
 
 

@@ -11,9 +11,9 @@
       >
         <span style="color:aliceblue">ALL</span>
       </v-avatar>
-      <v-div class="imgText">
+      <div class="imgText">
         전체
-      </v-div>
+      </div>
     </v-col>
     <v-col
       v-for="cate in category"
@@ -30,7 +30,7 @@
           :height="cate.imageSize"
         />
       </v-avatar>
-      <v-div
+      <div
         class="imgText"
         v-text="cate.title"
       />
