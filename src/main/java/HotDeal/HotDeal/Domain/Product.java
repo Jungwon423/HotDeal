@@ -17,6 +17,7 @@ public class Product {
     private String name;
     @PositiveOrZero
     private Double price;
+    private String currency;
     @PositiveOrZero
     private Double discountRate;
     private String imageUrl;
