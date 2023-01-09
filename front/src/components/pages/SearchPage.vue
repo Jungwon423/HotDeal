@@ -93,7 +93,7 @@
 
     <v-spacer />
     <div
-      style="background-color:grey"
+      style="background-color:gray"
       class="d-flex grow"
     >
       ""

@@ -40,7 +40,7 @@
         <th
           v-for="item in header"
           :key="item"
-          :color="grey"
+          color="grey"
         >
           {{ item }}
         </th>
