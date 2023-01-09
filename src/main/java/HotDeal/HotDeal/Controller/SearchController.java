@@ -15,7 +15,7 @@ public class SearchController {
 
     private final SearchService searchService;
 
-    @GetMapping("/name")
+    @PostMapping("/name")
     public ResponseEntity<Map<String, Object>> searchByName(@RequestBody Map<String,String> searchMap) throws ParseException {
         return searchService.SearchByName(searchMap.get("name"));
     }

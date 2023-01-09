@@ -3,6 +3,7 @@ package HotDeal.HotDeal.Service;
 import HotDeal.HotDeal.Domain.Product;
 import HotDeal.HotDeal.Repository.ExchangeRepository;
 import HotDeal.HotDeal.Repository.ProductRepository;
+import HotDeal.HotDeal.Util.Validator;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -37,7 +38,7 @@ public class SearchService {
         boolean hot = true;
         System.out.println(krPrice);
         //double krPrice = 5;
-
+        //Validator.ListIsEmpty(objectList);
         if (objectList.isEmpty()){
             responseJson.put("errorMessage","네이버 쇼핑 검색 결과가 없습니다");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseJson);
