@@ -39,7 +39,7 @@ public class SearchService {
         //double krPrice = 5;
 
         if (objectList.isEmpty()){
-            responseJson.put("errorMessage","검색 결과가 없는듯");
+            responseJson.put("errorMessage","네이버 쇼핑 검색 결과가 없습니다");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseJson);
         }
         for (Object li : objectList) {
@@ -78,7 +78,7 @@ public class SearchService {
 
         String text = "";
         try {
-            text = URLEncoder.encode(searchText, "UTF-8");  // 이부분을 변경해야함
+            text = URLEncoder.encode(searchText, "UTF-8");  // 이 부분을 변경해야함
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException("검색어 인코딩 실패", e);
         }

@@ -23,5 +23,7 @@ public class Product {
     private String categoryName;
     private String marketName;
     private String link;
+    private Double tax;
+    private Double shippingFee;
     private int clickCount;
 }
