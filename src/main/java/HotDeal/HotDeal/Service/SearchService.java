@@ -3,6 +3,7 @@ package HotDeal.HotDeal.Service;
 import HotDeal.HotDeal.Domain.Product;
 import HotDeal.HotDeal.Repository.ExchangeRepository;
 import HotDeal.HotDeal.Repository.ProductRepository;
+import HotDeal.HotDeal.Util.Validator;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -27,40 +28,43 @@ public class SearchService {
 
     public ResponseEntity<Map<String,Object>> SearchByName(String searchText) throws ParseException {
         String responseBody = SearchAPI(searchText);
-        List<?> objectList = StringToList(responseBody);
+        List<?> objectList = responseStrToList(responseBody);
         Map<String, Object> responseJson = new HashMap<>();
 
-        List<Integer> lpriceList = new ArrayList<>();
         double price = productRepository.findByName(searchText).getPrice();  //제품이름 가격 매칭
         double dollarToWon = exchangeRepository.findByName("dollar").getExchangeRate(); //환율
         double krPrice = dollarToWon * price* 10;
         boolean hot = true;
         System.out.println(krPrice);
         //double krPrice = 5;
-
+        //Validator.ListIsEmpty(objectList);
         if (objectList.isEmpty()){
             responseJson.put("errorMessage","네이버 쇼핑 검색 결과가 없습니다");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseJson);
         }
-        for (Object li : objectList) {
-            JSONObject JsonLi =  (JSONObject) li;
-            //System.out.println(JsonLi.get("lprice"));
-            Object objLi = JsonLi.get("lprice");
-            int objInt = Integer.parseInt((String) objLi); //object -> int
-            lpriceList.add(objInt);
-            if(krPrice > (double) objInt){
-                hot = false;
-            }
+        List<Integer> lpriceList = new ArrayList<>(); //결과 리스트로 출력용 (테스트용)
+        for (Object rawObj : objectList) {
+            int lowestPrice = ObjectToInt(rawObj);
+            lpriceList.add(lowestPrice);
+            hot = CheckIfHot(lowestPrice,krPrice);
         }
         System.out.println(lpriceList);
         if(hot){
             System.out.println(searchText);
-            responseJson.put("result", searchText);
+            responseJson.put("result", searchText); //핫딜이면 제품이름 그대로 출력
             return ResponseEntity.status(HttpStatus.OK).body(responseJson);
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseJson);
     }
-    private List<?> StringToList(String responseBody) throws ParseException {
+    private int ObjectToInt(Object rawObj){
+        JSONObject JsonLi = (JSONObject) rawObj;
+        Object objLi = JsonLi.get("lprice");
+        return Integer.parseInt((String) objLi);
+    }
+    private boolean CheckIfHot(int lowestPrice, Double krPrice){
+        return !(krPrice > (double) lowestPrice);
+    }
+    private List<?> responseStrToList(String responseBody) throws ParseException {
         List<?> objectList = new ArrayList<>();
         JSONParser parser = new JSONParser();
         JSONObject JsonBodyFirstLevel = (JSONObject) parser.parse(responseBody);
@@ -101,7 +105,7 @@ public class SearchService {
         for(Product productEx : productList) {
             String productName = productEx.getName();
             String responseBody = SearchAPI(productName);
-            List<?> objectList = StringToList(responseBody);
+            List<?> objectList = responseStrToList(responseBody);
 
             double price = productEx.getPrice(); //제품이름 가격 매칭
             double dollarToWon = exchangeRepository.findByName("dollar").getExchangeRate(); //환율
@@ -114,13 +118,8 @@ public class SearchService {
                 System.out.println("값이 없음!");
             }
             for (Object li : objectList) {
-                JSONObject JsonLi = (JSONObject) li;
-                Object objLi = JsonLi.get("lprice");
-                int objInt = Integer.parseInt((String) objLi); //object -> int
-                System.out.println(objInt);
-                if (krPrice > (double) objInt) {
-                    hot = false;
-                }
+                int lowestPrice = ObjectToInt(li);
+                hot = CheckIfHot(lowestPrice,krPrice);
             }
             if (hot) {
                 hotProductList.add(productName);

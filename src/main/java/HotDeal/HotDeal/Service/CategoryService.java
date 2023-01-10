@@ -21,6 +21,7 @@ public class CategoryService {
         Map<String, Object> responseJson = new HashMap<>();
         Category category;
 
+        System.out.println(categoryRepository.findById(categoryId).getClass().getName());
         if (categoryRepository.findById(categoryId).isEmpty()) {
             responseJson.put("errorMessage", "categoryId = " + categoryId + "를 가지는 category가 없습니다");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseJson);
