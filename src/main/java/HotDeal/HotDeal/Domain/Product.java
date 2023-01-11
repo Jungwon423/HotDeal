@@ -28,4 +28,5 @@ public class Product {
     private Double shippingFee;
     private int clickCount;
     private String locale;
+    private Double naverPrice;
 }
