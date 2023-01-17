@@ -31,10 +31,17 @@ export default {
       tab: 'Category',
       categoryNames: [
         'all',
-        'fashion_beauty',
-        'furniture_living',
-        'homeAppliances_computers',
-        'travel_car',
+        'life_health',
+        'duty-free',
+        'travel_culture',
+        'sports_leisure',
+        'food',
+        'childbirth_parenting',
+        'furniture_interior',
+        'digital_consumer',
+        'cosmetics_beauty',
+        'fashion-accessories',
+        'fashion-clothes'
       ],
     }
   },
