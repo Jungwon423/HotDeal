@@ -12,7 +12,6 @@ import javax.validation.constraints.Size;
 public class Product {
 
     @Id
-    private String id;
     @Size(min = 2, max = 20, message = "길이는 2~20로")
     private String name;
     @PositiveOrZero
