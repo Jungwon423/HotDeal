@@ -54,6 +54,9 @@ export default {
   computed: {
     categoryNameSub() {
       //categoryNameSubstitution
+      console.log(this.categoryName)
+      console.log(this.$categoryMap)
+      console.log(this.$categoryMap.get(this.categoryName))
       return this.$categoryMap.get(this.categoryName)
     },
   },
