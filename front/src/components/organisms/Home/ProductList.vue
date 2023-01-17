@@ -64,8 +64,6 @@ export default {
 
   async created() {
     await this.$store.dispatch('GetProductListApi/FETCH_PRODUCTLIST_API')
-    
-    await this.$store.dispatch('GetProductListApi/FETCH_EXCHANGERATE_API')
   },
 }
 </script>

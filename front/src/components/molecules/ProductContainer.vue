@@ -86,15 +86,11 @@ export default {
   },
   computed: {
     discountedPrice: function() {
-      return Math.floor(this.$store.state.GetProductListApi.dollar*this.productPrice).toLocaleString('ko-KR')
+      return Math.floor(this.productPrice).toLocaleString('ko-KR')
     },
     originalPrice: function() {
-      return Math.floor(this.$store.state.GetProductListApi.dollar*this.productPrice/(100-this.discountRate)*100).toLocaleString('ko-KR')
+      return Math.floor(this.productPrice.toLocaleString('ko-KR'))
     },
-
-    dollar: function() {
-      return this.$store.state.GetProductListApi.dollar
-    }
   },
   // created(){
   //   console.log("test!!!!")
