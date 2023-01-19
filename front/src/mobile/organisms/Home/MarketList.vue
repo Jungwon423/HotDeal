@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import MarketButton from '@/components/molecules/MarketButton.vue'
+import MarketButton from '@/mobile/molecules/MarketButton.vue'
 
 export default {
   components: {

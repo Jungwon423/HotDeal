@@ -20,9 +20,9 @@
 </template>
 
 <script>
-import BannerBox from '@/components/organisms/Home/BannerBox.vue'
-import CategoryButton2 from '@/components/molecules/CategoryButton2.vue'
-import ProductContainer from '@/components/molecules/ProductContainer.vue'
+import BannerBox from '@/mobile/organisms/Home/BannerBox.vue'
+import CategoryButton2 from '@/mobile/molecules/CategoryButton2.vue'
+import ProductContainer from '@/mobile/molecules/ProductContainer.vue'
 
 export default {
   components: { 

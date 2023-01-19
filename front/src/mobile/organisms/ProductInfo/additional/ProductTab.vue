@@ -44,8 +44,8 @@
 </template>
 
 <script>
-import ProductDetail from '@/components/organisms/ProductInfo/additional/ProductDetail.vue';
-import ShoppingGuide from '@/components/organisms/ProductInfo/additional/ShoppingGuide.vue'
+import ProductDetail from '@/mobile/organisms/ProductInfo/additional/ProductDetail.vue';
+import ShoppingGuide from '@/mobile/organisms/ProductInfo/additional/ShoppingGuide.vue'
 
 export default {
   components: {

@@ -25,11 +25,11 @@
 </template>
 
 <script>
-import ProductTitle from '@/components/organisms/ProductInfo/main/ProductTitle.vue'
-import ProductAppBar from '@/components/organisms/ProductInfo/bar/ProductAppBar.vue'
-import ProductTab from '@/components/organisms/ProductInfo/additional/ProductTab.vue'
-import PageFooter from '@/components/organisms/ProductInfo/footer/PageFooter.vue'
-import RelatedProduct from '@/components/organisms/ProductInfo/RelatedProduct.vue'
+import ProductTitle from '@/mobile/organisms/ProductInfo/main/ProductTitle.vue'
+import ProductAppBar from '@/mobile/organisms/ProductInfo/bar/ProductAppBar.vue'
+import ProductTab from '@/mobile/organisms/ProductInfo/additional/ProductTab.vue'
+import PageFooter from '@/mobile/organisms/ProductInfo/footer/PageFooter.vue'
+import RelatedProduct from '@/mobile/organisms/ProductInfo/RelatedProduct.vue'
 
 export default {
   components: {
