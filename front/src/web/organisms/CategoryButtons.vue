@@ -1,5 +1,5 @@
-<template class="pa-12">
-  <div class="pa-12">
+<template>
+  <div class="px-12">
     <v-row
       class="px-6 text-center"
       justify="center"
