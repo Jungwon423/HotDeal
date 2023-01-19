@@ -4,8 +4,8 @@
 </template>
   
 <script>
-import CategoryHead from '@/components/organisms/Category/CategoryHead.vue'
-import CategoryMain from '@/components/organisms/Category/CategoryMain.vue'
+import CategoryHead from '@/mobile/organisms/Category/CategoryHead.vue'
+import CategoryMain from '@/mobile/organisms/Category/CategoryMain.vue'
   export default {
     name: 'CategoryButton',
     components : {

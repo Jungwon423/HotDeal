@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import HomePage from '@/components/pages/HomePage.vue';
-import ProductInfoPage from '@/components/pages/ProductInfoPage.vue';
-import CategoryPage from '@/components/pages/CategoryPage.vue';
-import SearchPage from '@/components/pages/SearchPage.vue';
+import HomePage from '@/mobile/pages/HomePage.vue';
+import ProductInfoPage from '@/mobile/pages/ProductInfoPage.vue';
+import CategoryPage from '@/mobile/pages/CategoryPage.vue';
+import SearchPage from '@/mobile/pages/SearchPage.vue';
 
 //Vue.use(VueRouter)
 

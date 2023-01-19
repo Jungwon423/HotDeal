@@ -12,12 +12,12 @@
 </template>
 
 <script>
-import TitleHeader from '@/components/organisms/Home/title/TitleHeader.vue'
-import MarketList from '@/components/organisms/Home/MarketList.vue'
-import AdvertisingBox from '@/components/organisms/Home/AdvertisingBox.vue'
-import CategorySlider from '@/components/organisms/Home/category/CategorySlider.vue'
-// import CategoryList from '@//components/organisms/CategoryList.vue';
-import ProductList from '@/components/organisms/Home/ProductList.vue'
+import TitleHeader from '@/mobile/organisms/Home/title/TitleHeader.vue'
+import MarketList from '@/mobile/organisms/Home/MarketList.vue'
+import AdvertisingBox from '@/mobile/organisms/Home/AdvertisingBox.vue'
+import CategorySlider from '@/mobile/organisms/Home/category/CategorySlider.vue'
+// import CategoryList from '@/mobile/organisms/CategoryList.vue';
+import ProductList from '@/mobile/organisms/Home/ProductList.vue'
 
 export default {
   name: 'HomePage',
