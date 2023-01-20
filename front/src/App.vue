@@ -13,6 +13,12 @@ export default {
 </script>
 
 <style>
+#app{
+  width: 1000px;
+  height: 80vw;
+  margin-left: auto;
+  margin-right: auto;
+}
 @font-face {
   font-family: 'dream';
   src: url('./assets/fonts/SCDream6.ttf') format('truetype');
