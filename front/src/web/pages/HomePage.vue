@@ -4,6 +4,7 @@
   <CategoryMain />
   <product-container />
   <product-set />
+  <box />
 </template>
     
   <script>
@@ -12,6 +13,7 @@
   import HomeHeader from '@/web/organisms/HomeHeader.vue'
   import ProductContainer from '@/web/molecules/ProductContainer.vue'
   import ProductSet from '../organisms/ProductSet.vue'
+  import box from '@/web/molecules/SideBox.vue'
   export default {
     name: 'CategoryButtons',
     components : {
@@ -19,7 +21,8 @@
       CategoryMain,
       AdvertisingBox,
       ProductContainer,
-      ProductSet
+      ProductSet,
+      box
     },
       
     computed: {
@@ -39,3 +42,7 @@
     },
   }
   </script>
+  <style>
+@media (max-width: 1440px) {}
+  
+  </style>

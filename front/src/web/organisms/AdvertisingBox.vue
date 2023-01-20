@@ -25,12 +25,24 @@
       />
     </v-carousel>
   </div>
+  <div class="innerText1">
+    Super Flash Sale
+  </div>
 </template>
 <style scoped>
 .banner{
   padding:0;
   position:relative;
-  top:-7%;
+  top:-3%;
   background-color: beige;
+}
+.innerText1{
+  color:white;
+  font-size: 50px;
+  font-weight: 500;
+  line-height: 36px;
+  position:absolute;
+  top:500px;
+  left:300px;
 }
 </style>
