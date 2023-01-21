@@ -2,9 +2,10 @@
   <HomeHeader />
   <AdvertisingBox />
   <CategoryMain />
-  <product-container />
+  <!--<product-container />-->
   <product-set />
   <box />
+  <exhibition-set />
 </template>
     
   <script>
@@ -12,17 +13,18 @@
   import AdvertisingBox from '@/web/organisms/AdvertisingBox.vue'
   import HomeHeader from '@/web/organisms/HomeHeader.vue'
   import ProductContainer from '@/web/molecules/ProductContainer.vue'
-  import ProductSet from '../organisms/ProductSet.vue'
+  import ProductSet from '@/web/organisms/ProductSet.vue'
   import box from '@/web/molecules/SideBox.vue'
+  import ExhibitionSet from '@/web/organisms/ExhibitionSet.vue'
   export default {
     name: 'CategoryButtons',
     components : {
       HomeHeader,
       CategoryMain,
       AdvertisingBox,
-      ProductContainer,
       ProductSet,
-      box
+      box,
+      ExhibitionSet
     },
       
     computed: {
@@ -43,6 +45,5 @@
   }
   </script>
   <style>
-@media (max-width: 1440px) {}
   
   </style>
