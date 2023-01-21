@@ -4,24 +4,24 @@
     <v-carousel
       :show-arrows="false"
       :hide-delimiters="true"
-      height="500"
+      height="400"
     >
       <v-carousel-item
         src="@/assets/홈그림.png"
-        max-height="500px"
+        max-height="400px"
         cover
       />
 
       <v-carousel-item
         src="@/assets/carousel/cate2.png"
-        max-height="500px"
+        max-height="400px"
         cover
       />
 
       <v-carousel-item
         src="@/assets/carousel/cate3.png"
         cover
-        max-height="500px"
+        max-height="400px"
       />
     </v-carousel>
   </div>
@@ -31,10 +31,10 @@
 </template>
 <style scoped>
 .banner{
-  padding:0;
+  padding-top:10px;
+  padding-bottom: 10px;
   position:relative;
-  top:-3%;
-  background-color: beige;
+  background-color: transparent;
 }
 .innerText1{
   color:white;

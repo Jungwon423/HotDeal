@@ -1,11 +1,11 @@
 <template>
   <v-row
-    class="px-6 text-center"
+    class="pa-6 text-center"
     justify="center"
   >
     <v-col>
       <div class="best-text">
-        BEST SELLER
+        초특가 핫딜
       </div>
     </v-col>
   </v-row> 
@@ -64,7 +64,6 @@ export default {
 <style scoped>
 .best-text {
   position: relative;
-  font-family: Poppins;
   font-size: 30px;
   font-weight: 800;
 }
