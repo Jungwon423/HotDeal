@@ -15,7 +15,7 @@
   import ProductSet from '../organisms/ProductSet.vue'
   import box from '@/web/molecules/SideBox.vue'
   export default {
-    name: 'CategoryButtons',
+    name: 'HomePage',
     components : {
       HomeHeader,
       CategoryMain,
@@ -42,7 +42,6 @@
     },
   }
   </script>
-  <style>
-@media (max-width: 1440px) {}
-  
-  </style>
+<style>
+  @media (max-width: 1440px) {}
+</style>
