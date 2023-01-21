@@ -4,8 +4,9 @@ import ProductInfoPage from '@/mobile/pages/ProductInfoPage.vue';
 import CategoryPage from '@/mobile/pages/CategoryPage.vue';
 import SearchPage from '@/mobile/pages/SearchPage.vue';
 import testPage from '@/web/pages/HomePage.vue';
+import CategoryPageVue from '@/web/pages/CategoryPage.vue';
 import MobileDetect from 'mobile-detect';
-  
+
 
 //Vue.use(VueRouter)
 
@@ -52,7 +53,7 @@ const w_routes = [ //웹 라우터
     {
       path: '/category',
       name: 'category',
-      component: CategoryPage
+      component: CategoryPageVue
     },
     {
       path: '/search',

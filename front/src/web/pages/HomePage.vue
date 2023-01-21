@@ -17,7 +17,7 @@
   import box from '@/web/molecules/SideBox.vue'
   import ExhibitionSet from '@/web/organisms/ExhibitionSet.vue'
   export default {
-    name: 'CategoryButtons',
+    name: 'HomePage',
     components : {
       HomeHeader,
       CategoryMain,
