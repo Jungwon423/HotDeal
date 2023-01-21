@@ -14,7 +14,7 @@ export default {
 
 <style>
 #app{
-  width: 1000px;
+  width: 980px;
   height: 80vw;
   margin-left: auto;
   margin-right: auto;

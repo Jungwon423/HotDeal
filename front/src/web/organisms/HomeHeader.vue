@@ -14,55 +14,44 @@
 
       <span
         class="mx-1"
-        style="font-size: 25px; font-family: dream"
+        style="font-size: 22px; font-family: dream"
       >
         Kagu
       </span>
-      <div />
-      <div>
-        <div class="group1">
-          <span class="group1-text px-10">HOME</span>
-          <span class="group1-text px-10">핫딜</span>
-          <span class="group1-text px-10">메뉴</span>
-          <span class="group1-text px-10">CONTACT</span>
-          <span class="group2-text">로그인</span>
-          <span class="group2-text px-10">무료 회원가입</span>
-        </div>
+    </div>
+    <div>
+      <div class="group1">
+        <span class="group1-text px-10">카테고리</span>
+        <span class="v-line" />
+        <span class="group1-text px-10">홈</span>
+        <span class="group1-text px-10">핫딜</span>
+        <span class="group1-text px-10">기획전</span>
+        <span class="group2-text px-10">로그인</span>
       </div>
     </div>
   </container>
 </template>
 <script>
 export default {
-  metaInfo: {
-    // title 입력하기
-    title: '페이지 타이틀',
-    // link tag 입력하기
-    link: [{rel: "canonical", href: 'www.site.com'}],
-    // meta tag 입력하기
-    meta: [
-      { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=1000px, initial-scale=1' },
-      { vmid: "description", name: "description", content: 'description' }
-      //vmid ↑ 메타 태그를 고유하게 만들어준다.
-    ]
-  }
 }
 </script>
 <style>
 
   .group1 {
   display: flex;
-  padding:50px;
+  padding:0px;
   position: relative;
   background-color: transparent;
+  border-style:solid;
+  border-width:1px 0px 1px 0px;
+  border-color:#E0E0E0;
 }
 .group2-text {
-  left:40%;
+  left: 30%;
   position: relative;
   background-color: transparent;
   font-family: Poppins;
-  font-size: 22px;
+  font-size: 16px;
   font-weight: 600;
   line-height: 36px;
   letter-spacing: 0em;
@@ -70,11 +59,18 @@ export default {
 }
 .group1-text{
   font-family: Poppins;
-  font-size: 22px;
+  font-size: 16px;
   font-weight: 600;
   line-height: 36px;
   letter-spacing: 0em;
   text-align: left;
   position: relative;
+}
+.v-line{
+  margin-top:5px;
+  border-left: solid;
+  border-width:1px;
+  border-color:#E0E0E0;
+  height:25px;
 }
 </style>

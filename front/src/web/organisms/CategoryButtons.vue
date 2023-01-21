@@ -1,5 +1,5 @@
 <template>
-  <div class="px-12">
+  <div class="px-0">
     <v-row
       class="px-6 text-center"
       justify="center"
@@ -97,12 +97,6 @@
                 src: require('@/assets/categoryImage/leisure.png'),
                 imageSize: '40px',
                 color: '#FFECB3',
-            },
-            {
-                title: '주방용품',
-                src: require('@/assets/categoryImage/kitchen.png'),
-                imageSize: '40px',
-                color: '#F0F4C3',
             }
             ],
             category4:[
@@ -131,12 +125,6 @@
 </script>
 <style>
   @import '@/assets/styles/CategoryMain.css';
-  .kagu {
-    color:var(--shark-2);
-    font-family:var(--font-family-poppins);
-    font-size: var(--font-size-m);
-    font-weight: 700;
-  }
 </style>
     
     
