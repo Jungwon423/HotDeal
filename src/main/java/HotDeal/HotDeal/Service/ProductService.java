@@ -33,6 +33,20 @@ public class ProductService {
         }
     };
 
+    public ResponseEntity<Map<String, Object>> getTop3ProductsByMarketName(String marketName) {
+        Map<String, Object> responseJson = new HashMap<>();
+        if (marketName.equals("all")){
+            responseJson.put("result", productRepository.findAll().subList(0, 3));
+            return ResponseEntity.status(HttpStatus.OK).body(responseJson);
+        }
+        List<Product> productList = productRepository.findByMarketName(marketName);
+        if (productList == null) {
+            responseJson.put("result", "MarketName = " + marketName + "를 가지는 category가 없습니다");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseJson);
+        }
+        else responseJson.put("result", productList.subList(0, 3));
+        return ResponseEntity.status(HttpStatus.OK).body(responseJson);
+    }
     public ResponseEntity<Map<String, Object>> getAllProducts() { // 모두 all
         Map<String, Object> responseJson = new HashMap<>();
         responseJson.put("result", productRepository.findAll().subList(0, 10));

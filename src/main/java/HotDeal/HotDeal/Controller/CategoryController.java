@@ -21,6 +21,11 @@ public class CategoryController {
         return productService.getProductsByCategoryAndMarket(categoryName, marketName);
     }
 
+    @GetMapping("{marketName}/top3")
+    public ResponseEntity<Map<String, Object>> getTop3ProductsByMarket(@PathVariable("marketName") String marketName) {
+        return productService.getTop3ProductsByMarketName(marketName);
+    }
+
     @PostMapping("{categoryId}/click")
     public ResponseEntity<Map<String, Object>> clickCategory(@PathVariable String categoryId) {
         return categoryService.clickCategory(categoryId);
