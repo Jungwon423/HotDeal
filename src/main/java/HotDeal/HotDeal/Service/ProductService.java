@@ -56,12 +56,12 @@ public class ProductService {
         List<Product> productList = productRepository.findAll();
         if (productList.size() < 10) {
             responseJson.put("result", productList);
-            responseJson.put("pageNumber", 1);
+            responseJson.put("totalPage", 1);
             responseJson.put("productCount", productList.size());
         }
         else {
             responseJson.put("result", productList.subList(pageNumber * 10, (pageNumber+1)*10));
-            responseJson.put("pageNumber", (productList.size() % 10 == 0) ? productList.size()/10 : productList.size()/10 + 1);
+            responseJson.put("totalPage", (productList.size() % 10 == 0) ? productList.size()/10 : productList.size()/10 + 1);
             responseJson.put("productCount", productList.size());
         }
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
@@ -85,7 +85,7 @@ public class ProductService {
                 }
                 else {
                     responseJson.put("result", productList.subList(pageNumber * 10, (pageNumber+1)*10));
-                    responseJson.put("pageNumber", (productList.size() % 10 == 0) ? productList.size()/10 : productList.size()/10 + 1);
+                    responseJson.put("totalPage", (productList.size() % 10 == 0) ? productList.size()/10 : productList.size()/10 + 1);
                     responseJson.put("productCount", productList.size());
                 }
                 return ResponseEntity.status(HttpStatus.OK).body(responseJson);
@@ -105,7 +105,7 @@ public class ProductService {
         }
         else {
             responseJson.put("result", productList.subList(pageNumber * 10, (pageNumber+1)*10));
-            responseJson.put("pageNumber", (productList.size() % 10 == 0) ? productList.size()/10 : productList.size()/10 + 1);
+            responseJson.put("totalPage", (productList.size() % 10 == 0) ? productList.size()/10 : productList.size()/10 + 1);
             responseJson.put("productCount", productList.size());
         }
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
@@ -120,7 +120,7 @@ public class ProductService {
         }
         else {
             responseJson.put("result", productList.subList(pageNumber * 10, (pageNumber+1)*10));
-            responseJson.put("pageNumber", (productList.size() % 10 == 0) ? productList.size()/10 : productList.size()/10 + 1);
+            responseJson.put("totalPage", (productList.size() % 10 == 0) ? productList.size()/10 : productList.size()/10 + 1);
             responseJson.put("productCount", productList.size());
         }
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
