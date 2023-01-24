@@ -16,9 +16,9 @@ public class CategoryController {
     private final ProductService productService;
     private final CategoryService categoryService;
 
-    @GetMapping("{categoryName}/{marketName}/list")
-    public ResponseEntity<Map<String, Object>> getProductsByCategoryAndMarket(@PathVariable("categoryName")  String categoryName, @PathVariable("marketName") String marketName) {
-        return productService.getProductsByCategoryAndMarket(categoryName, marketName);
+    @GetMapping("{categoryName}/{marketName}/{pageNumber}/list")
+    public ResponseEntity<Map<String, Object>> getProductsByCategoryAndMarket(@PathVariable("categoryName")  String categoryName, @PathVariable("marketName") String marketName, @PathVariable("pageNumber") Integer pageNumber) {
+        return productService.getProductsByCategoryAndMarket(categoryName, marketName, pageNumber);
     }
 
     @GetMapping("{marketName}/top3")
