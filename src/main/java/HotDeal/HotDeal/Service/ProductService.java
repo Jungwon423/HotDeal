@@ -46,24 +46,18 @@ public class ProductService {
             responseJson.put("result", "MarketName = " + marketName + "를 가지는 category가 없습니다");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseJson);
         }
-        else if (productList.size() < 3) responseJson.put("result", productList);
-        else responseJson.put("result", productList.subList(0, 3));
+        else responseJson.put("result", productList.subList(0, Math.min(productList.size(), 3)));
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
 
     public ResponseEntity<Map<String, Object>> getAllProducts(Integer pageNumber) { // 모두 all
         Map<String, Object> responseJson = new HashMap<>();
+
         List<Product> productList = productRepository.findAll();
-        if (productList.size() < 10) {
-            responseJson.put("result", productList);
-            responseJson.put("totalPage", 1);
-            responseJson.put("productCount", productList.size());
-        }
-        else {
-            responseJson.put("result", productList.subList(pageNumber * 10, (pageNumber+1)*10));
-            responseJson.put("totalPage", (productList.size() % 10 == 0) ? productList.size()/10 : productList.size()/10 + 1);
-            responseJson.put("productCount", productList.size());
-        }
+        responseJson.put("result", productList.subList((pageNumber-1) * 10, Math.min(productList.size(), pageNumber * 10)));
+        responseJson.put("totalPage", (productList.size() % 10 == 0) ? productList.size()/10 : productList.size()/10 + 1);
+        responseJson.put("productCount", productList.size());
+
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
 
@@ -84,7 +78,7 @@ public class ProductService {
                     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseJson);
                 }
                 else {
-                    responseJson.put("result", productList.subList(pageNumber * 10, (pageNumber+1)*10));
+                    responseJson.put("result", productList.subList((pageNumber-1) * 10, Math.min(productList.size(), pageNumber * 10)));
                     responseJson.put("totalPage", (productList.size() % 10 == 0) ? productList.size()/10 : productList.size()/10 + 1);
                     responseJson.put("productCount", productList.size());
                 }
@@ -104,7 +98,7 @@ public class ProductService {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseJson);
         }
         else {
-            responseJson.put("result", productList.subList(pageNumber * 10, (pageNumber+1)*10));
+            responseJson.put("result", productList.subList((pageNumber-1) * 10, Math.min(productList.size(), pageNumber * 10)));
             responseJson.put("totalPage", (productList.size() % 10 == 0) ? productList.size()/10 : productList.size()/10 + 1);
             responseJson.put("productCount", productList.size());
         }
@@ -117,9 +111,8 @@ public class ProductService {
         if (productList == null) {
             responseJson.put("result", "categoryName = " + categoryName + "를 가지는 category가 없습니다");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseJson);
-        }
-        else {
-            responseJson.put("result", productList.subList(pageNumber * 10, (pageNumber+1)*10));
+        } else {
+            responseJson.put("result", productList.subList((pageNumber-1) * 10, Math.min(productList.size(), pageNumber * 10)));
             responseJson.put("totalPage", (productList.size() % 10 == 0) ? productList.size()/10 : productList.size()/10 + 1);
             responseJson.put("productCount", productList.size());
         }
