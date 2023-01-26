@@ -44,6 +44,6 @@ public class GlobalExceptionHandler {
  */
     @ExceptionHandler(IllegalArgumentException.class)
     public String illegalArgumentExceptionAdvice(IllegalArgumentException e) {
-        return "IllegalArgumentException Occurred!!!!!!!!!!!!!";
+        return "ID 존재하지 않음, IllegalArgumentException Occurred!!!!!!!!!!!!!";
     }
 }
