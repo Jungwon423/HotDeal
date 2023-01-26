@@ -8,6 +8,8 @@ import lombok.Getter;
 public enum ErrorCode {
     //400 BAD_REQUEST 잘못된 요청
     INVALID_PARAMETER(400, "파라미터 값을 확인해주세요."),
+    DUPLICATE_ID(400, "중복된 ID 값 입니다."),
+    DUPLICATE_NICKNAME(400, "중복된 닉네임입니다."),
 
     //404 NOT_FOUND 잘못된 리소스 접근
     LIST_IS_EMPTY(404, "값이 비어있습니다."),
