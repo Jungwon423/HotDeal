@@ -7,6 +7,7 @@ import HotDeal.HotDeal.Util.DuplicateNicknameException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -40,7 +41,7 @@ public class UserService {
     public ResponseEntity<Map<String,Object>> userLogin(User user){
         Map<String, Object> responseJson = new HashMap<>();
         User tempUser = userRepository.findById(user.getId())
-                .orElseThrow(IllegalArgumentException::new);
+                .orElseThrow(IllegalArgumentException::new);    //ID 없으면 일단 IllegalArgumentException임.
         if (tempUser.getPassword().equals(user.getPassword())){
             responseJson.put("result",tempUser);
             logger2.info("비밀번호는 " + tempUser.getPassword());
