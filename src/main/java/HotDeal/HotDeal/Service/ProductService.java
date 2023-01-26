@@ -29,7 +29,6 @@ public class ProductService {
             put("cosmetics_beauty","화장품/미용");
             put("fashion-accessories", "패션잡화");
             put("fashion-clothes", "패션의류");
-
         }
     };
 
