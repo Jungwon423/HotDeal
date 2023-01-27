@@ -1,5 +1,6 @@
 package HotDeal.HotDeal.config;
 
+import HotDeal.HotDeal.Util.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -10,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 @RequiredArgsConstructor
 public class JwtAuthInterceptor implements HandlerInterceptor {
-/*
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         String authorizationHeader = request.getHeader("Authorization");
@@ -19,7 +19,7 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
         }
 
         String jwtToken = JwtUtils.getJwtTokenFromAuthorizationHeader(authorizationHeader);
-        if (JwtUtils.validateJwtToken(jwtToken) == false) {
+        if (!JwtUtils.validateJwtToken(jwtToken)) {
             System.out.println("invalid jwt token.");
             return true;
         }
@@ -28,6 +28,4 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
         request.setAttribute("userId", userId);
         return true;
     }
-
- */
 }

@@ -4,9 +4,6 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.constraints.PositiveOrZero;
-import javax.validation.constraints.Size;
-
 @Data
 @Document(collection = "user")
 public class User {
