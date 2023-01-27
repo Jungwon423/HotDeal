@@ -1,4 +1,4 @@
-package HotDeal.HotDeal.Util;
+package HotDeal.HotDeal.Exception;
 
 import org.json.simple.JSONObject;
 import org.springframework.http.HttpStatus;
