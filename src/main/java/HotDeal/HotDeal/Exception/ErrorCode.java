@@ -1,4 +1,4 @@
-package HotDeal.HotDeal.Util;
+package HotDeal.HotDeal.Exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -2,19 +2,17 @@ package HotDeal.HotDeal.Service;
 
 import HotDeal.HotDeal.Domain.User;
 import HotDeal.HotDeal.Repository.UserRepository;
-import HotDeal.HotDeal.Util.DuplicateIdException;
-import HotDeal.HotDeal.Util.DuplicateNicknameException;
+import HotDeal.HotDeal.Exception.DuplicateIdException;
+import HotDeal.HotDeal.Exception.DuplicateNicknameException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
