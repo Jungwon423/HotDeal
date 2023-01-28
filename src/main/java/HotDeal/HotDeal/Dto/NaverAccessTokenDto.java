@@ -1,9 +1,9 @@
-package HotDeal.HotDeal.Domain;
+package HotDeal.HotDeal.Dto;
 
 import lombok.Data;
 
 @Data
-public class KakaoAccessTokenDto {
+public class NaverAccessTokenDto {
 
     private String tokenType;
     private String accessToken;

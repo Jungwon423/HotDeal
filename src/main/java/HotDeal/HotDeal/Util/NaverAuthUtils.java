@@ -1,23 +1,8 @@
 package HotDeal.HotDeal.Util;
 
-import HotDeal.HotDeal.Domain.KakaoAccessTokenDto;
-import HotDeal.HotDeal.Domain.KakaoUserDto;
-import HotDeal.HotDeal.Domain.NaverUserDto;
-import HotDeal.HotDeal.Domain.User;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import HotDeal.HotDeal.Dto.NaverUserDto;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
 
 import java.io.BufferedReader;
 import java.io.IOException;

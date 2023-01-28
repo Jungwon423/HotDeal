@@ -1,7 +1,7 @@
 package HotDeal.HotDeal.Service;
 
-import HotDeal.HotDeal.Domain.KakaoUserDto;
-import HotDeal.HotDeal.Domain.NaverUserDto;
+import HotDeal.HotDeal.Dto.KakaoUserDto;
+import HotDeal.HotDeal.Dto.NaverUserDto;
 import HotDeal.HotDeal.Domain.User;
 import HotDeal.HotDeal.Repository.UserRepository;
 import HotDeal.HotDeal.Util.JwtUtils;
