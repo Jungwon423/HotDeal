@@ -32,6 +32,20 @@ public class ProductService {
         }
     };
 
+    public ResponseEntity<Map<String, Object>> getProductDetail(String name) {
+        Map<String, Object> responseJson = new HashMap<>();
+        Product product = productRepository.findByName(name);
+
+        if (product == null) {
+            responseJson.put("result", "product not found");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseJson);
+        }
+        else {
+            responseJson.put("result", product);
+            return ResponseEntity.status(HttpStatus.OK).body(responseJson);
+        }
+    }
+
     public ResponseEntity<Map<String, Object>> getTop3ProductsByMarketName(String marketName) {
         Map<String, Object> responseJson = new HashMap<>();
         if (marketName.equals("all")){

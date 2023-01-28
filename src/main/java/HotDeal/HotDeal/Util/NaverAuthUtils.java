@@ -1,6 +1,7 @@
 package HotDeal.HotDeal.Util;
 
-import HotDeal.HotDeal.Domain.NaverUserDto;
+import HotDeal.HotDeal.Dto.NaverUserDto;
+
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 

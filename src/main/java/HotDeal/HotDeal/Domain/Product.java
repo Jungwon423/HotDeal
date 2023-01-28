@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Data
 @Document(collection = "product")
@@ -28,4 +29,10 @@ public class Product {
     private int clickCount;
     private String locale;
     private Double naverPrice;
+    private List<String> good;
+    private List<String> bad;
+    private int rating;
+    private List<String> want;
+    private List<String> comments;
+    private List<String> subImageUrl;
 }

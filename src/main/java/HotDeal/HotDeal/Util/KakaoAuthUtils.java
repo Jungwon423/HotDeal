@@ -1,7 +1,7 @@
 package HotDeal.HotDeal.Util;
 
-import HotDeal.HotDeal.Domain.KakaoAccessTokenDto;
-import HotDeal.HotDeal.Domain.KakaoUserDto;
+import HotDeal.HotDeal.Dto.KakaoAccessTokenDto;
+import HotDeal.HotDeal.Dto.KakaoUserDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
