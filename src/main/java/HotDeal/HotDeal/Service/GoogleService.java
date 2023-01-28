@@ -1,19 +1,36 @@
 package HotDeal.HotDeal.Service;
 
+import com.google.api.client.auth.openidconnect.IdTokenVerifier;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.json.JsonFactory;
 import com.google.gson.JsonObject;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Collections;
+
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.gson.GsonFactory;
 
 @RequiredArgsConstructor
 @Service
 public class GoogleService {
-    public String getAccessToken(String authorize_code) {   //구글은 액세스 토큰이 아닌 id 토큰을 발급 받아서 프로필 정보 받음.
+    HttpTransport transport = new NetHttpTransport();
+    JsonFactory jsonFactory = new GsonFactory();
+    GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jsonFactory)
+            .setAudience(Collections.singletonList("862259299846-ham1sak40i9ampguua9m9mrnqqdonfa8.apps.googleusercontent.com"))
+            // Or, if multiple clients access the backend:
+            //.setAudience(Arrays.asList(CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3))
+            .build();
+
+    public String getAccessToken(String authorize_code) {
         String access_Token = "";
         String id_Token = "";
         String reqURL = "https://oauth2.googleapis.com/token";
@@ -30,39 +47,35 @@ public class GoogleService {
             sb.append("&client_id=862259299846-ham1sak40i9ampguua9m9mrnqqdonfa8.apps.googleusercontent.com"); //수정 할것
             sb.append("&redirect_uri=http://localhost:8081/google"); //수정 할것
             sb.append("&client_secret=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"); //수정 할것
-            sb.append("&code=" + authorize_code);
+            sb.append("&code=").append(authorize_code);
             bw.write(sb.toString());
             bw.flush();
-            int responseCode = conn.getResponseCode();
-            System.out.println("responseCode : " + responseCode);
 
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String line = "";
-            String result = "";
+            StringBuilder result = new StringBuilder();
 
             while ((line = br.readLine()) != null) {
-                result += line;
+                result.append(line);
             }
             //System.out.println("response body : " + result);
 
-            //JsonParser parser = new JsonParser();
-            //JsonElement element = parser.parse(result);
-            JsonObject JsonObject = JsonParser.parseString(result).getAsJsonObject();
+            JsonObject JsonObject = JsonParser.parseString(result.toString()).getAsJsonObject();
             access_Token = JsonObject.get("access_token").getAsString();
             id_Token = JsonObject.get("id_token").getAsString();
-            System.out.println("access_token : " + access_Token);
+            //System.out.println("access_token : " + access_Token);
+            //System.out.println("id_token : " + id_Token);
 
             br.close();
-            return id_Token;
+            return access_Token;
 
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             return "Error";
         }
     }
-
-    public String getUserInfo (String code) {
+    /*
+    public String getUserInfoByIDToken (String code) {  //구글은 액세스 토큰이 아닌 id 토큰을 발급 받아서 프로필 정보 받는다고 하는데 모르겠음.
         String id_token = getAccessToken(code);
         String reqURL = "https://oauth2.googleapis.com/tokeninfo?id_token="+id_token;
         String email="";
@@ -72,9 +85,6 @@ public class GoogleService {
             conn.setRequestMethod("GET");
             conn.setDoOutput(true);
 
-            int responseCode = conn.getResponseCode();
-            System.out.println("responseCode : " + responseCode);
-
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String line = "";
             String result = "";
@@ -82,7 +92,6 @@ public class GoogleService {
             while ((line = br.readLine()) != null) {
                 result += line;
             }
-            //System.out.println("response body : " + result);
 
             JsonObject JsonObject = JsonParser.parseString(result).getAsJsonObject();
             System.out.println("id_Token에서 받아온 정보 값 : " + JsonObject);
@@ -91,9 +100,43 @@ public class GoogleService {
             br.close();
 
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return email;
     }
+
+    public Object getIdTokenByIDToken2 (String id_Token) {    //with GoogleIdToken Verifier
+        try{
+        GoogleIdToken idToken = verifier.verify(id_Token);
+        if (idToken != null) {
+            Payload payload = idToken.getPayload();
+            // Print user identifier
+            System.out.println(payload);
+            String userId = payload.getSubject();
+            System.out.println("User ID: " + userId);
+
+            // Get profile information from payload
+            String email = payload.getEmail();
+            boolean emailVerified = Boolean.valueOf(payload.getEmailVerified());
+            String name = (String) payload.get("name");
+            String pictureUrl = (String) payload.get("picture");
+            String locale = (String) payload.get("locale");
+            String familyName = (String) payload.get("family_name");
+            String givenName = (String) payload.get("given_name");
+
+            Map<String, String> payloadObj = new HashMap<>();
+            payloadObj.put("name",name);
+            payloadObj.put("pictureUrl",pictureUrl);
+            payloadObj.put("locale",locale);
+            return payloadObj;
+        } else {
+            System.out.println("Invalid ID token.");
+            return new Object();
+        }
+        }catch(Exception e){
+            e.printStackTrace();
+            return new Object();
+        }
+    }
+    */
 }
