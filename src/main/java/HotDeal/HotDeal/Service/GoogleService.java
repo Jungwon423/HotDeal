@@ -3,6 +3,7 @@ package HotDeal.HotDeal.Service;
 import com.google.api.client.auth.openidconnect.IdTokenVerifier;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.JsonGenerator;
 import com.google.gson.JsonObject;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ public class GoogleService {
             //.setAudience(Arrays.asList(CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3))
             .build();
 
-    public String getAccessToken(String authorize_code) {
+    public static String getAccessToken(String authorize_code) {
         String access_Token = "";
         String id_Token = "";
         String reqURL = "https://oauth2.googleapis.com/token";
@@ -47,24 +48,22 @@ public class GoogleService {
             sb.append("&client_id=862259299846-ham1sak40i9ampguua9m9mrnqqdonfa8.apps.googleusercontent.com"); //수정 할것
             sb.append("&redirect_uri=http://localhost:8081/google"); //수정 할것
             sb.append("&client_secret=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"); //수정 할것
-            sb.append("&code=").append(authorize_code);
+            sb.append("&code=" + authorize_code);
             bw.write(sb.toString());
             bw.flush();
 
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String line = "";
-            StringBuilder result = new StringBuilder();
+            String result = "";
 
             while ((line = br.readLine()) != null) {
-                result.append(line);
+                result += line;
             }
             //System.out.println("response body : " + result);
 
-            JsonObject JsonObject = JsonParser.parseString(result.toString()).getAsJsonObject();
+            JsonObject JsonObject = JsonParser.parseString(result).getAsJsonObject();
             access_Token = JsonObject.get("access_token").getAsString();
             id_Token = JsonObject.get("id_token").getAsString();
-            //System.out.println("access_token : " + access_Token);
-            //System.out.println("id_token : " + id_Token);
 
             br.close();
             return access_Token;

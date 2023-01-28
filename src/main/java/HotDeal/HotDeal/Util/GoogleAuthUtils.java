@@ -16,23 +16,26 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GoogleAuthUtils {
-    static GoogleService googleService;
 
     public static GoogleUserDto getUserInfoByAccessToken(String code) {
-        String access_token = googleService.getAccessToken(code);
+        String access_token = GoogleService.getAccessToken(code);
         String header = "Bearer " + access_token; // Bearer 다음에 공백 추가
         String apiURL = "https://www.googleapis.com/oauth2/v2/userinfo?access_token=" + access_token;
 
         Map<String, String> requestHeaders = new HashMap<>();
         requestHeaders.put("Authorization", header);
         String responseBody = get(apiURL, requestHeaders);
-        JSONObject responseObject = StringToObj(responseBody);
-
-        String id = String.valueOf(responseObject.get("id"));
-        String email = String.valueOf(responseObject.get("email"));
-        String imageUrl = String.valueOf(responseObject.get("picture"));
-
-        return new GoogleUserDto(id, email, imageUrl);
+        //System.out.println(responseBody);
+        try{
+            JSONParser parser = new JSONParser();
+            JSONObject responseJson = (JSONObject) parser.parse(responseBody);
+            String id = String.valueOf(responseJson.get("id"));
+            String email = String.valueOf(responseJson.get("email"));
+            String imageUrl = String.valueOf(responseJson.get("picture"));
+            return new GoogleUserDto(id, email, imageUrl);
+        }catch(Exception e){
+            throw new IllegalArgumentException();
+        }
     }
 
     private static JSONObject StringToObj(String responseBody) {
