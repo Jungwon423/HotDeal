@@ -27,7 +27,7 @@ public class LoginController {
         return loginService.loginWithNaver(code);
     }
     @GetMapping("google")
-    public String receiveGoogleAuthRequest(@RequestParam String code) {
-        return googleService.getUserInfo(code);
+    public Map<String, Object> receiveGoogleAuthRequest(@RequestParam String code) {
+        return loginService.loginWithGoogle(code);
     }
 }
