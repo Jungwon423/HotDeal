@@ -26,14 +26,14 @@ public class GoogleAuthUtils {
         requestHeaders.put("Authorization", header);
         String responseBody = get(apiURL, requestHeaders);
         //System.out.println(responseBody);
-        try{
+        try {
             JSONParser parser = new JSONParser();
             JSONObject responseJson = (JSONObject) parser.parse(responseBody);
             String id = String.valueOf(responseJson.get("id"));
             String email = String.valueOf(responseJson.get("email"));
             String imageUrl = String.valueOf(responseJson.get("picture"));
             return new GoogleUserDto(id, email, imageUrl);
-        }catch(Exception e){
+        } catch (Exception e) {
             throw new IllegalArgumentException();
         }
     }

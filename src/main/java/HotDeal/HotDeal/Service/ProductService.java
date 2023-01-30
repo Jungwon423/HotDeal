@@ -29,9 +29,9 @@ public class ProductService {
             put("sports_leisure", "스포츠/레저");
             put("food", "식품");
             put("childbirth_parenting", "출산/육아");
-            put("furniture_interior","가구/인테리어");
-            put("digital_consumer","디지털/가전" );
-            put("cosmetics_beauty","화장품/미용");
+            put("furniture_interior", "가구/인테리어");
+            put("digital_consumer", "디지털/가전");
+            put("cosmetics_beauty", "화장품/미용");
             put("fashion-accessories", "패션잡화");
             put("fashion-clothes", "패션의류");
         }
@@ -44,8 +44,7 @@ public class ProductService {
         if (product == null) {
             responseJson.put("result", "product not found");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseJson);
-        }
-        else {
+        } else {
             responseJson.put("result", product);
             return ResponseEntity.status(HttpStatus.OK).body(responseJson);
         }
@@ -53,18 +52,17 @@ public class ProductService {
 
     public ResponseEntity<Map<String, Object>> getTop3ProductsByMarketName(String marketName) {
         Map<String, Object> responseJson = new HashMap<>();
-        if (marketName.equals("all")){
+        if (marketName.equals("all")) {
             responseJson.put("result", productRepository.findAll().subList(0, 3));
             return ResponseEntity.status(HttpStatus.OK).body(responseJson);
         }
 
         List<Product> productList = productRepository.findByMarketName(marketName);
-        validateList(productList,marketName);
+        validateList(productList, marketName);
         if (productList == null) {
             responseJson.put("result", "MarketName = " + marketName + "를 가지는 category가 없습니다");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseJson);
-        }
-        else responseJson.put("result", productList.subList(0, Math.min(productList.size(), 3)));
+        } else responseJson.put("result", productList.subList(0, Math.min(productList.size(), 3)));
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
 
@@ -72,32 +70,29 @@ public class ProductService {
         Map<String, Object> responseJson = new HashMap<>();
 
         List<Product> productList = productRepository.findAll();
-        responseJson.put("result", productList.subList((pageNumber-1) * 10, Math.min(productList.size(), pageNumber * 10)));
-        responseJson.put("totalPage", (productList.size() % 10 == 0) ? productList.size()/10 : productList.size()/10 + 1);
+        responseJson.put("result", productList.subList((pageNumber - 1) * 10, Math.min(productList.size(), pageNumber * 10)));
+        responseJson.put("totalPage", (productList.size() % 10 == 0) ? productList.size() / 10 : productList.size() / 10 + 1);
         responseJson.put("productCount", productList.size());
 
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
 
-    public ResponseEntity<Map<String,Object>> getProductsByCategoryAndMarket(String categoryName, String marketName, Integer pageNumber){
+    public ResponseEntity<Map<String, Object>> getProductsByCategoryAndMarket(String categoryName, String marketName, Integer pageNumber) {
         Map<String, Object> responseJson = new HashMap<>();
         String categoryNameKr = categoryMap.get(categoryName);
-        if (categoryName.equals("all")){
+        if (categoryName.equals("all")) {
             return getProductsByMarketName(marketName, pageNumber);
-        }
-        else{
-            if(marketName.equals("all")){
+        } else {
+            if (marketName.equals("all")) {
                 return getProductsByCategoryName(categoryNameKr, pageNumber);
-            }
-            else {
+            } else {
                 List<Product> productList = productRepository.findByCategoryNameAndMarketName(categoryNameKr, marketName);
                 if (productList == null) {
-                    responseJson.put("result", "CategoryName = " + categoryNameKr +" 와 MarketName = " + marketName + "를 가지는 product가 없습니다");
+                    responseJson.put("result", "CategoryName = " + categoryNameKr + " 와 MarketName = " + marketName + "를 가지는 product가 없습니다");
                     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseJson);
-                }
-                else {
-                    responseJson.put("result", productList.subList((pageNumber-1) * 10, Math.min(productList.size(), pageNumber * 10)));
-                    responseJson.put("totalPage", (productList.size() % 10 == 0) ? productList.size()/10 : productList.size()/10 + 1);
+                } else {
+                    responseJson.put("result", productList.subList((pageNumber - 1) * 10, Math.min(productList.size(), pageNumber * 10)));
+                    responseJson.put("totalPage", (productList.size() % 10 == 0) ? productList.size() / 10 : productList.size() / 10 + 1);
                     responseJson.put("productCount", productList.size());
                 }
                 return ResponseEntity.status(HttpStatus.OK).body(responseJson);
@@ -105,19 +100,18 @@ public class ProductService {
         }
     }
 
-    public ResponseEntity<Map<String,Object>> getProductsByMarketName(String marketName, Integer pageNumber){ // categoryname이 all인 경우
+    public ResponseEntity<Map<String, Object>> getProductsByMarketName(String marketName, Integer pageNumber) { // categoryname이 all인 경우
         Map<String, Object> responseJson = new HashMap<>();
-        if (marketName.equals("all")){
+        if (marketName.equals("all")) {
             return getAllProducts(pageNumber);
         }
         List<Product> productList = productRepository.findByMarketName(marketName);
         if (productList == null) {
             responseJson.put("result", "MarketName = " + marketName + "를 가지는 category가 없습니다");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseJson);
-        }
-        else {
-            responseJson.put("result", productList.subList((pageNumber-1) * 10, Math.min(productList.size(), pageNumber * 10)));
-            responseJson.put("totalPage", (productList.size() % 10 == 0) ? productList.size()/10 : productList.size()/10 + 1);
+        } else {
+            responseJson.put("result", productList.subList((pageNumber - 1) * 10, Math.min(productList.size(), pageNumber * 10)));
+            responseJson.put("totalPage", (productList.size() % 10 == 0) ? productList.size() / 10 : productList.size() / 10 + 1);
             responseJson.put("productCount", productList.size());
         }
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
@@ -130,8 +124,8 @@ public class ProductService {
             responseJson.put("result", "categoryName = " + categoryName + "를 가지는 category가 없습니다");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseJson);
         } else {
-            responseJson.put("result", productList.subList((pageNumber-1) * 10, Math.min(productList.size(), pageNumber * 10)));
-            responseJson.put("totalPage", (productList.size() % 10 == 0) ? productList.size()/10 : productList.size()/10 + 1);
+            responseJson.put("result", productList.subList((pageNumber - 1) * 10, Math.min(productList.size(), pageNumber * 10)));
+            responseJson.put("totalPage", (productList.size() % 10 == 0) ? productList.size() / 10 : productList.size() / 10 + 1);
             responseJson.put("productCount", productList.size());
         }
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
@@ -150,11 +144,12 @@ public class ProductService {
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
 
-    public void plusCount(Product product){
+    public void plusCount(Product product) {
         product.setClickCount(product.getClickCount() + 1);
         productRepository.save(product);
     }
-    public WishList setProductToWishlist(String userId, String productId){
+
+    public WishList setProductToWishlist(String userId, String productId) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(IdNotFoundException::new);
         //WishListDto wishListDto = WishListDto.from(product);
@@ -168,8 +163,8 @@ public class ProductService {
         wishlist.setClickCount(product.getClickCount());
         wishlist.setNaverPrice(product.getNaverPrice());
         wishlist.setRating(product.getRating());
-        //List<String> comments = product.getComments();
-        List<String> WishUserList = new ArrayList<>();
+
+        List<String> WishUserList = product.getWishUserList();
         WishUserList.add(userId);
         product.setWishUserList(WishUserList);
         productRepository.save(product);
@@ -179,26 +174,70 @@ public class ProductService {
 
         return wishlist;
     }
-    public ResponseEntity<Map<String, Object>> setWishlistForUser(String userId, String productId){
+
+    public ResponseEntity<Map<String, Object>> setWishlistForUser(String userId, String productId) {
         WishList wishlist = setProductToWishlist(userId, productId);
         Map<String, Object> responseJson = new HashMap<>();
         User user = userRepository.findById(userId)
                 .orElseThrow(NotFoundException::new);
-        //List<Wishlist> wishlists = user.getWishLists();
-        List<WishList> wishLists = new ArrayList<>();
+        List<WishList> wishLists = user.getWishLists();
         wishLists.add(wishlist);
         user.setWishLists(wishLists);
         userRepository.save(user);
-        responseJson.put("message","wishlist가 user객체에 저장되었습니다.");
-        responseJson.put("result", user);
+        responseJson.put("message", "wishList가 user 객체에 저장되었습니다.");
+        responseJson.put("message2", "wishUserList가 product 객체에 저장되었습니다.");
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
-    public void validateList(List<?> exList, String customString){
-        if(exList == null){
+
+    public ResponseEntity<Map<String, Object>> getCommentsByProduct(String productId) {
+        Map<String, Object> responseJson = new HashMap<>();
+        Product product = productRepository.findById(productId)
+                .orElseThrow(NotFoundException::new);
+        responseJson.put("result", product.getComments());
+        return ResponseEntity.status(HttpStatus.OK).body(responseJson);
+    }
+
+    public void validateList(List<?> exList, String customString) {
+        if (exList == null) {
             throw new CustomException(ErrorCode.LIST_IS_NULL);
         }
-        if (exList.isEmpty()){
+        if (exList.isEmpty()) {
             throw new CustomException(ErrorCode.LIST_IS_EMPTY);
         }
+    }
+
+    public ResponseEntity<Map<String, Object>> recommendProduct(String userId, String productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(IdNotFoundException::new);
+        //WishListDto wishListDto = WishListDto.from(product);
+        //System.out.println(wishListDto);
+
+        WishList wishList = new WishList();
+        wishList.setName(product.getName());
+        wishList.setPrice(product.getPrice());
+        wishList.setImageUrl(product.getImageUrl());
+        wishList.setMarketName(product.getMarketName());
+        wishList.setClickCount(product.getClickCount());
+        wishList.setNaverPrice(product.getNaverPrice());
+        wishList.setRating(product.getRating());
+
+        List<String> WishUserList = product.getWishUserList();
+        WishUserList.add(userId);
+        product.setWishUserList(WishUserList);
+        productRepository.save(product);
+
+        wishList.setCommentCount(0);
+        System.out.println(wishList);
+        WishList wishlist = setProductToWishlist(userId, productId);
+        Map<String, Object> responseJson = new HashMap<>();
+        User user = userRepository.findById(userId)
+                .orElseThrow(NotFoundException::new);
+        List<WishList> wishLists = user.getWishLists();
+        wishLists.add(wishlist);
+        user.setWishLists(wishLists);
+        userRepository.save(user);
+        responseJson.put("message", "wishList가 user 객체에 저장되었습니다.");
+        responseJson.put("message2", "wishUserList가 product 객체에 저장되었습니다.");
+        return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
 }

@@ -3,7 +3,6 @@ package HotDeal.HotDeal.Service;
 import HotDeal.HotDeal.Domain.Category;
 import HotDeal.HotDeal.Exception.CustomException;
 import HotDeal.HotDeal.Exception.ErrorCode;
-import HotDeal.HotDeal.Exception.Validator;
 import HotDeal.HotDeal.Repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

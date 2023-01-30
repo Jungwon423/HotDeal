@@ -12,11 +12,11 @@ import javax.validation.constraints.Size;
 public class WishList {
     @Id
     @Size(min = 2, max = 20, message = "길이는 2~20로")
-    private String name = "찜한 상품";         //테스트를 위한 초기값
+    private String name;
     @PositiveOrZero
-    private Double price = 87000d;
+    private Double price;
     private String imageUrl;
-    private String marketName = "아마존";
+    private String marketName;
     private int clickCount;
     private Double naverPrice;
     private int rating;

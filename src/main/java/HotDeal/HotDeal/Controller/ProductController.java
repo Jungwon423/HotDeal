@@ -29,11 +29,25 @@ public class ProductController {
     public ResponseEntity<Map<String, Object>> getProductDetail(@RequestParam String name) {
         return productService.getProductDetail(name);
     }
+
     @PostMapping("{productId}/wishlist")   //테스트용 : Amazon Essentials 남아 및 유아용 방수 스노우 턱받이
-    public ResponseEntity<Map<String, Object>> setProductToWishlist(HttpServletRequest request, @PathVariable String productId){
+    public ResponseEntity<Map<String, Object>> setProductToWishlist(HttpServletRequest request, @PathVariable String productId) {
         //String userId = (String) request.getAttribute("userId");
-        String userId="test";
+        String userId = "test";
         Validator.checkIfLogin(userId);
-        return productService.setWishlistForUser(userId,productId);
+        return productService.setWishlistForUser(userId, productId);
+    }
+
+    @GetMapping("{productId}/comments")
+    public ResponseEntity<Map<String, Object>> getCommentsByProduct(@PathVariable("productId") String productId) {
+        return productService.getCommentsByProduct(productId);
+    }
+
+    @PostMapping("{productId}/recommend")
+    public ResponseEntity<Map<String, Object>> recommendProduct(HttpServletRequest request, @PathVariable String productId) {
+        //String userId = (String) request.getAttribute("userId");
+        String userId = "test";
+        Validator.checkIfLogin(userId);
+        return productService.recommendProduct(userId, productId);
     }
 }

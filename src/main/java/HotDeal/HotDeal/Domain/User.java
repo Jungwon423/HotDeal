@@ -16,6 +16,6 @@ public class User {
     private String password;
     private String phoneNumber;
     private List<Comment> comments;
-    private List<Recommend> recommends;
+    private List<String> goods;
     private List<WishList> wishLists;
 }

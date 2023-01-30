@@ -30,6 +30,7 @@ public class LoginController {
     public Map<String, Object> receiveNaverAuthRequest(@RequestParam String code) {
         return loginService.loginWithNaver(code);
     }
+
     @GetMapping("google")
     public Map<String, Object> receiveGoogleAuthRequest(@RequestParam String code) {
         return loginService.loginWithGoogle(code);

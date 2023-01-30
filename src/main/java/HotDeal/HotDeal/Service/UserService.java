@@ -1,7 +1,6 @@
 package HotDeal.HotDeal.Service;
 
 import HotDeal.HotDeal.Domain.Comment;
-import HotDeal.HotDeal.Domain.Recommend;
 import HotDeal.HotDeal.Domain.User;
 import HotDeal.HotDeal.Domain.WishList;
 import HotDeal.HotDeal.Exception.*;
@@ -14,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,76 +24,69 @@ public class UserService {
     private final Logger logger2 = LoggerFactory.getLogger(this.getClass());
     private final UserRepository userRepository;
 
-    public ResponseEntity<Map<String,Object>> userRegister(User user){
+    public ResponseEntity<Map<String, Object>> userRegister(User user) {
         Map<String, Object> responseJson = new HashMap<>();
-        validateDuplicate(user.getId(),user.getNickname());
+        validateDuplicate(user.getId(), user.getNickname());
         userRepository.save(user);
-        responseJson.put("result",user);
+        responseJson.put("result", user);
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
-    public ResponseEntity<Map<String,Object>> userLogin(User user){  //user에는 id,password 밖에 없다.
+
+    public ResponseEntity<Map<String, Object>> userLogin(User user) {  //user에는 id,password 밖에 없다.
         Map<String, Object> responseJson = new HashMap<>();
         User savedUser = userRepository.findById(user.getId())
                 .orElseThrow(IdNotFoundException::new);
-        validatePassword(user,savedUser);
+        validatePassword(user, savedUser);
 
         String jwtToken = JwtUtils.generateJwtToken(user);
         responseJson.put("token", jwtToken);
         String resultMessage = String.format("User with id '%s' joined with default login\n", savedUser.getId());
-        responseJson.put("resultMessage",resultMessage);
-        responseJson.put("객체",savedUser);
+        responseJson.put("resultMessage", resultMessage);
+        responseJson.put("객체", savedUser);
 
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
-    public ResponseEntity<Map<String,Object>> getUserProfileById(String userId){
+
+    public ResponseEntity<Map<String, Object>> getUserProfileById(String userId) {
         //test를 위해 임의로 객체 값들을 임시로 넣어놓은 상태이다.
         Map<String, Object> userProfile = new HashMap<>();
-        List<Recommend> recommends = new ArrayList<>();
-        List<Comment> comments = new ArrayList<>();
-        Comment userComment = new Comment();
-        Recommend userRecommend = new Recommend();
 
         User tempUser = userRepository.findById(userId)
                 .orElseThrow(IdNotFoundException::new);
-        userProfile.put("nickname",tempUser.getNickname());
-        userProfile.put("email",tempUser.getEmail());
+        userProfile.put("nickname", tempUser.getNickname());
+        userProfile.put("email", tempUser.getEmail());
 
-        //comments = tempUser.getComments();
-        //recommends = tempUser.getRecommends();
+        List<Comment> comments = tempUser.getComments();
+        List<String> goods = tempUser.getGoods();
 
-        comments.add(userComment);
-        recommends.add(userRecommend);
-        recommends.add(userRecommend);
-        userProfile.put("recommends", recommends);
+        userProfile.put("recommends", goods);
         userProfile.put("comments", comments);
         return ResponseEntity.status(HttpStatus.OK).body(userProfile);
     }
 
-    public ResponseEntity<Map<String,Object>> getUserWishlistsById(String userId){
+    public ResponseEntity<Map<String, Object>> getUserWishlistsById(String userId) {
         //test를 위해 임의로 객체 값들을 임시로 넣어놓은 상태이다.
         Map<String, Object> userWishlists = new HashMap<>();
-        List<WishList> wishLists = new ArrayList<>();
-        WishList wishlist = new WishList();
-        wishLists.add(wishlist);
 
         User tempUser = userRepository.findById(userId)
                 .orElseThrow(IdNotFoundException::new);
-        //wishlists = tempUser.getWishlists();
+        List<WishList> wishLists = tempUser.getWishLists();
         userWishlists.put("찜목록", wishLists);
 
         return ResponseEntity.status(HttpStatus.OK).body(userWishlists);
     }
 
-    private void validateDuplicate(String id, String nickname){
-        if(userRepository.existsById(id)){
+    private void validateDuplicate(String id, String nickname) {
+        if (userRepository.existsById(id)) {
             throw new CustomException(ErrorCode.DUPLICATE_ID);
         }
-        if(userRepository.existsByNickname(nickname)){
+        if (userRepository.existsByNickname(nickname)) {
             throw new CustomException(ErrorCode.DUPLICATE_NICKNAME);
         }
     }
-    private void validatePassword(User user, User tempUser){
-        if (!tempUser.getPassword().equals(user.getPassword())){
+
+    private void validatePassword(User user, User tempUser) {
+        if (!tempUser.getPassword().equals(user.getPassword())) {
             logger2.info("비밀번호는 " + tempUser.getPassword());
             throw new CustomException(ErrorCode.WRONG_PASSWORD);
         }
