@@ -5,5 +5,5 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class DuplicateNicknameException extends RuntimeException{
+public class NotFoundException extends RuntimeException{
 }

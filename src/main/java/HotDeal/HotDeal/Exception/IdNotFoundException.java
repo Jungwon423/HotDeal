@@ -5,5 +5,5 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class DuplicateIdException extends RuntimeException {
+public class IdNotFoundException extends RuntimeException{
 }
