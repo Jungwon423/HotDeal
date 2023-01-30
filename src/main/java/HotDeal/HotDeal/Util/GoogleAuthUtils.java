@@ -1,6 +1,6 @@
 package HotDeal.HotDeal.Util;
 
-import HotDeal.HotDeal.Domain.GoogleUserDto;
+import HotDeal.HotDeal.Dto.GoogleUserDto;
 import HotDeal.HotDeal.Service.GoogleService;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;

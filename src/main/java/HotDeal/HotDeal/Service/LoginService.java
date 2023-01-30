@@ -1,6 +1,6 @@
 package HotDeal.HotDeal.Service;
 
-import HotDeal.HotDeal.Domain.GoogleUserDto;
+import HotDeal.HotDeal.Dto.GoogleUserDto;
 import HotDeal.HotDeal.Dto.KakaoUserDto;
 import HotDeal.HotDeal.Dto.NaverUserDto;
 import HotDeal.HotDeal.Domain.User;
@@ -84,8 +84,9 @@ public class LoginService {
 //        updateLoginInfo(user);
 //        resultMessage += String.format("User with id '%s' logged in at timestamp %tF. continuous attendance count: %d\n",
 //                user.getId(), user.getLastLoginDate(), user.getContinuousAttendanceCount());
+        String jwtToken = JwtUtils.generateJwtToken(user);
+        responseJson.put("token", jwtToken);
         responseJson.put("resultMessage", resultMessage);
-        responseJson.put("result", user);
 
         return responseJson;
     }
@@ -121,8 +122,9 @@ public class LoginService {
 //        updateLoginInfo(user);
 //        resultMessage += String.format("User with id '%s' logged in at timestamp %tF. continuous attendance count: %d\n",
 //                user.getId(), user.getLastLoginDate(), user.getContinuousAttendanceCount());
+        String jwtToken = JwtUtils.generateJwtToken(user);
+        responseJson.put("token", jwtToken);
         responseJson.put("resultMessage", resultMessage);
-        responseJson.put("result", user);
 
         return responseJson;
     }
