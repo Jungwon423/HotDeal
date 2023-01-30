@@ -1,7 +1,11 @@
 package HotDeal.HotDeal.Service;
 
 import HotDeal.HotDeal.Domain.Product;
+import HotDeal.HotDeal.Domain.User;
+import HotDeal.HotDeal.Domain.WishList;
+import HotDeal.HotDeal.Exception.*;
 import HotDeal.HotDeal.Repository.ProductRepository;
+import HotDeal.HotDeal.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +18,7 @@ import java.util.*;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final UserRepository userRepository;
 
     private final HashMap<String, String> categoryMap = new HashMap<>() {
         {
@@ -54,7 +59,7 @@ public class ProductService {
         }
 
         List<Product> productList = productRepository.findByMarketName(marketName);
-
+        validateList(productList,marketName);
         if (productList == null) {
             responseJson.put("result", "MarketName = " + marketName + "를 가지는 category가 없습니다");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseJson);
@@ -118,7 +123,7 @@ public class ProductService {
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
 
-    public ResponseEntity<Map<String, Object>> getProductsByCategoryName(String categoryName, Integer pageNumber) { // marketname이 all, cateogyrname이 all이 아닌 경우
+    public ResponseEntity<Map<String, Object>> getProductsByCategoryName(String categoryName, Integer pageNumber) { // marketname이 all, categoryname이 all이 아닌 경우
         Map<String, Object> responseJson = new HashMap<>();
         List<Product> productList = productRepository.findByCategoryName(categoryName);
         if (productList == null) {
@@ -136,7 +141,6 @@ public class ProductService {
 
         Map<String, Object> responseJson = new HashMap<>();
         Product product;
-
         if (productRepository.findById(productId).isEmpty()) {
             responseJson.put("errorMessage", "productId = " + productId + "를 가지는 product가 없습니다");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseJson);
@@ -149,5 +153,52 @@ public class ProductService {
     public void plusCount(Product product){
         product.setClickCount(product.getClickCount() + 1);
         productRepository.save(product);
+    }
+    public WishList setProductToWishlist(String userId, String productId){
+        Product product = productRepository.findById(productId)
+                .orElseThrow(IdNotFoundException::new);
+        //WishListDto wishListDto = WishListDto.from(product);
+        //System.out.println(wishListDto);
+
+        WishList wishlist = new WishList();
+        wishlist.setName(product.getName());
+        wishlist.setPrice(product.getPrice());
+        wishlist.setImageUrl(product.getImageUrl());
+        wishlist.setMarketName(product.getMarketName());
+        wishlist.setClickCount(product.getClickCount());
+        wishlist.setNaverPrice(product.getNaverPrice());
+        wishlist.setRating(product.getRating());
+        //List<String> comments = product.getComments();
+        List<String> WishUserList = new ArrayList<>();
+        WishUserList.add(userId);
+        product.setWishUserList(WishUserList);
+        productRepository.save(product);
+
+        wishlist.setCommentCount(0);
+        System.out.println(wishlist);
+
+        return wishlist;
+    }
+    public ResponseEntity<Map<String, Object>> setWishlistForUser(String userId, String productId){
+        WishList wishlist = setProductToWishlist(userId, productId);
+        Map<String, Object> responseJson = new HashMap<>();
+        User user = userRepository.findById(userId)
+                .orElseThrow(NotFoundException::new);
+        //List<Wishlist> wishlists = user.getWishLists();
+        List<WishList> wishLists = new ArrayList<>();
+        wishLists.add(wishlist);
+        user.setWishLists(wishLists);
+        userRepository.save(user);
+        responseJson.put("message","wishlist가 user객체에 저장되었습니다.");
+        responseJson.put("result", user);
+        return ResponseEntity.status(HttpStatus.OK).body(responseJson);
+    }
+    public void validateList(List<?> exList, String customString){
+        if(exList == null){
+            throw new CustomException(ErrorCode.LIST_IS_NULL);
+        }
+        if (exList.isEmpty()){
+            throw new CustomException(ErrorCode.LIST_IS_EMPTY);
+        }
     }
 }
