@@ -16,7 +16,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<Map<String, Object>> register(@RequestBody User user){
+    public ResponseEntity<Map<String, Object>> register(@RequestBody User user) {
         return userService.userRegister(user);
     }
     @PostMapping("/login")

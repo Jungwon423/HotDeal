@@ -32,7 +32,7 @@ public class Product {
     private List<String> good;
     private List<String> bad;
     private int rating;
-    private List<String> want;
+    private List<String> wish;
     private List<String> comments;
     private List<String> subImageUrl;
 }
