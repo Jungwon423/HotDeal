@@ -15,7 +15,7 @@ public class ExchangeController {
     private final ExchangeService exchangeService;
 
     @GetMapping("{name}")
-    public ResponseEntity<Map<String, Object>> getTodayExchangeRate(@PathVariable String name){
+    public ResponseEntity<Map<String, Object>> getTodayExchangeRate(@PathVariable String name) {
         return exchangeService.getExchangeRateByName(name);
     }
 

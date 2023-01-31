@@ -1,6 +1,8 @@
 package HotDeal.HotDeal.Service;
 
 import HotDeal.HotDeal.Domain.Category;
+import HotDeal.HotDeal.Exception.CustomException;
+import HotDeal.HotDeal.Exception.ErrorCode;
 import HotDeal.HotDeal.Repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -34,15 +36,21 @@ public class CategoryService {
     };
 
     public ResponseEntity<Map<String, Object>> clickCategory(String categoryId) {
+        CheckCategoryExist(categoryId); //위에 카테고리 맵을 설정해놓아서 IllegalArgumentException발생하는 것을 바꿔놓음
         String translatedCategory = categoryMap.get(categoryId);
 
         Map<String, Object> responseJson = new HashMap<>();
         Category category;
-
+        boolean check = categoryRepository.findById(translatedCategory).isEmpty();
+        System.out.println(check);
+        validateProductByCategoryId(check);
+        /*
         if (categoryRepository.findById(translatedCategory).isEmpty()) {
             responseJson.put("errorMessage", "categoryId = " + translatedCategory + "를 가지는 category가 없습니다");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseJson);
         } else category = categoryRepository.findById(translatedCategory).get();
+         */
+        category = categoryRepository.findById(translatedCategory).get();
         plusCount(category);
         responseJson.put("result", category); //Product 페이지 정보를 가져온다. (link 가져오고 상품디테일)
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
@@ -51,5 +59,17 @@ public class CategoryService {
     public void plusCount(Category category){
         category.setClickCount(category.getClickCount() + 1);
         categoryRepository.save(category);
+    }
+
+    public void CheckCategoryExist(String categoryId){
+        if(categoryMap.get(categoryId)==null){
+            throw new CustomException(ErrorCode.ID_NOT_FOUND);
+        }
+    }
+
+    public void validateProductByCategoryId(boolean check){
+        if(check){
+            throw new CustomException(ErrorCode.CATEGORY_NOT_FOUND);
+        }
     }
 }

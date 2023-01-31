@@ -1,4 +1,4 @@
-package HotDeal.HotDeal.Domain;
+package HotDeal.HotDeal.Dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

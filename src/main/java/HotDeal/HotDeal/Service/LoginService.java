@@ -1,6 +1,6 @@
 package HotDeal.HotDeal.Service;
 
-import HotDeal.HotDeal.Domain.GoogleUserDto;
+import HotDeal.HotDeal.Dto.GoogleUserDto;
 import HotDeal.HotDeal.Dto.KakaoUserDto;
 import HotDeal.HotDeal.Dto.NaverUserDto;
 import HotDeal.HotDeal.Domain.User;
@@ -87,7 +87,6 @@ public class LoginService {
         String jwtToken = JwtUtils.generateJwtToken(user);
         responseJson.put("token", jwtToken);
         responseJson.put("resultMessage", resultMessage);
-        responseJson.put("result", user);
 
         return responseJson;
     }
@@ -126,7 +125,6 @@ public class LoginService {
         String jwtToken = JwtUtils.generateJwtToken(user);
         responseJson.put("token", jwtToken);
         responseJson.put("resultMessage", resultMessage);
-        responseJson.put("result", user);
 
         return responseJson;
     }

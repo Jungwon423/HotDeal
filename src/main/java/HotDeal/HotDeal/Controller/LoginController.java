@@ -3,11 +3,15 @@ package HotDeal.HotDeal.Controller;
 import HotDeal.HotDeal.Service.GoogleService;
 import HotDeal.HotDeal.Service.LoginService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @RestController
@@ -26,6 +30,7 @@ public class LoginController {
     public Map<String, Object> receiveNaverAuthRequest(@RequestParam String code) {
         return loginService.loginWithNaver(code);
     }
+
     @GetMapping("google")
     public Map<String, Object> receiveGoogleAuthRequest(@RequestParam String code) {
         return loginService.loginWithGoogle(code);
