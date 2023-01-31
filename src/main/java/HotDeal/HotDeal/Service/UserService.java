@@ -1,8 +1,9 @@
 package HotDeal.HotDeal.Service;
 
 import HotDeal.HotDeal.Domain.Comment;
+import HotDeal.HotDeal.Dto.GoodDto;
 import HotDeal.HotDeal.Domain.User;
-import HotDeal.HotDeal.Domain.WishList;
+import HotDeal.HotDeal.Dto.WishListDto;
 import HotDeal.HotDeal.Exception.*;
 import HotDeal.HotDeal.Repository.UserRepository;
 import HotDeal.HotDeal.Util.JwtUtils;
@@ -57,7 +58,7 @@ public class UserService {
         userProfile.put("email", tempUser.getEmail());
 
         List<Comment> comments = tempUser.getComments();
-        List<String> goods = tempUser.getGoods();
+        List<GoodDto> goods = tempUser.getGoods();
 
         userProfile.put("recommends", goods);
         userProfile.put("comments", comments);
@@ -70,7 +71,7 @@ public class UserService {
 
         User tempUser = userRepository.findById(userId)
                 .orElseThrow(IdNotFoundException::new);
-        List<WishList> wishLists = tempUser.getWishLists();
+        List<WishListDto> wishLists = tempUser.getWishLists();
         userWishlists.put("찜목록", wishLists);
 
         return ResponseEntity.status(HttpStatus.OK).body(userWishlists);
