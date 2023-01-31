@@ -1,8 +1,9 @@
 package HotDeal.HotDeal.Service;
 
+import HotDeal.HotDeal.Dto.GoodDto;
 import HotDeal.HotDeal.Domain.Product;
 import HotDeal.HotDeal.Domain.User;
-import HotDeal.HotDeal.Domain.WishList;
+import HotDeal.HotDeal.Dto.WishListDto;
 import HotDeal.HotDeal.Exception.*;
 import HotDeal.HotDeal.Repository.ProductRepository;
 import HotDeal.HotDeal.Repository.UserRepository;
@@ -149,43 +150,27 @@ public class ProductService {
         productRepository.save(product);
     }
 
-    public WishList setProductToWishlist(String userId, String productId) {
+    public ResponseEntity<Map<String, Object>> setProductToWishlist(String userId, String productId) {
+        Map<String, Object> responseJson = new HashMap<>();
         Product product = productRepository.findById(productId)
                 .orElseThrow(IdNotFoundException::new);
-        //WishListDto wishListDto = WishListDto.from(product);
-        //System.out.println(wishListDto);
-
-        WishList wishlist = new WishList();
-        wishlist.setName(product.getName());
-        wishlist.setPrice(product.getPrice());
-        wishlist.setImageUrl(product.getImageUrl());
-        wishlist.setMarketName(product.getMarketName());
-        wishlist.setClickCount(product.getClickCount());
-        wishlist.setNaverPrice(product.getNaverPrice());
-        wishlist.setRating(product.getRating());
-
-        List<String> WishUserList = product.getWishUserList();
-        WishUserList.add(userId);
-        product.setWishUserList(WishUserList);
+        validateObject(product.getWishUserList());   //객체의 list값은 초기화 안하면 null값이 참조됨
+        if (!product.getWishUserList().contains(userId)){ //제품 객체가 userId 안 갖고있으면
+            product.getWishUserList().add(userId);  //제품객체에 userId 저장
+        }
         productRepository.save(product);
 
-        wishlist.setCommentCount(0);
-        System.out.println(wishlist);
-
-        return wishlist;
-    }
-
-    public ResponseEntity<Map<String, Object>> setWishlistForUser(String userId, String productId) {
-        WishList wishlist = setProductToWishlist(userId, productId);
-        Map<String, Object> responseJson = new HashMap<>();
+        WishListDto wishListDto = WishListDto.from(product);
         User user = userRepository.findById(userId)
                 .orElseThrow(NotFoundException::new);
-        List<WishList> wishLists = user.getWishLists();
-        wishLists.add(wishlist);
-        user.setWishLists(wishLists);
+        validateObject(user.getWishLists());
+
+        if (!user.getWishLists().contains(wishListDto)){ //유저 객체가 wishList객체 안 갖고있으면
+            user.getWishLists().add(wishListDto);  //유저 객체에 wishList객체 저장
+        }
         userRepository.save(user);
-        responseJson.put("message", "wishList가 user 객체에 저장되었습니다.");
-        responseJson.put("message2", "wishUserList가 product 객체에 저장되었습니다.");
+        responseJson.put("message", "찜목록이 user 객체에 저장되었습니다.");
+        responseJson.put("message2", "userID가 product 객체에 저장되었습니다.");
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
 
@@ -193,7 +178,32 @@ public class ProductService {
         Map<String, Object> responseJson = new HashMap<>();
         Product product = productRepository.findById(productId)
                 .orElseThrow(NotFoundException::new);
+        validateObject(product.getComments());
         responseJson.put("result", product.getComments());
+        return ResponseEntity.status(HttpStatus.OK).body(responseJson);
+    }
+
+    public ResponseEntity<Map<String, Object>> recommendProduct(String userId, String productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(IdNotFoundException::new);
+        GoodDto good = GoodDto.from(product);
+        validateObject(product.getGood());
+        if (!product.getGood().contains(userId)){
+            product.getGood().add(userId); //제품 good에 userId 추가
+        }
+        productRepository.save(product);
+
+        Map<String, Object> responseJson = new HashMap<>();
+        User user = userRepository.findById(userId)
+                .orElseThrow(IdNotFoundException::new);
+        validateObject(user.getGoods());
+
+        if (!user.getGoods().contains(good)){
+            user.getGoods().add(good);  //유저 goods에 good 추가
+        }
+        userRepository.save(user);
+        responseJson.put("message", "추천 객체가 user 객체에 저장되었습니다.");
+        responseJson.put("message2", "추천 유저 ID가 product 객체에 저장되었습니다.");
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
 
@@ -205,39 +215,9 @@ public class ProductService {
             throw new CustomException(ErrorCode.LIST_IS_EMPTY);
         }
     }
-
-    public ResponseEntity<Map<String, Object>> recommendProduct(String userId, String productId) {
-        Product product = productRepository.findById(productId)
-                .orElseThrow(IdNotFoundException::new);
-        //WishListDto wishListDto = WishListDto.from(product);
-        //System.out.println(wishListDto);
-
-        WishList wishList = new WishList();
-        wishList.setName(product.getName());
-        wishList.setPrice(product.getPrice());
-        wishList.setImageUrl(product.getImageUrl());
-        wishList.setMarketName(product.getMarketName());
-        wishList.setClickCount(product.getClickCount());
-        wishList.setNaverPrice(product.getNaverPrice());
-        wishList.setRating(product.getRating());
-
-        List<String> WishUserList = product.getWishUserList();
-        WishUserList.add(userId);
-        product.setWishUserList(WishUserList);
-        productRepository.save(product);
-
-        wishList.setCommentCount(0);
-        System.out.println(wishList);
-        WishList wishlist = setProductToWishlist(userId, productId);
-        Map<String, Object> responseJson = new HashMap<>();
-        User user = userRepository.findById(userId)
-                .orElseThrow(NotFoundException::new);
-        List<WishList> wishLists = user.getWishLists();
-        wishLists.add(wishlist);
-        user.setWishLists(wishLists);
-        userRepository.save(user);
-        responseJson.put("message", "wishList가 user 객체에 저장되었습니다.");
-        responseJson.put("message2", "wishUserList가 product 객체에 저장되었습니다.");
-        return ResponseEntity.status(HttpStatus.OK).body(responseJson);
+    public void validateObject(Object exObject){
+        if(exObject == null){
+            throw new CustomException(ErrorCode.OBJECT_IS_NULL);
+        }
     }
 }

@@ -35,7 +35,7 @@ public class ProductController {
         //String userId = (String) request.getAttribute("userId");
         String userId = "test";
         Validator.checkIfLogin(userId);
-        return productService.setWishlistForUser(userId, productId);
+        return productService.setProductToWishlist(userId, productId);
     }
 
     @GetMapping("{productId}/comments")
