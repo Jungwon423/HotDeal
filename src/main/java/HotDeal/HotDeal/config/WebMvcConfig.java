@@ -13,7 +13,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(jwtAuthInterceptor)
-                .addPathPatterns("**");
+                .addPathPatterns("/**");
 //                .addPathPatterns("/topics")
 //                .addPathPatterns("/topics/**")
 //                .addPathPatterns("/private/topics/**")

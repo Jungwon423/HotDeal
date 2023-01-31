@@ -29,8 +29,8 @@ public class UserController {
 
     @GetMapping("/profile")
     public ResponseEntity<Map<String, Object>> getUserProfile(HttpServletRequest request) {
-        //String userId = (String) request.getAttribute("userId");   
-        String userId = "test";    //테스트용
+        String userId = (String) request.getAttribute("userId");
+        System.out.println(userId);
 
         Validator.checkIfLogin(userId);
         return userService.getUserProfileById(userId);
