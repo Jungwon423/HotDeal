@@ -21,16 +21,14 @@ public class AdminController {
 
     @GetMapping("/{userId}/detail")
     public ResponseEntity<Map<String, Object>> getUserDetail(HttpServletRequest request, @PathVariable("userId") String userId) {
-        //String userId = (String) request.getAttribute("userId");
-        String id="test";
+        String id = (String) request.getAttribute("userId");
         Validator.checkIfLogin(id);
         return adminService.getUserDetail(userId);
     }
 
     @GetMapping("/checkAdmin")
     public ResponseEntity<Map<String, Object>> CheckAdminUser(HttpServletRequest request) {
-        //String userId = (String) request.getAttribute("userId");
-        String userId="test";
+        String userId = (String) request.getAttribute("userId");
         Validator.checkIfLogin(userId);
         return adminService.handleAdminUserCheckRequest(userId);
     }

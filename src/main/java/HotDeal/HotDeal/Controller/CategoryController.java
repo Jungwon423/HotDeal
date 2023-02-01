@@ -29,9 +29,7 @@ public class CategoryController {
 
     @PostMapping("{categoryId}/click")
     public ResponseEntity<Map<String, Object>> clickCategory(HttpServletRequest request, @PathVariable String categoryId) {
-        //String userId = (String) request.getAttribute("userId");
-        //String userId=null;
-        String userId="test";
+        String userId = (String) request.getAttribute("userId");
         if (userId==null){
             return categoryService.clickCategory(categoryId);
         }else return categoryService.clickCategory(categoryId, userId);
