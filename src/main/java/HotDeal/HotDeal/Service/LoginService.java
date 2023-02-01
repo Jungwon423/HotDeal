@@ -94,6 +94,9 @@ public class LoginService {
     private User joinWithNaver(NaverUserDto naverUser) { // TODO
         User user = new User();
         user.setId("Naver_" + naverUser.getAccountId());
+        if (naverUser.getNickname()==null){
+            user.setNickname(generateRandomNickname()); //랜덤 닉네임
+        }
         user.setNickname(naverUser.getNickname());
         user.setEmail(naverUser.getEmail());
         user.setPassword("*");
@@ -131,7 +134,7 @@ public class LoginService {
     private User joinWithGoogle(GoogleUserDto googleUser) { // TODO
         User user = new User();
         user.setId("Google_" + googleUser.getAccountId());
-        user.setNickname("*");
+        user.setNickname(generateRandomNickname()); //랜덤 닉네임
         user.setEmail(googleUser.getEmail());
         user.setPassword("*");
         user.setPhoneNumber("*");
@@ -139,5 +142,16 @@ public class LoginService {
         userRepository.save(user);
 //        alimTalkService.sendWelcomeMessage(user.getId(), user.getNickname());
         return user;
+    }
+
+    private String generateRandomNickname() {
+        List<String> prefixPool = Arrays.asList("배고픈", "누추한", "냄새나는", "배부른", "심심한", "대담한", "멋있는", "격렬한", "운좋은", "단단한", "부드러운", "무심한", "아차싶은", "잘생긴","재밌는");
+        List<String> suffixPool = Arrays.asList("발바닥", "손바닥", "방바닥", "길바닥", "고양이", "강아지", "하마", "사다리", "오징어", "학교", "배꼽", "얼굴", "언덕", "섬유유연제", "장학금","자명종","시계추");
+
+        Random random = new Random();
+        String nickname = prefixPool.get(random.nextInt(prefixPool.size()))
+                + " " + suffixPool.get(random.nextInt(suffixPool.size()));
+        return nickname;
+
     }
 }

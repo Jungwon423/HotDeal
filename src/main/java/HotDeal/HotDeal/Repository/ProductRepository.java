@@ -1,6 +1,5 @@
 package HotDeal.HotDeal.Repository;
 
-import HotDeal.HotDeal.Domain.Comment;
 import HotDeal.HotDeal.Domain.Product;
 import org.springframework.data.mongodb.repository.MongoRepository;
 

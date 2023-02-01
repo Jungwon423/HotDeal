@@ -55,4 +55,12 @@ public class ProductController {
         Validator.checkIfLogin(userId);
         return productService.recommendProduct(userId, productId);
     }
+
+    @PostMapping("{productId}/bad")
+    public ResponseEntity<Map<String, Object>> badProduct(HttpServletRequest request, @PathVariable String productId) {
+        //String userId = (String) request.getAttribute("userId");
+        String userId = "test";
+        Validator.checkIfLogin(userId);
+        return productService.badProduct(userId, productId);
+    }
 }

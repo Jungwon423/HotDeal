@@ -21,7 +21,7 @@ public enum ErrorCode {
     PRODUCT_NOT_FOUND(404, "존재하지 않는 제품입니다"),
     CATEGORY_IS_NULL(404, "카테고리가 null값 입니다. (Category Map에 없음.)"),
     CATEGORY_NOT_FOUND(404, "존재하지 않는 카테고리입니다."),
-    OBJECT_IS_NULL(404, "객체가 null값을 가집니다."),
+    OBJECT_IS_NULL(404, "해당 객체가 null값을 가집니다."),
 
     //409 CONFLICT 중복된 리소스
     ALREADY_SAVED_Category(409, "중복된 카테고리 입니다."),

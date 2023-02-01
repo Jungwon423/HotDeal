@@ -1,17 +1,38 @@
 package HotDeal.HotDeal.Exception;
 
+import HotDeal.HotDeal.Domain.User;
+
 import java.util.List;
 
 public class Validator {
+    public static void validatePassword(User user, User tempUser) {
+        if (!tempUser.getPassword().equals(user.getPassword())) {
+            throw new CustomException(ErrorCode.WRONG_PASSWORD);
+        }
+    }
     public static void checkIfLogin(String userId){
         if (userId == null) {
             throw new CustomException(ErrorCode.UNAUTHORIZED_LOGIN);
         }
     }
-    public static void ListIsEmpty(List<?> givenList) {
-        //Map<String, Object> responseJson = new HashMap<>();
-        if (givenList.isEmpty()) {
+
+    public static void validateProductByCategoryId(boolean check){
+        if(check){
+            throw new CustomException(ErrorCode.CATEGORY_NOT_FOUND);
+        }
+    }
+
+    public static void validateList(List<?> exList) {
+        if (exList == null) {
+            throw new CustomException(ErrorCode.LIST_IS_NULL);
+        }
+        if (exList.isEmpty()) {
             throw new CustomException(ErrorCode.LIST_IS_EMPTY);
+        }
+    }
+    public static void validateObject(Object exObject){
+        if(exObject == null){
+            throw new CustomException(ErrorCode.OBJECT_IS_NULL);
         }
     }
 }

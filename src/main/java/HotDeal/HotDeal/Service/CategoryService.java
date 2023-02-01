@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
 
+import static HotDeal.HotDeal.Exception.Validator.validateProductByCategoryId;
+
 @Service
 @RequiredArgsConstructor
 public class CategoryService {
@@ -90,12 +92,6 @@ public class CategoryService {
     public void CheckCategoryExist(String categoryId){
         if(categoryMap.get(categoryId)==null){
             throw new CustomException(ErrorCode.CATEGORY_IS_NULL);
-        }
-    }
-
-    public void validateProductByCategoryId(boolean check){
-        if(check){
-            throw new CustomException(ErrorCode.CATEGORY_NOT_FOUND);
         }
     }
 }

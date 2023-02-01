@@ -44,8 +44,11 @@ public class UserController {
         return userService.getUserWishlistsById(userId);
     }
 
-    @GetMapping("/{userId}/detail")
-    public ResponseEntity<Map<String, Object>> getUserDetail(HttpServletRequest request, @PathVariable("userId") String userId) {
-        return userService.getUserDetail(userId);
+    @PutMapping("/nickname")
+    public ResponseEntity<Map<String, Object>> changeNickname(HttpServletRequest request, @RequestBody Map<String, String> nickname) {
+        //String userId = (String) request.getAttribute("userId");
+        String userId="test";
+        Validator.checkIfLogin(userId);
+        return userService.changeNickname(userId, nickname);
     }
 }
