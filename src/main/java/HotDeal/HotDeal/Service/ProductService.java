@@ -1,5 +1,6 @@
 package HotDeal.HotDeal.Service;
 
+import HotDeal.HotDeal.Domain.Comment;
 import HotDeal.HotDeal.Dto.GoodDto;
 import HotDeal.HotDeal.Domain.Product;
 import HotDeal.HotDeal.Domain.User;
@@ -59,7 +60,7 @@ public class ProductService {
         }
 
         List<Product> productList = productRepository.findByMarketName(marketName);
-        validateList(productList, marketName);
+        validateList(productList);
         if (productList == null) {
             responseJson.put("result", "MarketName = " + marketName + "를 가지는 category가 없습니다");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseJson);
@@ -133,7 +134,6 @@ public class ProductService {
     }
 
     public ResponseEntity<Map<String, Object>> clickProduct(String productId) {
-
         Map<String, Object> responseJson = new HashMap<>();
         Product product;
         if (productRepository.findById(productId).isEmpty()) {
@@ -143,6 +143,31 @@ public class ProductService {
         plusCount(product);
         responseJson.put("result", product); // Product 페이지 정보를 가져온다. (link 가져오고 상품디테일)
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
+    }
+    public ResponseEntity<Map<String, Object>> clickProduct(String productId, String userId) {
+        Map<String, Object> responseJson = new HashMap<>();
+        Product product;
+        if (productRepository.findById(productId).isEmpty()) {
+            responseJson.put("errorMessage", "productId = " + productId + "를 가지는 product가 없습니다");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseJson);
+        } else product = productRepository.findById(productId).get();
+        plusCount(product);
+
+        User user = userRepository.findById(userId)   //유저에 제품 클릭 정보 전달
+                .orElseThrow(IdNotFoundException::new);
+        userPlusCount(productId, user);
+
+        responseJson.put("result", product); // Product 페이지 정보를 가져온다. (link 가져오고 상품디테일)
+        return ResponseEntity.status(HttpStatus.OK).body(responseJson);
+    }
+
+    public void userPlusCount(String id, User user){
+        Map<String,Integer> userMap =  user.getProductCount();
+
+        userMap.putIfAbsent(id, 0);  //없으면 productId에 put 0
+        userMap.put(id, userMap.get(id)+1);
+        user.setProductCount(userMap);
+        userRepository.save(user);
     }
 
     public void plusCount(Product product) {
@@ -154,24 +179,49 @@ public class ProductService {
         Map<String, Object> responseJson = new HashMap<>();
         Product product = productRepository.findById(productId)
                 .orElseThrow(IdNotFoundException::new);
-        validateObject(product.getWishUserList());   //객체의 list값은 초기화 안하면 null값이 참조됨
-        if (!product.getWishUserList().contains(userId)){ //제품 객체가 userId 안 갖고있으면
-            product.getWishUserList().add(userId);  //제품객체에 userId 저장
+        if (product.getWish()==null){
+            product.setWish("unwish");
         }
-        productRepository.save(product);
 
         WishListDto wishListDto = WishListDto.from(product);
-        User user = userRepository.findById(userId)
-                .orElseThrow(NotFoundException::new);
-        validateObject(user.getWishLists());
+        System.out.println(wishListDto);
+        if (Objects.equals(wishListDto.getWish(), "wish")){     //추가되어 있으므로 삭제 진행
+            product.setWish("unwish");
+            User user = userRepository.findById(userId)
+                    .orElseThrow(IdNotFoundException::new);
+            List<WishListDto> wishlists = user.getWishLists();
+            wishlists.removeIf(wishlist -> Objects.equals(wishlist.getName(), productId));
 
-        if (!user.getWishLists().contains(wishListDto)){ //유저 객체가 wishList객체 안 갖고있으면
-            user.getWishLists().add(wishListDto);  //유저 객체에 wishList객체 저장
+            user.setWishLists(wishlists);
+            userRepository.save(user);
+
+            product.getWishUserList().remove(userId);
+            productRepository.save(product);
+
+            responseJson.put("message","유저정보에서 찜목록이 삭제되었습니다");
+            responseJson.put("message2","제품정보에서 찜목록이 삭제되었습니다");
+            return ResponseEntity.status(HttpStatus.OK).body(responseJson);
         }
-        userRepository.save(user);
-        responseJson.put("message", "찜목록이 user 객체에 저장되었습니다.");
-        responseJson.put("message2", "userID가 product 객체에 저장되었습니다.");
-        return ResponseEntity.status(HttpStatus.OK).body(responseJson);
+        else{
+            validateObject(product.getWishUserList());   //객체의 list값은 초기화 안하면 null값이 참조됨
+            if (!product.getWishUserList().contains(userId)){ //제품 객체가 userId 안 갖고있으면
+                product.getWishUserList().add(userId);  //제품객체에 userId 저장
+            }
+            product.setWish("wish");
+            productRepository.save(product);
+
+            User user = userRepository.findById(userId)
+                    .orElseThrow(NotFoundException::new);
+            validateObject(user.getWishLists());
+
+            if (!user.getWishLists().contains(wishListDto)){ //유저 객체가 wishList객체 안 갖고있으면
+                user.getWishLists().add(wishListDto);  //유저 객체에 wishList객체 저장
+            }
+            userRepository.save(user);
+            responseJson.put("message", "찜목록이 user 객체에 저장되었습니다.");
+            responseJson.put("message2", "userID가 product 객체에 저장되었습니다.");
+            return ResponseEntity.status(HttpStatus.OK).body(responseJson);
+        }
     }
 
     public ResponseEntity<Map<String, Object>> getCommentsByProduct(String productId) {
@@ -184,30 +234,53 @@ public class ProductService {
     }
 
     public ResponseEntity<Map<String, Object>> recommendProduct(String userId, String productId) {
+        Map<String, Object> responseJson = new HashMap<>();
         Product product = productRepository.findById(productId)
                 .orElseThrow(IdNotFoundException::new);
-        GoodDto good = GoodDto.from(product);
-        validateObject(product.getGood());
-        if (!product.getGood().contains(userId)){
-            product.getGood().add(userId); //제품 good에 userId 추가
+        GoodDto goodProduct = GoodDto.from(product);
+        if (product.getRecommend()==null){   // 추천인지 비추천인지 없으면 null 값으로
+            product.setRecommend("bad");
         }
-        productRepository.save(product);
 
-        Map<String, Object> responseJson = new HashMap<>();
-        User user = userRepository.findById(userId)
-                .orElseThrow(IdNotFoundException::new);
-        validateObject(user.getGoods());
+        if (Objects.equals(goodProduct.getRecommend(), "good")) {     //추가되어 있으므로 삭제 진행
+            product.setRecommend("bad");
+            User user = userRepository.findById(userId)
+                    .orElseThrow(IdNotFoundException::new);
+            List<GoodDto> goods = user.getGoods();
+            goods.removeIf(good -> Objects.equals(good.getName(), productId));
+            user.setGoods(goods);
+            userRepository.save(user);
 
-        if (!user.getGoods().contains(good)){
-            user.getGoods().add(good);  //유저 goods에 good 추가
+            product.getGood().remove(userId);
+            productRepository.save(product);
+
+            responseJson.put("message", "유저정보에서 추천목록 삭제되었습니다");
+            responseJson.put("message2", "제품정보에서 추천목록이 삭제되었습니다");
+            return ResponseEntity.status(HttpStatus.OK).body(responseJson);
         }
-        userRepository.save(user);
-        responseJson.put("message", "추천 객체가 user 객체에 저장되었습니다.");
-        responseJson.put("message2", "추천 유저 ID가 product 객체에 저장되었습니다.");
-        return ResponseEntity.status(HttpStatus.OK).body(responseJson);
+        else{
+            validateObject(product.getGood());
+            if (!product.getGood().contains(userId)) {
+                product.getGood().add(userId); //제품 good에 userId 추가
+            }
+            product.setRecommend("good");
+            productRepository.save(product);
+
+            User user = userRepository.findById(userId)
+                    .orElseThrow(IdNotFoundException::new);
+            validateObject(user.getGoods());
+
+            if (!user.getGoods().contains(goodProduct)) {
+                user.getGoods().add(goodProduct);  //유저 goods에 good 추가
+            }
+            userRepository.save(user);
+            responseJson.put("message", "추천 객체가 user 객체에 저장되었습니다.");
+            responseJson.put("message2", "추천 유저 ID가 product 객체에 저장되었습니다.");
+            return ResponseEntity.status(HttpStatus.OK).body(responseJson);
+        }
     }
 
-    public void validateList(List<?> exList, String customString) {
+    public void validateList(List<?> exList) {
         if (exList == null) {
             throw new CustomException(ErrorCode.LIST_IS_NULL);
         }

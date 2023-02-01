@@ -72,11 +72,19 @@ public class UserService {
         User tempUser = userRepository.findById(userId)
                 .orElseThrow(IdNotFoundException::new);
         List<WishListDto> wishLists = tempUser.getWishLists();
-        userWishlists.put("찜목록", wishLists);
+        userWishlists.put("result", wishLists);
 
         return ResponseEntity.status(HttpStatus.OK).body(userWishlists);
     }
 
+    public ResponseEntity<Map<String, Object>> getUserDetail(String userId){
+        Map<String, Object> responseJson = new HashMap<>();
+        User user = userRepository.findById(userId)
+                .orElseThrow(IdNotFoundException::new);
+        responseJson.put("categoryCount",user.getCategoryCount());
+        responseJson.put("productCount", user.getProductCount());
+        return ResponseEntity.status(HttpStatus.OK).body(responseJson);
+    }
     private void validateDuplicate(String id, String nickname) {
         if (userRepository.existsById(id)) {
             throw new CustomException(ErrorCode.DUPLICATE_ID);

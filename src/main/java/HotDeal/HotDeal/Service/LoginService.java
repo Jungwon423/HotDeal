@@ -44,6 +44,7 @@ public class LoginService {
         responseJson.put("token", jwtToken);
         responseJson.put("resultMessage", resultMessage);
 
+
         return responseJson;
     }
 
@@ -87,7 +88,6 @@ public class LoginService {
         String jwtToken = JwtUtils.generateJwtToken(user);
         responseJson.put("token", jwtToken);
         responseJson.put("resultMessage", resultMessage);
-
         return responseJson;
     }
 
@@ -125,7 +125,6 @@ public class LoginService {
         String jwtToken = JwtUtils.generateJwtToken(user);
         responseJson.put("token", jwtToken);
         responseJson.put("resultMessage", resultMessage);
-
         return responseJson;
     }
 

@@ -29,9 +29,8 @@ public class UserController {
 
     @GetMapping("/profile")
     public ResponseEntity<Map<String, Object>> getUserProfile(HttpServletRequest request) {
-        String userId = (String) request.getAttribute("userId");
-        System.out.println(userId);
-
+        //String userId = (String) request.getAttribute("userId");
+        String userId="test";
         Validator.checkIfLogin(userId);
         return userService.getUserProfileById(userId);
     }
@@ -39,9 +38,14 @@ public class UserController {
     @GetMapping("/wishlist")
     public ResponseEntity<Map<String, Object>> getUserWishlist(HttpServletRequest request) {
         //String userId = (String) request.getAttribute("userId");
-        String userId="test";
         //String userId = "kakao_2639335658"; //테스트용2
+        String userId="test";
         Validator.checkIfLogin(userId);
         return userService.getUserWishlistsById(userId);
+    }
+
+    @GetMapping("/{userId}/detail")
+    public ResponseEntity<Map<String, Object>> getUserDetail(HttpServletRequest request, @PathVariable("userId") String userId) {
+        return userService.getUserDetail(userId);
     }
 }

@@ -8,7 +8,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @Document(collection = "user")
@@ -23,4 +25,6 @@ public class User {
     private List<Comment> comments = new ArrayList<>();
     private List<GoodDto> goods = new ArrayList<>();
     private List<WishListDto> wishLists = new ArrayList<>();
+    private Map<String, Integer> categoryCount = new HashMap<>();
+    private Map<String, Integer> productCount = new HashMap<>();
 }

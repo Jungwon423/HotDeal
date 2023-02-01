@@ -19,6 +19,7 @@ public enum ErrorCode {
     LIST_IS_NULL(404, "리스트가 null값 입니다.(어떤 주소값도 참조 X)"),
 
     PRODUCT_NOT_FOUND(404, "존재하지 않는 제품입니다"),
+    CATEGORY_IS_NULL(404, "카테고리가 null값 입니다. (Category Map에 없음.)"),
     CATEGORY_NOT_FOUND(404, "존재하지 않는 카테고리입니다."),
     OBJECT_IS_NULL(404, "객체가 null값을 가집니다."),
 

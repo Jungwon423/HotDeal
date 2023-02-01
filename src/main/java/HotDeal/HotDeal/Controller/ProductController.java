@@ -22,7 +22,12 @@ public class ProductController {
 
     @PostMapping("{productId}/click")
     public ResponseEntity<Map<String, Object>> clickProduct(@PathVariable String productId) {
-        return productService.clickProduct(productId);
+        //String userId = (String) request.getAttribute("userId");
+        //String userId=null;
+        String userId="test";
+        if (userId==null){
+            return productService.clickProduct(productId);
+        }else return productService.clickProduct(productId, userId);
     }
 
     @GetMapping("detail")

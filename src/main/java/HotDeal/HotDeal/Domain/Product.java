@@ -37,4 +37,6 @@ public class Product {
     private List<String> wishUserList = new ArrayList<>();
     private List<Comment> comments = new ArrayList<>();
     private List<String> subImageUrl = new ArrayList<>();
+    private String wish;
+    private String recommend;
 }
