@@ -50,4 +50,61 @@ public class CommentService {
         //responseJson.put("result", user);
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
+
+    public ResponseEntity<Map<String, Object>> editCommentToProduct(String userId, String commentId, Comment editComment) {
+        Map<String, Object> responseJson = new HashMap<>();
+        User user = userRepository.findById(userId)
+                .orElseThrow(IdNotFoundException::new);
+        Comment beforeComment = commentRepository.findById(commentId)
+                .orElseThrow(IdNotFoundException::new);
+        editComment.setWriterId(userId);
+        editComment.setProductId(beforeComment.getProductId());
+        commentRepository.save(editComment);
+        //원래 댓글 삭제하고 새로 저장?
+
+        List<Comment> comments = user.getComments();
+        comments.remove(beforeComment);
+        comments.add(editComment);
+        user.setComments(comments);
+        userRepository.save(user);
+
+        Product product = productRepository.findById(beforeComment.getProductId())
+                .orElseThrow(IdNotFoundException::new);
+        List<Comment> productComments = product.getComments();
+        productComments.remove(beforeComment);
+        productComments.add(editComment);
+        product.setComments(comments);
+        productRepository.save(product);
+        commentRepository.delete(beforeComment);
+
+        responseJson.put("message","댓글이 수정되었습니다");
+        responseJson.put("message2","수정된 댓글이 유저정보에 저장되었습니다");
+        responseJson.put("message3","수정된 댓글이 제품정보에 저장되었습니다");
+        //responseJson.put("result", user);
+        return ResponseEntity.status(HttpStatus.OK).body(responseJson);
+    }
+
+    public ResponseEntity<Map<String, Object>> deleteCommentToProduct(String userId, String commentId) {
+        Map<String, Object> responseJson = new HashMap<>();
+
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(IdNotFoundException::new);
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(IdNotFoundException::new);
+        user.getComments().remove(comment);
+        userRepository.save(user);
+
+        Product product = productRepository.findById(comment.getProductId())
+                .orElseThrow(IdNotFoundException::new);
+        product.getComments().remove(comment);
+        productRepository.save(product);
+        commentRepository.deleteById(commentId);  //삭제
+
+        responseJson.put("message","댓글이 삭제되었습니다");
+        responseJson.put("message2","댓글이 유저정보에서 삭제되었습니다");
+        responseJson.put("message3","댓글이 제품정보에서 삭제되었습니다");
+        //responseJson.put("result", user);
+        return ResponseEntity.status(HttpStatus.OK).body(responseJson);
+    }
 }

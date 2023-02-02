@@ -1,9 +1,12 @@
 package HotDeal.HotDeal.Service;
 
 import HotDeal.HotDeal.Domain.Category;
+import HotDeal.HotDeal.Domain.User;
 import HotDeal.HotDeal.Exception.CustomException;
 import HotDeal.HotDeal.Exception.ErrorCode;
+import HotDeal.HotDeal.Exception.IdNotFoundException;
 import HotDeal.HotDeal.Repository.CategoryRepository;
+import HotDeal.HotDeal.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,11 +15,14 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
 
+import static HotDeal.HotDeal.Exception.Validator.validateProductByCategoryId;
+
 @Service
 @RequiredArgsConstructor
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final UserRepository userRepository;
 
     private final HashMap<String, String> categoryMap = new HashMap<>() {
         {
@@ -42,18 +48,40 @@ public class CategoryService {
         Map<String, Object> responseJson = new HashMap<>();
         Category category;
         boolean check = categoryRepository.findById(translatedCategory).isEmpty();
-        System.out.println(check);
         validateProductByCategoryId(check);
-        /*
-        if (categoryRepository.findById(translatedCategory).isEmpty()) {
-            responseJson.put("errorMessage", "categoryId = " + translatedCategory + "를 가지는 category가 없습니다");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseJson);
-        } else category = categoryRepository.findById(translatedCategory).get();
-         */
+
         category = categoryRepository.findById(translatedCategory).get();
         plusCount(category);
-        responseJson.put("result", category); //Product 페이지 정보를 가져온다. (link 가져오고 상품디테일)
+        responseJson.put("result", category); //카테고리 객체
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
+    }
+
+    public ResponseEntity<Map<String, Object>> clickCategory(String categoryId, String userId) {
+        CheckCategoryExist(categoryId); //위에 카테고리 맵을 설정해놓아서 IllegalArgumentException 발생하는 것을 바꿔놓음
+        String translatedCategory = categoryMap.get(categoryId);
+
+        Map<String, Object> responseJson = new HashMap<>();
+        Category category;
+        boolean check = categoryRepository.findById(translatedCategory).isEmpty();
+        validateProductByCategoryId(check);
+
+        category = categoryRepository.findById(translatedCategory).get();
+        plusCount(category);
+
+        User user = userRepository.findById(userId)   //유저에 카테고리 클릭 정보 전달
+                .orElseThrow(IdNotFoundException::new);
+        userPlusCount(categoryId, user);
+
+        responseJson.put("result", category); //카테고리 객체
+        return ResponseEntity.status(HttpStatus.OK).body(responseJson);
+    }
+    public void userPlusCount(String id, User user){
+        Map<String,Integer> userMap =  user.getProductCount();
+
+        userMap.putIfAbsent(id, 0);  //없으면 categoryId에 put 0
+        userMap.put(id, userMap.get(id)+1);
+        user.setProductCount(userMap);
+        userRepository.save(user);
     }
 
     public void plusCount(Category category){
@@ -63,13 +91,7 @@ public class CategoryService {
 
     public void CheckCategoryExist(String categoryId){
         if(categoryMap.get(categoryId)==null){
-            throw new CustomException(ErrorCode.ID_NOT_FOUND);
-        }
-    }
-
-    public void validateProductByCategoryId(boolean check){
-        if(check){
-            throw new CustomException(ErrorCode.CATEGORY_NOT_FOUND);
+            throw new CustomException(ErrorCode.CATEGORY_IS_NULL);
         }
     }
 }

@@ -1,6 +1,7 @@
 package HotDeal.HotDeal.Repository;
 
 import HotDeal.HotDeal.Domain.User;
+import HotDeal.HotDeal.Dto.WishListDto;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;

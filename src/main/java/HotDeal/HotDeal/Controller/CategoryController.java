@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @RestController
@@ -27,8 +28,11 @@ public class CategoryController {
     }
 
     @PostMapping("{categoryId}/click")
-    public ResponseEntity<Map<String, Object>> clickCategory(@PathVariable String categoryId) {
-        return categoryService.clickCategory(categoryId);
+    public ResponseEntity<Map<String, Object>> clickCategory(HttpServletRequest request, @PathVariable String categoryId) {
+        String userId = (String) request.getAttribute("userId");
+        if (userId==null){
+            return categoryService.clickCategory(categoryId);
+        }else return categoryService.clickCategory(categoryId, userId);
     }
 
 }

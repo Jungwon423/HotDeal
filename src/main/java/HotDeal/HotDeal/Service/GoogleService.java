@@ -29,8 +29,6 @@ public class GoogleService {
             .build();
 
     public static String getAccessToken(String authorize_code) {
-        String access_Token = "";
-        String id_Token = "";
         String reqURL = "https://oauth2.googleapis.com/token";
 
         try {
@@ -50,7 +48,7 @@ public class GoogleService {
             bw.flush();
 
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String line = "";
+            String line;
             String result = "";
 
             while ((line = br.readLine()) != null) {
@@ -59,8 +57,8 @@ public class GoogleService {
             //System.out.println("response body : " + result);
 
             JsonObject JsonObject = JsonParser.parseString(result).getAsJsonObject();
-            access_Token = JsonObject.get("access_token").getAsString();
-            id_Token = JsonObject.get("id_token").getAsString();
+            String access_Token = JsonObject.get("access_token").getAsString();
+            //String id_Token = JsonObject.get("id_token").getAsString();
 
             br.close();
             return access_Token;

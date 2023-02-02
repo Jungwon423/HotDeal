@@ -30,18 +30,21 @@ public class UserController {
     @GetMapping("/profile")
     public ResponseEntity<Map<String, Object>> getUserProfile(HttpServletRequest request) {
         String userId = (String) request.getAttribute("userId");
-        System.out.println(userId);
-
         Validator.checkIfLogin(userId);
         return userService.getUserProfileById(userId);
     }
 
     @GetMapping("/wishlist")
     public ResponseEntity<Map<String, Object>> getUserWishlist(HttpServletRequest request) {
-        //String userId = (String) request.getAttribute("userId");
-        String userId="test";
-        //String userId = "kakao_2639335658"; //테스트용2
+        String userId = (String) request.getAttribute("userId");
         Validator.checkIfLogin(userId);
         return userService.getUserWishlistsById(userId);
+    }
+
+    @PutMapping("/nickname")
+    public ResponseEntity<Map<String, Object>> changeNickname(HttpServletRequest request, @RequestBody Map<String, String> nickname) {
+        String userId = (String) request.getAttribute("userId");
+        Validator.checkIfLogin(userId);
+        return userService.changeNickname(userId, nickname);
     }
 }

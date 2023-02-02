@@ -21,8 +21,11 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping("{productId}/click")
-    public ResponseEntity<Map<String, Object>> clickProduct(@PathVariable String productId) {
-        return productService.clickProduct(productId);
+    public ResponseEntity<Map<String, Object>> clickProduct(HttpServletRequest request, @PathVariable String productId) {
+        String userId = (String) request.getAttribute("userId");
+        if (userId==null){
+            return productService.clickProduct(productId);
+        }else return productService.clickProduct(productId, userId);
     }
 
     @GetMapping("detail")
@@ -32,8 +35,7 @@ public class ProductController {
 
     @PostMapping("{productId}/wishlist")   //테스트용 : Amazon Essentials 남아 및 유아용 방수 스노우 턱받이
     public ResponseEntity<Map<String, Object>> setProductToWishlist(HttpServletRequest request, @PathVariable String productId) {
-        //String userId = (String) request.getAttribute("userId");
-        String userId = "test";
+        String userId = (String) request.getAttribute("userId");
         Validator.checkIfLogin(userId);
         return productService.setProductToWishlist(userId, productId);
     }
@@ -45,9 +47,15 @@ public class ProductController {
 
     @PostMapping("{productId}/recommend")
     public ResponseEntity<Map<String, Object>> recommendProduct(HttpServletRequest request, @PathVariable String productId) {
-        //String userId = (String) request.getAttribute("userId");
-        String userId = "test";
+        String userId = (String) request.getAttribute("userId");
         Validator.checkIfLogin(userId);
         return productService.recommendProduct(userId, productId);
+    }
+
+    @PostMapping("{productId}/bad")
+    public ResponseEntity<Map<String, Object>> badProduct(HttpServletRequest request, @PathVariable String productId) {
+        String userId = (String) request.getAttribute("userId");
+        Validator.checkIfLogin(userId);
+        return productService.badProduct(userId, productId);
     }
 }
