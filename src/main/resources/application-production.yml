@@ -1,0 +1,16 @@
+spring:
+  data:
+    mongodb:
+      port: 27017
+      database: hotdeal
+      host: 3.34.96.141
+      username: taptorestart
+      password: thisispass
+      authentication-database: admin
+
+server:
+  port: 8080
+  servlet:
+    context-path: "/api"
+    encoding:
+      force-response: true
