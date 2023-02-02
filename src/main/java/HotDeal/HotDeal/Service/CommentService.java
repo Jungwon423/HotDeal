@@ -107,4 +107,33 @@ public class CommentService {
         //responseJson.put("result", user);
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
+
+    public ResponseEntity<Map<String, Object>> recommendComment(String userId, String commentId) {
+        Map<String, Object> responseJson = new HashMap<>();
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(IdNotFoundException::new);
+        List<String> comments = comment.getGood();
+        if (comments.contains(userId)) {   //이미 포함하고 있으면 삭제
+            comments.remove(userId);
+        } else {    //아니면 추가
+            comments.add(userId);
+        }
+        comment.setGood(comments);
+        commentRepository.save(comment);
+        return ResponseEntity.status(HttpStatus.OK).body(responseJson);
+    }
+    public ResponseEntity<Map<String, Object>> disrecommendComment(String userId, String commentId) {
+        Map<String, Object> responseJson = new HashMap<>();
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(IdNotFoundException::new);
+        List<String> comments = comment.getBad();
+        if (comments.contains(userId)) {   //이미 포함하고 있으면 삭제
+            comments.remove(userId);
+        } else {    //아니면 추가
+            comments.add(userId);
+        }
+        comment.setBad(comments);
+        commentRepository.save(comment);
+        return ResponseEntity.status(HttpStatus.OK).body(responseJson);
+    }
 }

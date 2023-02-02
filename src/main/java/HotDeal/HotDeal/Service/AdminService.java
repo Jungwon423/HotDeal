@@ -1,17 +1,16 @@
 package HotDeal.HotDeal.Service;
 
 import HotDeal.HotDeal.Domain.User;
+import HotDeal.HotDeal.Dto.UserDetailDto;
 import HotDeal.HotDeal.Exception.IdNotFoundException;
 import HotDeal.HotDeal.Repository.UserRepository;
+import feign.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -41,6 +40,16 @@ public class AdminService {
                 .orElseThrow(IdNotFoundException::new);
         responseJson.put("categoryCount",user.getCategoryCount());
         responseJson.put("productCount", user.getProductCount());
+        return ResponseEntity.status(HttpStatus.OK).body(responseJson);
+    }
+    public ResponseEntity<Map<String, Object>> getUsers(){
+        Map<String, Object> responseJson = new HashMap<>();
+        List<User> users = userRepository.findAll();
+        List<UserDetailDto> usersDetail = new ArrayList<>();
+        for (User user: users) {
+            usersDetail.add(UserDetailDto.from(user));
+        }
+        responseJson.put("result",usersDetail);
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
 }

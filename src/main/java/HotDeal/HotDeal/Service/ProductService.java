@@ -311,7 +311,7 @@ public class ProductService {
         product.getGood().remove(userId);
         productRepository.save(product);
     }
-    public ResponseEntity<Map<String, Object>> badProduct(String userId, String productId){
+    public ResponseEntity<Map<String, Object>> disrecommendProduct(String userId, String productId){
         Map<String, Object> responseJson = new HashMap<>();
         Product product = productRepository.findById(productId)
                 .orElseThrow(IdNotFoundException::new);

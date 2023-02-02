@@ -37,4 +37,16 @@ public class CommentController {
         Validator.checkIfLogin(userId);
         return commentService.deleteCommentToProduct(userId,  commentId);
     }
+    @PostMapping("{commentId}/recommend")
+    public ResponseEntity<Map<String, Object>> recommendComment(HttpServletRequest request,@PathVariable("commentId") String commentId) {
+        String userId = (String) request.getAttribute("userId");
+        Validator.checkIfLogin(userId);
+        return commentService.recommendComment(userId,  commentId);
+    }
+    @PostMapping("{commentId}/disrecommend")
+    public ResponseEntity<Map<String, Object>> disrecommendComment(HttpServletRequest request,@PathVariable("commentId") String commentId) {
+        String userId = (String) request.getAttribute("userId");
+        Validator.checkIfLogin(userId);
+        return commentService.disrecommendComment(userId,  commentId);
+    }
 }
