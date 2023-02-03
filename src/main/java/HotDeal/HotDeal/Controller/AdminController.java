@@ -5,10 +5,7 @@ import HotDeal.HotDeal.Service.AdminService;
 import HotDeal.HotDeal.Service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -21,8 +18,8 @@ public class AdminController {
 
     @GetMapping("/{userId}/detail")
     public ResponseEntity<Map<String, Object>> getUserDetail(HttpServletRequest request, @PathVariable("userId") String userId) {
-        String id = (String) request.getAttribute("userId");
-        Validator.checkIfLogin(id);
+        String loginId = (String) request.getAttribute("userId");
+        Validator.checkIfLogin(loginId);
         return adminService.getUserDetail(userId);
     }
 
@@ -31,5 +28,12 @@ public class AdminController {
         String userId = (String) request.getAttribute("userId");
         Validator.checkIfLogin(userId);
         return adminService.handleAdminUserCheckRequest(userId);
+    }
+    @GetMapping("/users")
+    public ResponseEntity<Map<String, Object>> getUsers() {
+        //public ResponseEntity<Map<String, Object>> getUsers(HttpServletRequest request) {
+        //String loginId = (String) request.getAttribute("userId");
+        //Validator.checkIfLogin(loginId);
+        return adminService.getUsers();
     }
 }

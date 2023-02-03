@@ -22,6 +22,11 @@ public class CategoryController {
         return productService.getProductsByCategoryAndMarket(categoryName, marketName, pageNumber);
     }
 
+    @GetMapping("{categoryName}/{pageNumber}/list")
+    public ResponseEntity<Map<String, Object>> getProductsByCategoryAndMarkets(@PathVariable("categoryName") String categoryName,@PathVariable("pageNumber") Integer pageNumber, @RequestBody Map<String, Boolean> marketMap) {
+        return productService.getProductsByCategoryAndMarkets(categoryName, pageNumber, marketMap);
+    }
+
     @GetMapping("{marketName}/top3")
     public ResponseEntity<Map<String, Object>> getTop3ProductsByMarket(@PathVariable("marketName") String marketName) {
         return productService.getTop3ProductsByMarketName(marketName);

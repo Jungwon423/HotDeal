@@ -52,10 +52,10 @@ public class ProductController {
         return productService.recommendProduct(userId, productId);
     }
 
-    @PostMapping("{productId}/bad")
-    public ResponseEntity<Map<String, Object>> badProduct(HttpServletRequest request, @PathVariable String productId) {
+    @PostMapping("{productId}/disrecommend")
+    public ResponseEntity<Map<String, Object>> disrecommendProduct(HttpServletRequest request, @PathVariable String productId) {
         String userId = (String) request.getAttribute("userId");
         Validator.checkIfLogin(userId);
-        return productService.badProduct(userId, productId);
+        return productService.disrecommendProduct(userId, productId);
     }
 }

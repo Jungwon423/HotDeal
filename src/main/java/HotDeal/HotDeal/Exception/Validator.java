@@ -3,6 +3,7 @@ package HotDeal.HotDeal.Exception;
 import HotDeal.HotDeal.Domain.User;
 
 import java.util.List;
+import java.util.Set;
 
 public class Validator {
     public static void validatePassword(User user, User tempUser) {
@@ -33,6 +34,14 @@ public class Validator {
     public static void validateObject(Object exObject){
         if(exObject == null){
             throw new CustomException(ErrorCode.OBJECT_IS_NULL);
+        }
+    }
+    public static void validateSet(Set<?> exSet){
+        if(exSet == null){
+            throw new CustomException(ErrorCode.SET_IS_NULL);
+        }
+        if(exSet.isEmpty()){
+            throw new CustomException(ErrorCode.SET_IS_EMPTY);
         }
     }
 }

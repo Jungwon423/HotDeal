@@ -1,18 +1,3 @@
 spring:
-  data:
-    mongodb:
-#      host: localhost
-      port: 27017
-      database: hotdeal
-      host: 3.34.96.141
-#      아래는 배포할 때만
-      username: taptorestart
-      password: thisispass
-      authentication-database: admin
-
-server:
-  port: 8080
-  servlet:
-    context-path: "/api"
-    encoding:
-      force-response: true
+  profiles:
+    active: production

@@ -14,8 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-import static HotDeal.HotDeal.Exception.Validator.validateList;
-import static HotDeal.HotDeal.Exception.Validator.validateObject;
+import static HotDeal.HotDeal.Exception.Validator.*;
 
 @Service
 @RequiredArgsConstructor
@@ -95,6 +94,33 @@ public class ProductService {
                 return ResponseEntity.status(HttpStatus.OK).body(responseJson);
             }
         }
+    }
+
+    public ResponseEntity<Map<String, Object>> getProductsByCategoryAndMarkets(String categoryName, Integer pageNumber, Map<String,Boolean> marketMap) {
+        Map<String, Object> responseJson = new HashMap<>();
+        validateObject(marketMap);
+        String categoryNameKr = categoryMap.get(categoryName);
+        List<Product> newProductList;
+        if (categoryName.equals("all"))
+            newProductList = getProductListsByMarketCheck("전체", marketMap);
+        else
+            newProductList = getProductListsByMarketCheck(categoryNameKr, marketMap);
+        responseJson.put("result", newProductList.subList((pageNumber - 1) * 10, Math.min(newProductList.size(), pageNumber * 10)));
+        responseJson.put("totalPage", (newProductList.size() % 10 == 0) ? newProductList.size() / 10 : newProductList.size() / 10 + 1);
+        responseJson.put("productCount", newProductList.size());
+        return ResponseEntity.status(HttpStatus.OK).body(responseJson);
+    }
+    public List<Product> getProductListsByMarketCheck(String categoryNameKr, Map<String,Boolean> marketMap){
+        Set<String> marketList = marketMap.keySet();   //marketList는 set임
+        Set<Product> productSet = new HashSet<>();
+        for (String market : marketList) {
+            if (marketMap.get(market)){
+                List<Product> productList = productRepository.findByCategoryNameAndMarketName(categoryNameKr, market);
+                validateList(productList);
+                productSet.addAll(productList);
+            }
+        }
+        return new ArrayList<>(productSet);
     }
 
     public ResponseEntity<Map<String, Object>> getProductsByMarketName(String marketName, Integer pageNumber) { // categoryname이 all인 경우
@@ -285,7 +311,7 @@ public class ProductService {
         product.getGood().remove(userId);
         productRepository.save(product);
     }
-    public ResponseEntity<Map<String, Object>> badProduct(String userId, String productId){
+    public ResponseEntity<Map<String, Object>> disrecommendProduct(String userId, String productId){
         Map<String, Object> responseJson = new HashMap<>();
         Product product = productRepository.findById(productId)
                 .orElseThrow(IdNotFoundException::new);
