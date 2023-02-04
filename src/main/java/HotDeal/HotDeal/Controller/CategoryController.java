@@ -26,6 +26,7 @@ public class CategoryController {
     public ResponseEntity<Map<String, Object>> getProductsByCategoryAndMarkets(@PathVariable("categoryName") String categoryName,@PathVariable("pageNumber") Integer pageNumber, @RequestBody Map<String, Boolean> marketMap) {
         return productService.getProductsByCategoryAndMarkets(categoryName, pageNumber, marketMap);
     }
+    //
 
     @GetMapping("{marketName}/top3")
     public ResponseEntity<Map<String, Object>> getTop3ProductsByMarket(@PathVariable("marketName") String marketName) {
