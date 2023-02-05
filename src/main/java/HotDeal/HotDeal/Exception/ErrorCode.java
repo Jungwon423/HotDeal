@@ -11,16 +11,19 @@ public enum ErrorCode {
     WRONG_PASSWORD(400, "패스워드가 틀렸습니다."),
 
     //401 UNAUTHORIZED 권한없음
-    UNAUTHORIZED_LOGIN(401,"로그인되지 않은 유저입니다."),
+    UNAUTHORIZED_LOGIN(401,"로그인을 해주세요."),
 
     //404 NOT_FOUND 잘못된 리소스 접근
-    ID_NOT_FOUND(404, "존재하지 않는 ID입니다"),
-    LIST_IS_EMPTY(404, "리스트 값이 비어있습니다."),
-    LIST_IS_NULL(404, "리스트가 null값 입니다.(어떤 주소값도 참조 X)"),
+    ID_NOT_FOUND(404, "존재하지 않는 ID입니다."),
 
-    PRODUCT_NOT_FOUND(404, "존재하지 않는 제품입니다"),
+    COMMENT_NOT_FOUND(404,"존재하지 않는 댓글입니다."),
+    USER_NOT_FOUND(404,"등록되지 않은 유저입니다."),
+    PRODUCT_NOT_FOUND(404, "존재하지 않는 제품입니다."),
     CATEGORY_IS_NULL(404, "카테고리가 null값 입니다. (Category Map에 없음.)"),
     CATEGORY_NOT_FOUND(404, "존재하지 않는 카테고리입니다."),
+
+    LIST_IS_EMPTY(404, "리스트 값이 비어있습니다."),
+    LIST_IS_NULL(404, "리스트가 null값 입니다.(어떤 주소값도 참조 X)"),
     OBJECT_IS_NULL(404, "해당 객체가 null값을 가집니다."),
     SET_IS_NULL(404, "집합이 null값을 가집니다."),
     SET_IS_EMPTY(404, "SET의 값이 비어있습니다."),

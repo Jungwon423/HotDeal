@@ -23,7 +23,17 @@ public class Validator {
         }
     }
 
-    public static void validateList(List<?> exList) {
+    public static void validateNullList(List<?> exList) {
+        if (exList == null) {
+            throw new CustomException(ErrorCode.LIST_IS_NULL);
+        }
+    }
+    public static void validateEmptyList(List<?> exList) {
+        if (exList.isEmpty()) {
+            throw new CustomException(ErrorCode.LIST_IS_EMPTY);
+        }
+    }
+    public static void validateNullEmptyList(List<?> exList) {
         if (exList == null) {
             throw new CustomException(ErrorCode.LIST_IS_NULL);
         }
@@ -31,7 +41,7 @@ public class Validator {
             throw new CustomException(ErrorCode.LIST_IS_EMPTY);
         }
     }
-    public static void validateObject(Object exObject){
+    public static void validateNullObject(Object exObject){
         if(exObject == null){
             throw new CustomException(ErrorCode.OBJECT_IS_NULL);
         }

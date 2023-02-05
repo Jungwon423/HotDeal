@@ -39,7 +39,7 @@ public class UserService {
     public ResponseEntity<Map<String, Object>> userLogin(User user) {  //user에는 id,password 밖에 없다.
         Map<String, Object> responseJson = new HashMap<>();
         User savedUser = userRepository.findById(user.getId())
-                .orElseThrow(IdNotFoundException::new);
+                .orElseThrow(UserNotFound::new);
         validatePassword(user, savedUser);
 
         String jwtToken = JwtUtils.generateJwtToken(user);
@@ -56,7 +56,7 @@ public class UserService {
         Map<String, Object> userProfile = new HashMap<>();
 
         User tempUser = userRepository.findById(userId)
-                .orElseThrow(IdNotFoundException::new);
+                .orElseThrow(UserNotFound::new);
         userProfile.put("nickname", tempUser.getNickname());
         userProfile.put("email", tempUser.getEmail());
 
@@ -73,7 +73,7 @@ public class UserService {
         Map<String, Object> userWishlists = new HashMap<>();
 
         User tempUser = userRepository.findById(userId)
-                .orElseThrow(IdNotFoundException::new);
+                .orElseThrow(UserNotFound::new);
         List<WishListDto> wishLists = tempUser.getWishLists();
         userWishlists.put("result", wishLists);
 
@@ -88,7 +88,7 @@ public class UserService {
         Map<String, Object> responseJson = new HashMap<>();
 
         User user = userRepository.findById(userId)
-                .orElseThrow(IdNotFoundException::new);
+                .orElseThrow(UserNotFound::new);
         String newNickname = nickname.get("nickname");
 
         // 포함하면 안 되는 내용을 포함하는 경우

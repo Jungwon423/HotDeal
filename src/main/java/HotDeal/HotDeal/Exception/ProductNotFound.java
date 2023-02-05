@@ -5,5 +5,5 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class NotFoundException extends RuntimeException{
+public class ProductNotFound extends RuntimeException{
 }

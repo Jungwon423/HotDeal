@@ -14,8 +14,8 @@ public class Comment {
     private String id;
     private String writerId;
     private String content;
-    private List<String> good;
-    private List<String> bad;
+    private List<String> goodUser;
+    private List<String> badUser;
     private Date timestamp;
     private String productId;
 }

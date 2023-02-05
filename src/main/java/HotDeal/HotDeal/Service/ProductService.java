@@ -43,7 +43,7 @@ public class ProductService {
     public ResponseEntity<Map<String, Object>> getProductDetail(String name) {
         Map<String, Object> responseJson = new HashMap<>();
         Product product = productRepository.findByName(name);
-        validateObject(product);
+        validateNullObject(product);
 
         responseJson.put("result", product);
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
@@ -57,7 +57,7 @@ public class ProductService {
         }
 
         List<Product> productList = productRepository.findByMarketName(marketName);
-        validateList(productList);
+        validateNullEmptyList(productList);
         responseJson.put("result", productList.subList(0, Math.min(productList.size(), 3)));
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
@@ -66,6 +66,7 @@ public class ProductService {
         Map<String, Object> responseJson = new HashMap<>();
 
         List<Product> productList = productRepository.findAll();
+        validateNullEmptyList(productList);
         responseJson.put("result", productList.subList((pageNumber - 1) * 10, Math.min(productList.size(), pageNumber * 10)));
         responseJson.put("totalPage", (productList.size() % 10 == 0) ? productList.size() / 10 : productList.size() / 10 + 1);
         responseJson.put("productCount", productList.size());
@@ -98,13 +99,14 @@ public class ProductService {
 
     public ResponseEntity<Map<String, Object>> getProductsByCategoryAndMarkets(String categoryName, Integer pageNumber, Map<String,Boolean> marketMap) {
         Map<String, Object> responseJson = new HashMap<>();
-        validateObject(marketMap);
+        validateNullObject(marketMap);
         String categoryNameKr = categoryMap.get(categoryName);
         List<Product> newProductList;
         if (categoryName.equals("all"))
             newProductList = getProductListsByMarketCheck("전체", marketMap);
         else
             newProductList = getProductListsByMarketCheck(categoryNameKr, marketMap);
+        validateNullEmptyList(newProductList);
         responseJson.put("result", newProductList.subList((pageNumber - 1) * 10, Math.min(newProductList.size(), pageNumber * 10)));
         responseJson.put("totalPage", (newProductList.size() % 10 == 0) ? newProductList.size() / 10 : newProductList.size() / 10 + 1);
         responseJson.put("productCount", newProductList.size());
@@ -116,7 +118,6 @@ public class ProductService {
         for (String market : marketList) {
             if (marketMap.get(market)){
                 List<Product> productList = productRepository.findByCategoryNameAndMarketName(categoryNameKr, market);
-                validateList(productList);
                 productSet.addAll(productList);
             }
         }
@@ -157,7 +158,7 @@ public class ProductService {
     public ResponseEntity<Map<String, Object>> clickProduct(String productId) {
         Map<String, Object> responseJson = new HashMap<>();
         Product product = productRepository.findById(productId)
-                .orElseThrow(IdNotFoundException::new);
+                .orElseThrow(ProductNotFound::new);
 
         plusCount(product);
         responseJson.put("result", product); // Product 페이지 정보를 가져온다. (link 가져오고 상품디테일)
@@ -166,11 +167,11 @@ public class ProductService {
     public ResponseEntity<Map<String, Object>> clickProduct(String productId, String userId) {
         Map<String, Object> responseJson = new HashMap<>();
         Product product = productRepository.findById(productId)
-                .orElseThrow(IdNotFoundException::new);
+                .orElseThrow(ProductNotFound::new);
         plusCount(product);
 
         User user = userRepository.findById(userId)   //유저에 제품 클릭 정보 전달
-                .orElseThrow(IdNotFoundException::new);
+                .orElseThrow(UserNotFound::new);
         userPlusCount(productId, user);
 
         responseJson.put("result", product); // Product 페이지 정보를 가져온다. (link 가져오고 상품디테일)
@@ -194,7 +195,7 @@ public class ProductService {
     public ResponseEntity<Map<String, Object>> setProductToWishlist(String userId, String productId) {
         Map<String, Object> responseJson = new HashMap<>();
         Product product = productRepository.findById(productId)
-                .orElseThrow(IdNotFoundException::new);
+                .orElseThrow(ProductNotFound::new);
         if (product.getWish()==null){
             product.setWish("unwish");
         }
@@ -214,7 +215,7 @@ public class ProductService {
     }
     public void wish(String userId, Product product) {
         WishListDto wishListDto = WishListDto.from(product);
-        validateList(product.getWishUserList());   //객체의 list값은 초기화 안하면 null값이 참조됨
+        //validateNullList(product.getWishUserList());   //객체의 list값은 초기화 안하면 null값이 참조됨
         if (!product.getWishUserList().contains(userId)){ //제품 객체가 userId 안 갖고있으면
             product.getWishUserList().add(userId);  //제품객체에 userId 저장
         }
@@ -222,8 +223,7 @@ public class ProductService {
         productRepository.save(product);
 
         User user = userRepository.findById(userId)
-                .orElseThrow(NotFoundException::new);
-        validateList(user.getWishLists());
+                .orElseThrow(UserNotFound::new);
         if (!user.getWishLists().contains(wishListDto)){ //유저 객체가 wishList객체 안 갖고있으면
             user.getWishLists().add(wishListDto);  //유저 객체에 wishList객체 저장
         }
@@ -233,15 +233,13 @@ public class ProductService {
     public void unwish(String userId, Product product) {
         product.setWish("unwish");
         User user = userRepository.findById(userId)
-                .orElseThrow(IdNotFoundException::new);
-        validateList(user.getWishLists());
+                .orElseThrow(UserNotFound::new);
         List<WishListDto> wishlists = user.getWishLists();
         wishlists.removeIf(wishlist -> Objects.equals(wishlist.getName(), product.getName()));
 
         user.setWishLists(wishlists);
         userRepository.save(user);
 
-        validateList(product.getWishUserList());
         product.getWishUserList().remove(userId);
         productRepository.save(product);
     }
@@ -249,8 +247,7 @@ public class ProductService {
     public ResponseEntity<Map<String, Object>> getCommentsByProduct(String productId) {
         Map<String, Object> responseJson = new HashMap<>();
         Product product = productRepository.findById(productId)
-                .orElseThrow(NotFoundException::new);
-        validateList(product.getComments());
+                .orElseThrow(ProductNotFound::new);
         responseJson.put("result", product.getComments());
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
@@ -258,7 +255,7 @@ public class ProductService {
     public ResponseEntity<Map<String, Object>> recommendProduct(String userId, String productId) {
         Map<String, Object> responseJson = new HashMap<>();
         Product product = productRepository.findById(productId)
-                .orElseThrow(IdNotFoundException::new);
+                .orElseThrow(ProductNotFound::new);
         if (product.getRecommend()==null){   // 추천인지 비추천인지 없으면 bad 값으로 넣고 추가
             product.setRecommend("bad");
         }
@@ -279,7 +276,7 @@ public class ProductService {
 
     public void recommend(String userId, Product product){
         GoodDto goodProduct = GoodDto.from(product);
-        validateList(product.getGood());
+
         if (!product.getGood().contains(userId)) {
             product.getGood().add(userId); //제품 good에 userId 추가
         }
@@ -287,8 +284,7 @@ public class ProductService {
         productRepository.save(product);
 
         User user = userRepository.findById(userId)
-                .orElseThrow(IdNotFoundException::new);
-        validateList(user.getGoods());
+                .orElseThrow(UserNotFound::new);
 
         List<GoodDto> goods = user.getGoods();
         if (!goods.contains(goodProduct)) {
@@ -300,22 +296,19 @@ public class ProductService {
     public void disrecommend(String userId, Product product){
         product.setRecommend("bad");
         User user = userRepository.findById(userId)
-                .orElseThrow(IdNotFoundException::new);
+                .orElseThrow(UserNotFound::new);
         List<GoodDto> goods = user.getGoods();
-        validateList(user.getGoods());
         goods.removeIf(good -> Objects.equals(good.getName(), product.getName()));
         user.setGoods(goods);
         userRepository.save(user);
 
-        validateList(product.getGood());
         product.getGood().remove(userId);
         productRepository.save(product);
     }
     public ResponseEntity<Map<String, Object>> disrecommendProduct(String userId, String productId){
         Map<String, Object> responseJson = new HashMap<>();
         Product product = productRepository.findById(productId)
-                .orElseThrow(IdNotFoundException::new);
-        validateList(product.getBad());
+                .orElseThrow(ProductNotFound::new);
         if (!product.getBad().contains(userId)) {
             product.getBad().add(userId); //제품 Bad에 userId 추가
         }

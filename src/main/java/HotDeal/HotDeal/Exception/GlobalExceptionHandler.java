@@ -25,20 +25,36 @@ public class GlobalExceptionHandler {
         return new ResponseEntity(new ErrorDto(INTERNAL_SERVER_ERROR.getStatus(), INTERNAL_SERVER_ERROR.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
  */
-    @ExceptionHandler(IdNotFoundException.class)
-    public ResponseEntity<Map<String,Object>> IdNotFoundException() {
+    @ExceptionHandler(ProductNotFound.class)
+    public ResponseEntity<Map<String,Object>> ProductNotFoundException() {
         Map<String, Object> errorMap = new HashMap<>();
-        errorMap.put("errorMessage",ErrorCode.ID_NOT_FOUND.getMessage());
-        HttpStatus httpStatus = HttpStatus.valueOf(ErrorCode.ID_NOT_FOUND.getStatus());
+        errorMap.put("errorMessage",ErrorCode.PRODUCT_NOT_FOUND.getMessage());
+        HttpStatus httpStatus = HttpStatus.valueOf(ErrorCode.PRODUCT_NOT_FOUND.getStatus());
+        return ResponseEntity.status(httpStatus).body(errorMap);
+    }
+    @ExceptionHandler(CategoryNotFound.class)
+    public ResponseEntity<Map<String,Object>> CategoryNotFoundException() {
+        Map<String, Object> errorMap = new HashMap<>();
+        errorMap.put("errorMessage",ErrorCode.CATEGORY_NOT_FOUND.getMessage());
+        HttpStatus httpStatus = HttpStatus.valueOf(ErrorCode.CATEGORY_NOT_FOUND.getStatus());
+        return ResponseEntity.status(httpStatus).body(errorMap);
+    }
+    @ExceptionHandler(UserNotFound.class)
+    public ResponseEntity<Map<String,Object>> UserNotFoundException() {
+        Map<String, Object> errorMap = new HashMap<>();
+        errorMap.put("errorMessage",ErrorCode.USER_NOT_FOUND.getMessage());
+        HttpStatus httpStatus = HttpStatus.valueOf(ErrorCode.USER_NOT_FOUND.getStatus());
+        return ResponseEntity.status(httpStatus).body(errorMap);
+    }
+    @ExceptionHandler(CommentNotFound.class)
+    public ResponseEntity<Map<String,Object>> CommentNotFoundException() {
+        Map<String, Object> errorMap = new HashMap<>();
+        errorMap.put("errorMessage",ErrorCode.COMMENT_NOT_FOUND.getMessage());
+        HttpStatus httpStatus = HttpStatus.valueOf(ErrorCode.COMMENT_NOT_FOUND.getStatus());
         return ResponseEntity.status(httpStatus).body(errorMap);
     }
     @ExceptionHandler(IllegalArgumentException.class)
     public String illegalArgumentExceptionAdvice(IllegalArgumentException e) {
         return "IllegalArgumentException Occurred";
-    }
-
-    @ExceptionHandler(NotFoundException.class)
-    public String NotFoundExceptionAdvice(NotFoundException e) {
-        return "NotFoundArgumentException Occurred";
     }
 }

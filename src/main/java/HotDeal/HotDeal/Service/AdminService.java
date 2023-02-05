@@ -2,9 +2,8 @@ package HotDeal.HotDeal.Service;
 
 import HotDeal.HotDeal.Domain.User;
 import HotDeal.HotDeal.Dto.UserDetailDto;
-import HotDeal.HotDeal.Exception.IdNotFoundException;
+import HotDeal.HotDeal.Exception.UserNotFound;
 import HotDeal.HotDeal.Repository.UserRepository;
-import feign.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +19,7 @@ public class AdminService {
     public ResponseEntity<Map<String, Object>> handleAdminUserCheckRequest(String userId) {
         Map<String, Object> responseJson = new HashMap<>();
         User user = userRepository.findById(userId)
-                .orElseThrow(IdNotFoundException::new);
+                .orElseThrow(UserNotFound::new);
         boolean isAdminUser = checkAdminUser(user);
 
         responseJson.put("isAdminUser", isAdminUser);
@@ -37,7 +36,7 @@ public class AdminService {
     public ResponseEntity<Map<String, Object>> getUserDetail(String userId){
         Map<String, Object> responseJson = new HashMap<>();
         User user = userRepository.findById(userId)
-                .orElseThrow(IdNotFoundException::new);
+                .orElseThrow(UserNotFound::new);
         responseJson.put("categoryCount",user.getCategoryCount());
         responseJson.put("productCount", user.getProductCount());
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
