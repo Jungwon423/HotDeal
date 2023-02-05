@@ -4,7 +4,7 @@ import HotDeal.HotDeal.Domain.Category;
 import HotDeal.HotDeal.Domain.User;
 import HotDeal.HotDeal.Exception.CustomException;
 import HotDeal.HotDeal.Exception.ErrorCode;
-import HotDeal.HotDeal.Exception.IdNotFoundException;
+import HotDeal.HotDeal.Exception.UserNotFound;
 import HotDeal.HotDeal.Repository.CategoryRepository;
 import HotDeal.HotDeal.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -69,7 +69,7 @@ public class CategoryService {
         plusCount(category);
 
         User user = userRepository.findById(userId)   //유저에 카테고리 클릭 정보 전달
-                .orElseThrow(IdNotFoundException::new);
+                .orElseThrow(UserNotFound::new);
         userPlusCount(categoryId, user);
 
         responseJson.put("result", category); //카테고리 객체

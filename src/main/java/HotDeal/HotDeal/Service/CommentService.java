@@ -3,7 +3,9 @@ package HotDeal.HotDeal.Service;
 import HotDeal.HotDeal.Domain.Comment;
 import HotDeal.HotDeal.Domain.Product;
 import HotDeal.HotDeal.Domain.User;
-import HotDeal.HotDeal.Exception.IdNotFoundException;
+import HotDeal.HotDeal.Exception.CommentNotFound;
+import HotDeal.HotDeal.Exception.ProductNotFound;
+import HotDeal.HotDeal.Exception.UserNotFound;
 import HotDeal.HotDeal.Repository.CommentRepository;
 import HotDeal.HotDeal.Repository.ProductRepository;
 import HotDeal.HotDeal.Repository.UserRepository;
@@ -27,7 +29,7 @@ public class CommentService {
     public ResponseEntity<Map<String, Object>> writeCommentToProduct(String userId, String productId, Comment comment) {
         Map<String, Object> responseJson = new HashMap<>();
         User user = userRepository.findById(userId)
-                        .orElseThrow(IdNotFoundException::new);
+                        .orElseThrow(UserNotFound::new);
         comment.setWriterId(userId);
         comment.setProductId(productId);
         commentRepository.save(comment);
@@ -39,7 +41,7 @@ public class CommentService {
         userRepository.save(user);
 
         Product product = productRepository.findById(productId)
-                .orElseThrow(IdNotFoundException::new);
+                .orElseThrow(ProductNotFound::new);
         //List<Comment> comments = product.getComments();
         product.setComments(comments);
         productRepository.save(product);
@@ -54,9 +56,9 @@ public class CommentService {
     public ResponseEntity<Map<String, Object>> editCommentToProduct(String userId, String commentId, Comment editComment) {
         Map<String, Object> responseJson = new HashMap<>();
         User user = userRepository.findById(userId)
-                .orElseThrow(IdNotFoundException::new);
+                .orElseThrow(UserNotFound::new);
         Comment beforeComment = commentRepository.findById(commentId)
-                .orElseThrow(IdNotFoundException::new);
+                .orElseThrow(CommentNotFound::new);
         editComment.setWriterId(userId);
         editComment.setProductId(beforeComment.getProductId());
         commentRepository.save(editComment);
@@ -69,7 +71,7 @@ public class CommentService {
         userRepository.save(user);
 
         Product product = productRepository.findById(beforeComment.getProductId())
-                .orElseThrow(IdNotFoundException::new);
+                .orElseThrow(ProductNotFound::new);
         List<Comment> productComments = product.getComments();
         productComments.remove(beforeComment);
         productComments.add(editComment);
@@ -88,15 +90,15 @@ public class CommentService {
         Map<String, Object> responseJson = new HashMap<>();
 
         Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(IdNotFoundException::new);
+                .orElseThrow(CommentNotFound::new);
 
         User user = userRepository.findById(userId)
-                .orElseThrow(IdNotFoundException::new);
+                .orElseThrow(UserNotFound::new);
         user.getComments().remove(comment);
         userRepository.save(user);
 
         Product product = productRepository.findById(comment.getProductId())
-                .orElseThrow(IdNotFoundException::new);
+                .orElseThrow(ProductNotFound::new);
         product.getComments().remove(comment);
         productRepository.save(product);
         commentRepository.deleteById(commentId);  //삭제
@@ -111,28 +113,28 @@ public class CommentService {
     public ResponseEntity<Map<String, Object>> recommendComment(String userId, String commentId) {
         Map<String, Object> responseJson = new HashMap<>();
         Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(IdNotFoundException::new);
-        List<String> comments = comment.getGood();
+                .orElseThrow(CommentNotFound::new);
+        List<String> comments = comment.getGoodUser();
         if (comments.contains(userId)) {   //이미 포함하고 있으면 삭제
             comments.remove(userId);
         } else {    //아니면 추가
             comments.add(userId);
         }
-        comment.setGood(comments);
+        comment.setGoodUser(comments);
         commentRepository.save(comment);
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
     public ResponseEntity<Map<String, Object>> disrecommendComment(String userId, String commentId) {
         Map<String, Object> responseJson = new HashMap<>();
         Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(IdNotFoundException::new);
-        List<String> comments = comment.getBad();
+                .orElseThrow(CommentNotFound::new);
+        List<String> comments = comment.getBadUser();
         if (comments.contains(userId)) {   //이미 포함하고 있으면 삭제
             comments.remove(userId);
         } else {    //아니면 추가
             comments.add(userId);
         }
-        comment.setBad(comments);
+        comment.setBadUser(comments);
         commentRepository.save(comment);
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
