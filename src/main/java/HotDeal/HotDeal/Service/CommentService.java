@@ -14,6 +14,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,12 +30,15 @@ public class CommentService {
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
 
-    public ResponseEntity<Map<String, Object>> writeCommentToProduct(String userId, String productId, Comment comment) {
+    public ResponseEntity<Map<String, Object>> writeCommentToProduct(String userId, String productId, String commentContent) {
         Map<String, Object> responseJson = new HashMap<>();
         User user = userRepository.findById(userId)
                         .orElseThrow(UserNotFound::new);
+        Comment comment = new Comment();
+        comment.setTimestamp(getTimeNow());
         comment.setWriterId(userId);
         comment.setProductId(productId);
+        comment.setContent(commentContent);
         commentRepository.save(comment);
 
         //List<Comment> comments = user.getComments();
@@ -53,14 +60,17 @@ public class CommentService {
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
 
-    public ResponseEntity<Map<String, Object>> editCommentToProduct(String userId, String commentId, Comment editComment) {
+    public ResponseEntity<Map<String, Object>> editCommentToProduct(String userId, String commentId, String editCommentContent) {
         Map<String, Object> responseJson = new HashMap<>();
         User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFound::new);
         Comment beforeComment = commentRepository.findById(commentId)
                 .orElseThrow(CommentNotFound::new);
+        Comment editComment = new Comment();
+        editComment.setTimestamp(getTimeNow());
         editComment.setWriterId(userId);
         editComment.setProductId(beforeComment.getProductId());
+        editComment.setContent(editCommentContent);
         commentRepository.save(editComment);
         //원래 댓글 삭제하고 새로 저장?
 
@@ -137,5 +147,11 @@ public class CommentService {
         comment.setBadUser(comments);
         commentRepository.save(comment);
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
+    }
+    public String getTimeNow(){
+        LocalDateTime now = LocalDateTime.now();
+        // 포맷팅
+        String formatedNow = now.format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm"));
+        return formatedNow;
     }
 }

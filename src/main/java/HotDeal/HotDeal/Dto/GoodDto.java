@@ -26,7 +26,6 @@ public class GoodDto {
     private int badCount;
     private int rating;
     private int commentCount;
-    private String recommend;
 
     public static GoodDto from(Product product) {
         return GoodDto.builder()
@@ -40,7 +39,6 @@ public class GoodDto {
                 .goodCount(product.getGood().size())
                 .badCount(product.getBad().size())
                 .commentCount(product.getComments().size())
-                .recommend(product.getRecommend())
                 .build();
     }
 }

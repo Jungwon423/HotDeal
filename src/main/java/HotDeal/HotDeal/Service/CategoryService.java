@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
 
-import static HotDeal.HotDeal.Exception.Validator.validateProductByCategoryId;
+import static HotDeal.HotDeal.Exception.Validator.validateCategoryId;
 
 @Service
 @RequiredArgsConstructor
@@ -48,7 +48,7 @@ public class CategoryService {
         Map<String, Object> responseJson = new HashMap<>();
         Category category;
         boolean check = categoryRepository.findById(translatedCategory).isEmpty();
-        validateProductByCategoryId(check);
+        validateCategoryId(check);
 
         category = categoryRepository.findById(translatedCategory).get();
         plusCount(category);
@@ -63,7 +63,7 @@ public class CategoryService {
         Map<String, Object> responseJson = new HashMap<>();
         Category category;
         boolean check = categoryRepository.findById(translatedCategory).isEmpty();
-        validateProductByCategoryId(check);
+        validateCategoryId(check);
 
         category = categoryRepository.findById(translatedCategory).get();
         plusCount(category);
