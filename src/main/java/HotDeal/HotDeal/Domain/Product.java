@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Document(collection = "product")
+@Document(collection = "product2")
 public class Product {
 
     @Id
