@@ -18,8 +18,7 @@ public class CommentController {
 
     @PostMapping("{productId}/write")
     public ResponseEntity<Map<String, Object>> writeCommentToProduct(HttpServletRequest request, @PathVariable("productId") String productId, @RequestBody Map<String, String> comment) {
-        //String userId = (String) request.getAttribute("userId");
-        String userId = "test";
+        String userId = (String) request.getAttribute("userId");
         Validator.checkIfLogin(userId);
         return commentService.writeCommentToProduct(userId, productId, comment.get("comment"));
     }
@@ -39,8 +38,7 @@ public class CommentController {
     }
     @PostMapping("{commentId}/recommend")
     public ResponseEntity<Map<String, Object>> recommendComment(HttpServletRequest request,@PathVariable("commentId") String commentId) {
-        //String userId = (String) request.getAttribute("userId");
-        String userId = "test";
+        String userId = (String) request.getAttribute("userId");
         Validator.checkIfLogin(userId);
         return commentService.recommendComment(userId,  commentId);
     }

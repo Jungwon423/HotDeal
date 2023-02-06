@@ -124,28 +124,42 @@ public class CommentService {
         Map<String, Object> responseJson = new HashMap<>();
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(CommentNotFound::new);
-        List<String> comments = comment.getGoodUser();
-        if (comments.contains(userId)) {   //이미 포함하고 있으면 삭제
-            comments.remove(userId);
-        } else {    //아니면 추가
-            comments.add(userId);
+        List<String> commentUsers = comment.getGoodUser();
+
+        boolean checkIfRecommend = commentUsers.contains(userId);
+        if (!checkIfRecommend){
+            commentUsers.add(userId);
+            responseJson.put("message","댓글 추천한 유저아이디 추가함");
         }
-        comment.setGoodUser(comments);
+        else{
+            commentUsers.remove(userId);
+            responseJson.put("message","댓글 추천한 유저아이디 삭제함");
+        }
+        comment.setGoodUser(commentUsers);
         commentRepository.save(comment);
+        responseJson.put("users",commentUsers);
+        responseJson.put("recommendCheck",!checkIfRecommend);
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
     public ResponseEntity<Map<String, Object>> disrecommendComment(String userId, String commentId) {
         Map<String, Object> responseJson = new HashMap<>();
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(CommentNotFound::new);
-        List<String> comments = comment.getBadUser();
-        if (comments.contains(userId)) {   //이미 포함하고 있으면 삭제
-            comments.remove(userId);
-        } else {    //아니면 추가
-            comments.add(userId);
+        List<String> commentUsers = comment.getBadUser();
+
+        boolean checkIfDisrecommend = commentUsers.contains(userId);
+        if (!checkIfDisrecommend){
+            commentUsers.add(userId);
+            responseJson.put("message","댓글 추천한 유저아이디 추가함");
         }
-        comment.setBadUser(comments);
+        else{
+            commentUsers.remove(userId);
+            responseJson.put("message","댓글 추천한 유저아이디 삭제함");
+        }
+        comment.setBadUser(commentUsers);
         commentRepository.save(comment);
+        responseJson.put("users",commentUsers);
+        responseJson.put("disrecommendCheck",!checkIfDisrecommend);
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
     public String getTimeNow(){
