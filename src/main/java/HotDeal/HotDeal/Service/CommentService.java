@@ -150,11 +150,11 @@ public class CommentService {
         boolean checkIfDisrecommend = commentUsers.contains(userId);
         if (!checkIfDisrecommend){
             commentUsers.add(userId);
-            responseJson.put("message","댓글 추천한 유저아이디 추가함");
+            responseJson.put("message","댓글 비추한 유저아이디 추가함");
         }
         else{
             commentUsers.remove(userId);
-            responseJson.put("message","댓글 추천한 유저아이디 삭제함");
+            responseJson.put("message","댓글 비추한 유저아이디 삭제함");
         }
         comment.setBadUser(commentUsers);
         commentRepository.save(comment);
