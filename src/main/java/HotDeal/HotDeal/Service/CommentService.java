@@ -41,8 +41,7 @@ public class CommentService {
         comment.setContent(commentContent);
         commentRepository.save(comment);
 
-        //List<Comment> comments = user.getComments();
-        List<Comment> comments = new ArrayList<>();
+        List<Comment> comments = user.getComments();
         comments.add(comment);
         user.setComments(comments);
         userRepository.save(user);
