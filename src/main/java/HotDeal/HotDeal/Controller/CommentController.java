@@ -17,18 +17,18 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("{productId}/write")
-    public ResponseEntity<Map<String, Object>> writeCommentToProduct(HttpServletRequest request, @PathVariable("productId") String productId, @RequestBody Comment comment) {
-        String userId = (String) request.getAttribute("userId");
-        //String userId = "test";
+    public ResponseEntity<Map<String, Object>> writeCommentToProduct(HttpServletRequest request, @PathVariable("productId") String productId, @RequestBody Map<String, String> comment) {
+        //String userId = (String) request.getAttribute("userId");
+        String userId = "test";
         Validator.checkIfLogin(userId);
-        return commentService.writeCommentToProduct(userId, productId, comment);
+        return commentService.writeCommentToProduct(userId, productId, comment.get("comment"));
     }
 
     @PutMapping("{commentId}/edit")
-    public ResponseEntity<Map<String, Object>> editCommentToProduct(HttpServletRequest request, @PathVariable("commentId") String commentId, @RequestBody Comment comment) {
+    public ResponseEntity<Map<String, Object>> editCommentToProduct(HttpServletRequest request, @PathVariable("commentId") String commentId, @RequestBody  Map<String, String> comment) {
         String userId = (String) request.getAttribute("userId");
         Validator.checkIfLogin(userId);
-        return commentService.editCommentToProduct(userId, commentId, comment);
+        return commentService.editCommentToProduct(userId, commentId, comment.get("comment"));
     }
 
     @DeleteMapping("{commentId}/delete")
@@ -39,7 +39,8 @@ public class CommentController {
     }
     @PostMapping("{commentId}/recommend")
     public ResponseEntity<Map<String, Object>> recommendComment(HttpServletRequest request,@PathVariable("commentId") String commentId) {
-        String userId = (String) request.getAttribute("userId");
+        //String userId = (String) request.getAttribute("userId");
+        String userId = "test";
         Validator.checkIfLogin(userId);
         return commentService.recommendComment(userId,  commentId);
     }

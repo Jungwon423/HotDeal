@@ -57,7 +57,7 @@ public class ProductService {
         }
 
         List<Product> productList = productRepository.findByMarketName(marketName);
-        validateNullEmptyList(productList);
+        //validateNullEmptyList(productList);
         responseJson.put("result", productList.subList(0, Math.min(productList.size(), 3)));
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
@@ -66,7 +66,7 @@ public class ProductService {
         Map<String, Object> responseJson = new HashMap<>();
 
         List<Product> productList = productRepository.findAll();
-        validateNullEmptyList(productList);
+        //validateNullEmptyList(productList);
         responseJson.put("result", productList.subList((pageNumber - 1) * 10, Math.min(productList.size(), pageNumber * 10)));
         responseJson.put("totalPage", (productList.size() % 10 == 0) ? productList.size() / 10 : productList.size() / 10 + 1);
         responseJson.put("productCount", productList.size());
@@ -106,7 +106,7 @@ public class ProductService {
             newProductList = getProductListsByMarketCheck("전체", marketMap);
         else
             newProductList = getProductListsByMarketCheck(categoryNameKr, marketMap);
-        validateNullEmptyList(newProductList);
+        //validateNullEmptyList(newProductList);
         responseJson.put("result", newProductList.subList((pageNumber - 1) * 10, Math.min(newProductList.size(), pageNumber * 10)));
         responseJson.put("totalPage", (newProductList.size() % 10 == 0) ? newProductList.size() / 10 : newProductList.size() / 10 + 1);
         responseJson.put("productCount", newProductList.size());
@@ -196,18 +196,19 @@ public class ProductService {
         Map<String, Object> responseJson = new HashMap<>();
         Product product = productRepository.findById(productId)
                 .orElseThrow(ProductNotFound::new);
-        if (product.getWish()==null){
-            product.setWish("unwish");
-        }
-
-        if (Objects.equals(product.getWish(), "unwish")){
+        boolean checkIfWish = product.getWishUserList().contains(userId);
+        if (!checkIfWish){
             wish(userId,product);
+            responseJson.put("users",product.getWishUserList());
+            responseJson.put("checked", true);
             responseJson.put("message", "찜목록이 user 객체에 저장되었습니다.");
             responseJson.put("message2", "userID가 product 객체에 저장되었습니다.");
             return ResponseEntity.status(HttpStatus.OK).body(responseJson);
         }
         else{                  //추가되어 있으므로 삭제 진행
             unwish(userId,product);
+            responseJson.put("users",product.getWishUserList());
+            responseJson.put("checked", false);
             responseJson.put("message","유저정보에서 찜목록이 삭제되었습니다");
             responseJson.put("message2","제품정보에서 찜목록이 삭제되었습니다");
             return ResponseEntity.status(HttpStatus.OK).body(responseJson);
@@ -219,7 +220,6 @@ public class ProductService {
         if (!product.getWishUserList().contains(userId)){ //제품 객체가 userId 안 갖고있으면
             product.getWishUserList().add(userId);  //제품객체에 userId 저장
         }
-        product.setWish("wish");
         productRepository.save(product);
 
         User user = userRepository.findById(userId)
@@ -231,7 +231,6 @@ public class ProductService {
     }
 
     public void unwish(String userId, Product product) {
-        product.setWish("unwish");
         User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFound::new);
         List<WishListDto> wishlists = user.getWishLists();
@@ -256,22 +255,20 @@ public class ProductService {
         Map<String, Object> responseJson = new HashMap<>();
         Product product = productRepository.findById(productId)
                 .orElseThrow(ProductNotFound::new);
-        if (product.getRecommend()==null){   // 추천인지 비추천인지 없으면 bad 값으로 넣고 추가
-            product.setRecommend("bad");
-        }
-
-        if (Objects.equals(product.getRecommend(), "bad")) {
+        boolean checkIfGood = product.getGood().contains(userId);
+        if (!checkIfGood) {
             recommend(userId,product);
             responseJson.put("message", "추천 객체가 user 객체에 저장되었습니다.");
             responseJson.put("message2", "추천 유저 ID가 product 객체에 저장되었습니다.");
-            return ResponseEntity.status(HttpStatus.OK).body(responseJson);
         }
         else{                    //good일 때는 추가되어 있으므로 삭제 진행
             disrecommend(userId,product);
             responseJson.put("message", "유저정보에서 추천목록 삭제되었습니다");
             responseJson.put("message2", "제품정보에서 추천목록이 삭제되었습니다");
-            return ResponseEntity.status(HttpStatus.OK).body(responseJson);
         }
+        responseJson.put("users",product.getGood());
+        responseJson.put("recommendChecked", !checkIfGood);
+        return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
 
     public void recommend(String userId, Product product){
@@ -280,7 +277,6 @@ public class ProductService {
         if (!product.getGood().contains(userId)) {
             product.getGood().add(userId); //제품 good에 userId 추가
         }
-        product.setRecommend("good");
         productRepository.save(product);
 
         User user = userRepository.findById(userId)
@@ -294,7 +290,6 @@ public class ProductService {
     }
 
     public void disrecommend(String userId, Product product){
-        product.setRecommend("bad");
         User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFound::new);
         List<GoodDto> goods = user.getGoods();
@@ -309,10 +304,17 @@ public class ProductService {
         Map<String, Object> responseJson = new HashMap<>();
         Product product = productRepository.findById(productId)
                 .orElseThrow(ProductNotFound::new);
-        if (!product.getBad().contains(userId)) {
+        boolean checkIfBad = product.getBad().contains(userId);
+        if (!checkIfBad) {
             product.getBad().add(userId); //제품 Bad에 userId 추가
+            responseJson.put("message","유저 id를 제품 비추천목록에 추가");
+        }else {
+            product.getBad().remove(userId);
+            responseJson.put("message","유저 id를 제품 비추천목록에서 삭제");
         }
-        responseJson.put("message","유저 id를 제품 비추천목록에 추가");
+        productRepository.save(product);
+        responseJson.put("users",product.getBad());
+        responseJson.put("disrecommendChecked",!checkIfBad);
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
 }

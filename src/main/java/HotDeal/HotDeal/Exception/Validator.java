@@ -17,21 +17,16 @@ public class Validator {
         }
     }
 
-    public static void validateProductByCategoryId(boolean check){
+    public static void validateCategoryId(boolean check){
         if(check){
             throw new CustomException(ErrorCode.CATEGORY_NOT_FOUND);
         }
     }
-
-    public static void validateNullList(List<?> exList) {
-        if (exList == null) {
-            throw new CustomException(ErrorCode.LIST_IS_NULL);
-        }
-    }
-    public static void validateEmptyList(List<?> exList) {
+    public static String validateEmptyList(List<?> exList) {
         if (exList.isEmpty()) {
-            throw new CustomException(ErrorCode.LIST_IS_EMPTY);
+            return ErrorCode.LIST_IS_EMPTY.getMessage();
         }
+        else return "";
     }
     public static void validateNullEmptyList(List<?> exList) {
         if (exList == null) {
