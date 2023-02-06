@@ -46,7 +46,8 @@ public class UserService {
         responseJson.put("token", jwtToken);
         String resultMessage = String.format("User with id '%s' joined with default login\n", savedUser.getId());
         responseJson.put("resultMessage", resultMessage);
-        responseJson.put("object", savedUser);
+        //responseJson.put("object", savedUser);
+        responseJson.put("userid",savedUser.getId());
 
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
