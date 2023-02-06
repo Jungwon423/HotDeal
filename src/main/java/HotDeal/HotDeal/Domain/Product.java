@@ -20,10 +20,9 @@ public class Product {
     @PositiveOrZero
     private Double price;
     private String currency;
-    @PositiveOrZero
-    private Double discountRate;
     private String imageUrl;
     private String categoryName;
+    private String categoryName2;
     private String marketName;
     private String link;
     private Double tax;
