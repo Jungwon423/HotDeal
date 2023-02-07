@@ -22,6 +22,8 @@ public class ProductController {
 
     @PostMapping("click")
     public ResponseEntity<Map<String, Object>> clickProduct(HttpServletRequest request, @RequestParam String productId) {
+
+        System.out.println("!"+productId+"!");
         String userId = (String) request.getAttribute("userId");
         if (userId==null){
             return productService.clickProduct(productId);
@@ -30,6 +32,7 @@ public class ProductController {
 
     @GetMapping("detail")
     public ResponseEntity<Map<String, Object>> getProductDetail(@RequestParam String name) {
+        System.out.println("!"+name+"!");
         return productService.getProductDetail(name);
     }
 
