@@ -20,8 +20,8 @@ public class ProductController {
 
     private final ProductService productService;
 
-    @PostMapping("{productId}/click")
-    public ResponseEntity<Map<String, Object>> clickProduct(HttpServletRequest request, @PathVariable String productId) {
+    @PostMapping("click")
+    public ResponseEntity<Map<String, Object>> clickProduct(HttpServletRequest request, @RequestParam String productId) {
         String userId = (String) request.getAttribute("userId");
         if (userId==null){
             return productService.clickProduct(productId);
@@ -33,27 +33,27 @@ public class ProductController {
         return productService.getProductDetail(name);
     }
 
-    @PostMapping("{productId}/wishlist")   //테스트용 : Amazon Essentials 남아 및 유아용 방수 스노우 턱받이
-    public ResponseEntity<Map<String, Object>> setProductToWishlist(HttpServletRequest request, @PathVariable String productId) {
+    @PostMapping("wishlist")   //테스트용 : Amazon Essentials 남아 및 유아용 방수 스노우 턱받이
+    public ResponseEntity<Map<String, Object>> setProductToWishlist(HttpServletRequest request, @RequestParam String productId) {
         String userId = (String) request.getAttribute("userId");
         Validator.checkIfLogin(userId);
         return productService.setProductToWishlist(userId, productId);
     }
 
-    @GetMapping("{productId}/comments")
-    public ResponseEntity<Map<String, Object>> getCommentsByProduct(@PathVariable("productId") String productId) {
+    @GetMapping("comments")
+    public ResponseEntity<Map<String, Object>> getCommentsByProduct(@RequestParam String productId) {
         return productService.getCommentsByProduct(productId);
     }
 
-    @PostMapping("{productId}/recommend")
-    public ResponseEntity<Map<String, Object>> recommendProduct(HttpServletRequest request, @PathVariable String productId) {
+    @PostMapping("recommend")
+    public ResponseEntity<Map<String, Object>> recommendProduct(HttpServletRequest request, @RequestParam String productId) {
         String userId = (String) request.getAttribute("userId");
         Validator.checkIfLogin(userId);
         return productService.recommendProduct(userId, productId);
     }
 
-    @PostMapping("{productId}/disrecommend")
-    public ResponseEntity<Map<String, Object>> disrecommendProduct(HttpServletRequest request, @PathVariable String productId) {
+    @PostMapping("disrecommend")
+    public ResponseEntity<Map<String, Object>> disrecommendProduct(HttpServletRequest request, @RequestParam String productId) {
         String userId = (String) request.getAttribute("userId");
         Validator.checkIfLogin(userId);
         return productService.disrecommendProduct(userId, productId);
