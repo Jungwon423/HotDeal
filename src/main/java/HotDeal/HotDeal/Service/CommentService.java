@@ -48,8 +48,9 @@ public class CommentService {
 
         Product product = productRepository.findById(productId)
                 .orElseThrow(ProductNotFound::new);
-        //List<Comment> comments = product.getComments();
-        product.setComments(comments);
+        List<Comment> productComments = product.getComments();
+        productComments.add(comment);
+        product.setComments(productComments);
         productRepository.save(product);
 
         responseJson.put("message","댓글이 댓글 컬렉션에 저장되었습니다");

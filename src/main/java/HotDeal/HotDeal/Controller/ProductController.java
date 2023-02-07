@@ -22,8 +22,7 @@ public class ProductController {
 
     @PostMapping("{productId}/click")
     public ResponseEntity<Map<String, Object>> clickProduct(HttpServletRequest request, @PathVariable String productId) {
-        //String userId = (String) request.getAttribute("userId");
-        String userId = "test";
+        String userId = (String) request.getAttribute("userId");
         if (userId==null){
             return productService.clickProduct(productId);
         }else return productService.clickProduct(productId, userId);

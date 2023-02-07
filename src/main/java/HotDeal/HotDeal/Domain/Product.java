@@ -15,7 +15,6 @@ import java.util.List;
 public class Product {
 
     @Id
-    @Size(min = 2, max = 20, message = "길이는 2~20로")
     private String name;
     @PositiveOrZero
     private Double price;
