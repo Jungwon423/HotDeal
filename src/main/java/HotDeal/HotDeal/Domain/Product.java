@@ -31,7 +31,7 @@ public class Product {
     private Double naverPrice;
     private List<String> good = new ArrayList<>();   //리스트의 경우 선언 안해주면 null값이 참조됨.
     private List<String> bad = new ArrayList<>();
-    private int rating;
+    private Double rating;
     private List<String> wishUserList = new ArrayList<>();
     private List<Comment> comments = new ArrayList<>();
     private List<String> subImageUrl = new ArrayList<>();

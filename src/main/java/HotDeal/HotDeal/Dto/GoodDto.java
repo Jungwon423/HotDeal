@@ -24,7 +24,7 @@ public class GoodDto {
     private Double naverPrice;
     private int goodCount;
     private int badCount;
-    private int rating;
+    private Double rating;
     private int commentCount;
 
     public static GoodDto from(Product product) {

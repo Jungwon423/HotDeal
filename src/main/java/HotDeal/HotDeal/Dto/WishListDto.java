@@ -21,7 +21,7 @@ public class WishListDto {
     private String marketName;
     private int clickCount;
     private Double naverPrice;
-    private int rating;
+    private Double rating;
     private int commentCount;
 
     public static WishListDto from(Product product) {
