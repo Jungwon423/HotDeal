@@ -52,7 +52,7 @@ public class ProductController {
         Validator.checkIfLogin(userId);
         return productService.recommendProduct(userId, productId);
     }
-
+//
     @PostMapping("disrecommend")
     public ResponseEntity<Map<String, Object>> disrecommendProduct(HttpServletRequest request, @RequestParam String productId) {
         String userId = (String) request.getAttribute("userId");
