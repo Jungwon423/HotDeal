@@ -16,8 +16,8 @@ import java.util.Map;
 public class CommentController {
     private final CommentService commentService;
 
-    @PostMapping("{productId}/write")
-    public ResponseEntity<Map<String, Object>> writeCommentToProduct(HttpServletRequest request, @PathVariable("productId") String productId, @RequestBody Map<String, String> comment) {
+    @PostMapping("write")
+    public ResponseEntity<Map<String, Object>> writeCommentToProduct(HttpServletRequest request, @RequestParam String productId, @RequestBody Map<String, String> comment) {
         String userId = (String) request.getAttribute("userId");
         Validator.checkIfLogin(userId);
         return commentService.writeCommentToProduct(userId, productId, comment.get("comment"));

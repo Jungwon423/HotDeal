@@ -8,6 +8,7 @@ import HotDeal.HotDeal.Exception.*;
 import HotDeal.HotDeal.Repository.ProductRepository;
 import HotDeal.HotDeal.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.junit.After;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -255,6 +256,7 @@ public class ProductService {
         Map<String, Object> responseJson = new HashMap<>();
         Product product = productRepository.findById(productId)
                 .orElseThrow(ProductNotFound::new);
+        product.setName(encoding(product.getName()));
         boolean checkIfGood = product.getGood().contains(userId);
         if (!checkIfGood) {
             recommend(userId,product);
@@ -268,9 +270,16 @@ public class ProductService {
         }
         responseJson.put("users",product.getGood());
         responseJson.put("recommendChecked", !checkIfGood);
+        responseJson.put("product",product);
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
 
+    public String encoding(String beforeEncode){
+        String AfterEncode;
+        AfterEncode = beforeEncode.replaceAll("\\.","%2E");
+        AfterEncode = AfterEncode.replaceAll("/","%2E");
+        return AfterEncode;
+    }
     public void recommend(String userId, Product product){
         GoodDto goodProduct = GoodDto.from(product);
 
