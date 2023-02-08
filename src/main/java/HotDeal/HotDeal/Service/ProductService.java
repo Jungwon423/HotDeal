@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.regex.Pattern;
 
 import static HotDeal.HotDeal.Exception.Validator.*;
 
@@ -324,6 +325,31 @@ public class ProductService {
         productRepository.save(product);
         responseJson.put("users",product.getBad());
         responseJson.put("disrecommendChecked",!checkIfBad);
+        return ResponseEntity.status(HttpStatus.OK).body(responseJson);
+    }
+
+    public ResponseEntity<Map<String, Object>> searchProduct(String keyword){
+        Map<String, Object> responseJson = new HashMap<>();
+        List<Product> products1= productRepository.findByCategoryNameContaining(keyword);
+        List<Product> products2 = productRepository.findByCategoryName2Containing(keyword);
+        List<Product> products3= productRepository.findByNameContaining(keyword);
+        Set<Product> productSet = new HashSet<>(products1);
+        productSet.addAll(products2);
+        productSet.addAll(products3);
+
+        if(Pattern.matches("^[a-zA-Z0-9]*$", keyword)){    //영숫자
+            TranslateService translateService = new TranslateService();
+            String translatedKeyword = translateService.translate(keyword);
+            List<Product> products4= productRepository.findByCategoryNameContaining(translatedKeyword);
+            List<Product> products5 = productRepository.findByCategoryName2Containing(translatedKeyword);
+            List<Product> products6= productRepository.findByNameContaining(translatedKeyword);
+            productSet.addAll(products4);
+            productSet.addAll(products5);
+            productSet.addAll(products6);
+        }
+        List<Product> totalProduct = new ArrayList<>(productSet);
+        responseJson.put("result",totalProduct);
+        responseJson.put("productCount",productSet.size());
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
 }

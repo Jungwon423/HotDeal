@@ -26,7 +26,7 @@ public class CategoryService {
 
     private final HashMap<String, String> categoryMap = new HashMap<>() {
         {
-            put("all", "홈");
+            put("all", "전체");
             put("life_health", "생활/건강");
             put("duty-free", "면세점");
             put("travel_culture", "여행/문화");
