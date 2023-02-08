@@ -48,6 +48,7 @@ public class UserService {
         responseJson.put("resultMessage", resultMessage);
         //responseJson.put("object", savedUser);
         responseJson.put("userid",savedUser.getId());
+        System.out.println(jwtToken);
 
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }

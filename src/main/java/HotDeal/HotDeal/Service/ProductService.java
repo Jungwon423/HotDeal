@@ -8,13 +8,13 @@ import HotDeal.HotDeal.Exception.*;
 import HotDeal.HotDeal.Repository.ProductRepository;
 import HotDeal.HotDeal.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.junit.After;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static HotDeal.HotDeal.Exception.Validator.*;
 
@@ -54,11 +54,12 @@ public class ProductService {
     public ResponseEntity<Map<String, Object>> getTop3ProductsByMarketName(String marketName) {
         Map<String, Object> responseJson = new HashMap<>();
         if (marketName.equals("all")) {
-            responseJson.put("result", productRepository.findAll().subList(0, 3));
+            List<Product> Top3Products = sortProduct(productRepository.findAll()).subList(0,3);
+            responseJson.put("result", Top3Products);
             return ResponseEntity.status(HttpStatus.OK).body(responseJson);
         }
 
-        List<Product> productList = productRepository.findByMarketName(marketName);
+        List<Product> productList = sortProduct(productRepository.findByMarketName(marketName));
         //validateNullEmptyList(productList);
         responseJson.put("result", productList.subList(0, Math.min(productList.size(), 3)));
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
@@ -67,7 +68,7 @@ public class ProductService {
     public ResponseEntity<Map<String, Object>> getAllProducts(Integer pageNumber) { // 모두 all
         Map<String, Object> responseJson = new HashMap<>();
 
-        List<Product> productList = productRepository.findAll();
+        List<Product> productList = sortProduct(productRepository.findAll());
         //validateNullEmptyList(productList);
         responseJson.put("result", productList.subList((pageNumber - 1) * 10, Math.min(productList.size(), pageNumber * 10)));
         responseJson.put("totalPage", (productList.size() % 10 == 0) ? productList.size() / 10 : productList.size() / 10 + 1);
@@ -85,7 +86,7 @@ public class ProductService {
             if (marketName.equals("all")) {
                 return getProductsByCategoryName(categoryNameKr, pageNumber);
             } else {
-                List<Product> productList = productRepository.findByCategoryNameAndMarketName(categoryNameKr, marketName);
+                List<Product> productList = sortProduct(productRepository.findByCategoryNameAndMarketName(categoryNameKr, marketName));
                 if (productList == null) {
                     responseJson.put("result", "CategoryName = " + categoryNameKr + " 와 MarketName = " + marketName + "를 가지는 product가 없습니다");
                     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseJson);
@@ -105,9 +106,9 @@ public class ProductService {
         String categoryNameKr = categoryMap.get(categoryName);
         List<Product> newProductList;
         if (categoryName.equals("all"))
-            newProductList = getProductListsByMarketCheck("전체", marketMap);
+            newProductList = sortProduct(getProductListsByMarketCheck("전체", marketMap));
         else
-            newProductList = getProductListsByMarketCheck(categoryNameKr, marketMap);
+            newProductList = sortProduct(getProductListsByMarketCheck(categoryNameKr, marketMap));
         //validateNullEmptyList(newProductList);
         responseJson.put("result", newProductList.subList((pageNumber - 1) * 10, Math.min(newProductList.size(), pageNumber * 10)));
         responseJson.put("totalPage", (newProductList.size() % 10 == 0) ? newProductList.size() / 10 : newProductList.size() / 10 + 1);
@@ -131,7 +132,7 @@ public class ProductService {
         if (marketName.equals("all")) {
             return getAllProducts(pageNumber);
         }
-        List<Product> productList = productRepository.findByMarketName(marketName);
+        List<Product> productList = sortProduct(productRepository.findByMarketName(marketName));
         if (productList == null) {
             responseJson.put("result", "MarketName = " + marketName + "를 가지는 category가 없습니다");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseJson);
@@ -145,7 +146,7 @@ public class ProductService {
 
     public ResponseEntity<Map<String, Object>> getProductsByCategoryName(String categoryName, Integer pageNumber) { // marketname이 all, categoryname이 all이 아닌 경우
         Map<String, Object> responseJson = new HashMap<>();
-        List<Product> productList = productRepository.findByCategoryName(categoryName);
+        List<Product> productList = sortProduct(productRepository.findByCategoryName(categoryName));
         if (productList == null) {
             responseJson.put("result", "categoryName = " + categoryName + "를 가지는 category가 없습니다");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseJson);
@@ -328,7 +329,7 @@ public class ProductService {
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
 
-    public ResponseEntity<Map<String, Object>> searchProduct(String keyword){
+    public ResponseEntity<Map<String, Object>> searchProduct(String keyword, Integer pageNumber){
         Map<String, Object> responseJson = new HashMap<>();
         List<Product> products1= productRepository.findByCategoryNameContaining(keyword);
         List<Product> products2 = productRepository.findByCategoryName2Containing(keyword);
@@ -348,8 +349,16 @@ public class ProductService {
             productSet.addAll(products6);
         }
         List<Product> totalProduct = new ArrayList<>(productSet);
-        responseJson.put("result",totalProduct);
+        List<Product> productList = sortProduct(totalProduct);
+        responseJson.put("result", productList.subList((pageNumber - 1) * 10, Math.min(productList.size(), pageNumber * 10)));
+        responseJson.put("totalPage", (productList.size() % 10 == 0) ? productList.size() / 10 : productList.size() / 10 + 1);
         responseJson.put("productCount",productSet.size());
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
+    }
+    public List<Product> sortProduct(List<Product> products) {
+        return products.stream()
+                .sorted(Comparator.comparingInt(
+                        Product::getReview).reversed())
+                .collect(Collectors.toList());
     }
 }
