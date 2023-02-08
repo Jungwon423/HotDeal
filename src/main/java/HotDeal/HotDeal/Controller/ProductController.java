@@ -62,8 +62,8 @@ public class ProductController {
         Validator.checkIfLogin(userId);
         return productService.disrecommendProduct(userId, productId);
     }
-    @PostMapping("search")
-    public ResponseEntity<Map<String, Object>> searchProduct(@RequestParam String keyword) {
-        return productService.searchProduct(keyword);
+    @PostMapping("{pageNumber}/search")
+    public ResponseEntity<Map<String, Object>> searchProduct(@PathVariable("pageNumber") Integer pageNumber,@RequestParam String keyword) {
+        return productService.searchProduct(keyword,pageNumber);
     }
 }
