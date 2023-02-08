@@ -27,7 +27,7 @@ public class ProductService {
 
     private final HashMap<String, String> categoryMap = new HashMap<>() {
         {
-            put("all", "홈");
+            put("all", "전체");
             put("life_health", "생활/건강");
             put("duty-free", "면세점");
             put("travel_culture", "여행/문화");
@@ -117,10 +117,20 @@ public class ProductService {
     public List<Product> getProductListsByMarketCheck(String categoryNameKr, Map<String,Boolean> marketMap){
         Set<String> marketList = marketMap.keySet();   //marketList는 set임
         Set<Product> productSet = new HashSet<>();
-        for (String market : marketList) {
-            if (marketMap.get(market)){
-                List<Product> productList = productRepository.findByCategoryNameAndMarketName(categoryNameKr, market);
-                productSet.addAll(productList);
+        if (categoryNameKr.equals("전체")) {
+            for (String market : marketList) {
+                if (marketMap.get(market)) {
+                    List<Product> productList = productRepository.findByMarketName(market);
+                    productSet.addAll(productList);
+                }
+            }
+        }
+        else {
+            for (String market : marketList) {
+                if (marketMap.get(market)) {
+                    List<Product> productList = productRepository.findByCategoryNameAndMarketName(categoryNameKr, market);
+                    productSet.addAll(productList);
+                }
             }
         }
         return new ArrayList<>(productSet);
@@ -201,6 +211,9 @@ public class ProductService {
         boolean checkIfWish = product.getWishUserList().contains(userId);
         if (!checkIfWish){
             wish(userId,product);
+            User user = userRepository.findById(userId)
+                    .orElseThrow(UserNotFound::new);
+            responseJson.put("wishList", user.getWishLists());
             responseJson.put("users",product.getWishUserList());
             responseJson.put("checked", true);
             responseJson.put("message", "찜목록이 user 객체에 저장되었습니다.");
@@ -209,6 +222,9 @@ public class ProductService {
         }
         else{                  //추가되어 있으므로 삭제 진행
             unwish(userId,product);
+            User user = userRepository.findById(userId)
+                    .orElseThrow(UserNotFound::new);
+            responseJson.put("wishList", user.getWishLists());
             responseJson.put("users",product.getWishUserList());
             responseJson.put("checked", false);
             responseJson.put("message","유저정보에서 찜목록이 삭제되었습니다");

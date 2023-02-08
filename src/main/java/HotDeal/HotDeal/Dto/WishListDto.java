@@ -23,6 +23,7 @@ public class WishListDto {
     private Double naverPrice;
     private Double rating;
     private int commentCount;
+    private String link;
 
     public static WishListDto from(Product product) {
         return WishListDto.builder()
@@ -34,6 +35,7 @@ public class WishListDto {
                 .naverPrice(product.getNaverPrice())
                 .rating(product.getRating())
                 .commentCount(product.getComments().size())
+                .link(product.getLink())
                 .build();
     }
 }
