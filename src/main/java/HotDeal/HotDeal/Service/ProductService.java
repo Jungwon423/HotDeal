@@ -7,7 +7,13 @@ import HotDeal.HotDeal.Dto.WishListDto;
 import HotDeal.HotDeal.Exception.*;
 import HotDeal.HotDeal.Repository.ProductRepository;
 import HotDeal.HotDeal.Repository.UserRepository;
+import com.taobao.api.ApiException;
+import com.taobao.api.DefaultTaobaoClient;
+import com.taobao.api.TaobaoClient;
+import com.taobao.api.request.AliexpressAffiliateProductQueryRequest;
+import com.taobao.api.response.AliexpressAffiliateProductQueryResponse;
 import lombok.RequiredArgsConstructor;
+import org.json.simple.parser.ParseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -376,5 +382,53 @@ public class ProductService {
                 .sorted(Comparator.comparingInt(
                         Product::getReview).reversed())
                 .collect(Collectors.toList());
+    }
+
+    public ResponseEntity<Map<String, Object>> searchProductAli(String keyword, Integer pageNumber) throws ApiException, ParseException {
+        Map<String, Object> responseJson = new HashMap<>();
+        TranslateService translateService = new TranslateService();
+        String translatedKeyword = translateService.translateKoToEn(keyword);
+        TaobaoClient client = new DefaultTaobaoClient("http://api.taobao.com/router/rest", "34272625", "9eb7f31401f66e9f636acbcc5e02e1d5");
+        AliexpressAffiliateProductQueryRequest req = new AliexpressAffiliateProductQueryRequest();
+        req.setKeywords(translatedKeyword);
+        req.setTargetCurrency("KRW");
+        req.setTargetLanguage("KO");
+        req.setPageSize(10L);
+        AliexpressAffiliateProductQueryResponse response = client.execute(req);
+        List<AliexpressAffiliateProductQueryResponse.Product> products = new ArrayList<>(response.getRespResult().getResult().getProducts());
+        List<Product> productList = new ArrayList<>();
+        PriceComparisonService priceComparisonService =new PriceComparisonService();
+        for (AliexpressAffiliateProductQueryResponse.Product now : products){
+            Product product = priceComparisonService.comparePrice(convert(now));
+            if (product != null) productList.add(product);
+        }
+        responseJson.put("result", productList.subList((pageNumber - 1) * 10, Math.min(productList.size(), pageNumber * 10)));
+        responseJson.put("totalPage", (productList.size() % 10 == 0) ? productList.size() / 10 : productList.size() / 10 + 1);
+        responseJson.put("productCount",productList.size());
+        return ResponseEntity.status(HttpStatus.OK).body(responseJson);
+    }
+
+    public Product convert(AliexpressAffiliateProductQueryResponse.Product now){
+        Product product = new Product();
+        product.setName(now.getProductTitle());
+        product.setImageUrl(now.getProductMainImageUrl());
+        product.setLocale("kr");
+        product.setPrice(Double.parseDouble(now.getTargetAppSalePrice()));
+        product.setSubImageUrl(now.getProductSmallImageUrls());
+        product.setCurrency("KRW");
+        String rating = now.getEvaluateRate();
+        if(rating!=null) {
+            rating = rating.substring(0, rating.length() - 1);
+            double a = Double.parseDouble(rating);
+            double b = 20d;
+            a= a/b;
+            a= (double) Math.round(a*10d)/10d;
+            product.setRating(a);
+        }
+        else product.setRating(-1d);
+        product.setMarketName("AliExpress");
+        product.setLink(now.getPromotionLink());
+        product.setDirect_shippingFee(0d);
+        return product;
     }
 }
