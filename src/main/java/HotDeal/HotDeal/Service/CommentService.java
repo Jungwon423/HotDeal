@@ -18,10 +18,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -111,7 +108,8 @@ public class CommentService {
                 .orElseThrow(ProductNotFound::new);
         product.getComments().remove(comment);
         productRepository.save(product);
-        commentRepository.deleteById(commentId);  //삭제
+        commentRepository.delete(comment);
+        //commentRepository.deleteById(commentId);  //삭제
 
         responseJson.put("message","댓글이 삭제되었습니다");
         responseJson.put("message2","댓글이 유저정보에서 삭제되었습니다");
@@ -138,6 +136,20 @@ public class CommentService {
         }
         comment.setGoodUser(commentUsers);
         commentRepository.save(comment);
+
+        Product product = productRepository.findById(comment.getProductId())
+                        .orElseThrow(ProductNotFound::new);
+        List<Comment> productComments = product.getComments();   //제품에서 댓글 목록 불러와서
+
+        Comment matchComment = productComments.stream()    //현재 수정하려는 댓글 ID를 찾는다.
+                .filter(productComment -> comment.getId().equals(productComment.getId()))
+                .findAny()
+                .orElse(null); 
+        productComments.remove(matchComment);       //수정 전 댓글을 지우고
+        productComments.add(comment);           //수정 후 댓글 삽입
+        product.setComments(productComments);
+        productRepository.save(product);
+        
         responseJson.put("users",commentUsers);
         responseJson.put("recommendCheck",!checkIfRecommend);
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
@@ -151,14 +163,28 @@ public class CommentService {
         boolean checkIfDisrecommend = commentUsers.contains(userId);
         if (!checkIfDisrecommend){
             commentUsers.add(userId);
-            responseJson.put("message","댓글 추천한 유저아이디 추가함");
+            responseJson.put("message","댓글 비추한 유저아이디 추가함");
         }
         else{
             commentUsers.remove(userId);
-            responseJson.put("message","댓글 추천한 유저아이디 삭제함");
+            responseJson.put("message","댓글 비추한 유저아이디 삭제함");
         }
         comment.setBadUser(commentUsers);
         commentRepository.save(comment);
+
+        Product product = productRepository.findById(comment.getProductId())
+                .orElseThrow(ProductNotFound::new);
+        List<Comment> productComments = product.getComments();   //제품에서 댓글 목록 불러와서
+
+        Comment matchComment = productComments.stream()    //현재 수정하려는 댓글 ID를 찾는다.
+                .filter(productComment -> comment.getId().equals(productComment.getId()))
+                .findAny()
+                .orElse(null);
+        productComments.remove(matchComment);       //수정 전 댓글을 지우고
+        productComments.add(comment);           //수정 후 댓글 삽입
+        product.setComments(productComments);
+        productRepository.save(product);
+
         responseJson.put("users",commentUsers);
         responseJson.put("disrecommendCheck",!checkIfDisrecommend);
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
