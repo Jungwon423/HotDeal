@@ -1,9 +1,18 @@
+#spring:
+#  data:
+#    mongodb:
+#      host: localhost
+#      port: 27017
+#      database: hotdeal
 spring:
   data:
     mongodb:
-      host: localhost
       port: 27017
       database: hotdeal
+      host: 3.34.96.141
+      username: taptorestart
+      password: thisispass
+      authentication-database: admin
 
 server:
   port: 8080
@@ -11,3 +20,12 @@ server:
     context-path: "/api"
     encoding:
       force-response: true
+
+jwt:
+  token:
+    google:
+      redirect-url: "http://localhost:8081/google"
+
+test:
+  username: "hi"
+  password: "12345"

@@ -4,6 +4,7 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.gson.JsonObject;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.JsonParser;
@@ -20,6 +21,12 @@ import com.google.api.client.json.gson.GsonFactory;
 @RequiredArgsConstructor
 @Service
 public class GoogleService {
+
+    private static String redirectURL;
+    @Value("${jwt.token.google.redirect-url}")  //application.yml에서 가져옴
+    private void setClientId(String temp) {
+        redirectURL = temp;
+    }
     HttpTransport transport = new NetHttpTransport();
     JsonFactory jsonFactory = new GsonFactory();
     GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jsonFactory)
@@ -36,12 +43,11 @@ public class GoogleService {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setDoOutput(true);
-
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
             sb.append("&client_id=862259299846-ham1sak40i9ampguua9m9mrnqqdonfa8.apps.googleusercontent.com"); //수정 할것
-            sb.append("&redirect_uri=http://localhost:8081/google"); //수정 할것
+            sb.append("&redirect_uri="+redirectURL); //수정 할것
             sb.append("&client_secret=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"); //수정 할것
             sb.append("&code=" + authorize_code);
             bw.write(sb.toString());

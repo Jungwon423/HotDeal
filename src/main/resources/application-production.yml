@@ -14,3 +14,9 @@ server:
     context-path: "/api"
     encoding:
       force-response: true
+
+jwt:
+  token:
+    google:
+      redirect-url: "https://www.zigdeal.shop/google"
+
