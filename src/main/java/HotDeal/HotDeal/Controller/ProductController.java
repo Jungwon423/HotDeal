@@ -2,7 +2,9 @@ package HotDeal.HotDeal.Controller;
 
 import HotDeal.HotDeal.Exception.Validator;
 import HotDeal.HotDeal.Service.ProductService;
+import com.taobao.api.ApiException;
 import lombok.RequiredArgsConstructor;
+import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -63,7 +65,7 @@ public class ProductController {
         return productService.disrecommendProduct(userId, productId);
     }
     @PostMapping("{pageNumber}/search")
-    public ResponseEntity<Map<String, Object>> searchProduct(@PathVariable("pageNumber") Integer pageNumber,@RequestParam String keyword) {
-        return productService.searchProduct(keyword,pageNumber);
+    public ResponseEntity<Map<String, Object>> searchProduct(@PathVariable("pageNumber") Integer pageNumber,@RequestParam String keyword) throws ParseException, ApiException {
+        return productService.searchProductAli(keyword,pageNumber);
     }
 }

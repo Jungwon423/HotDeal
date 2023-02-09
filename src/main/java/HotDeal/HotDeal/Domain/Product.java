@@ -26,15 +26,15 @@ public class Product {
     private String link;
     private Double tax;
     private Double shippingFee;
-    private int clickCount;
+    private int clickCount = 0;
     private String locale;
     private Double naverPrice;
     private Double rating;
-    private Double direct_tax;
-    private Double direct_shippingFee;
+    private Double direct_tax = -1d;
+    private Double direct_shippingFee = -1d;
     private Double discountRate;
-    private Double indirect_tax;
-    private Double indirect_shippingFee;
+    private Double indirect_tax = -1d;
+    private Double indirect_shippingFee = -1d;
     private int review;
     private List<String> good = new ArrayList<>();   //리스트의 경우 선언 안해주면 null값이 참조됨.
     private List<String> bad = new ArrayList<>();
