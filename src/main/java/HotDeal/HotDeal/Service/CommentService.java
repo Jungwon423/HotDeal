@@ -116,6 +116,7 @@ public class CommentService {
         responseJson.put("message","댓글이 삭제되었습니다");
         responseJson.put("message2","댓글이 유저정보에서 삭제되었습니다");
         responseJson.put("message3","댓글이 제품정보에서 삭제되었습니다");
+        responseJson.put("comments", product.getComments());
         //responseJson.put("result", user);
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
