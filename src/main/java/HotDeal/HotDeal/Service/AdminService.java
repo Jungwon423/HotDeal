@@ -48,6 +48,7 @@ public class AdminService {
         for (User user: users) {
             usersDetail.add(UserDetailDto.from(user));
         }
+        responseJson.put("userCount",usersDetail.size());
         responseJson.put("result",usersDetail);
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
