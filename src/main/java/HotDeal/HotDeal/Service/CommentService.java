@@ -119,6 +119,20 @@ public class CommentService {
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
 
+    public ResponseEntity<Map<String, Object>> deleteSelectedComments(String userId, List<String> selectedComments) {
+        Map<String, Object> responseJson = new HashMap<>();
+
+        for (String selectedComment : selectedComments) {
+            deleteCommentToProduct(userId, selectedComment);
+        }
+        User user = userRepository.findById(userId)
+                .orElseThrow(UserNotFound::new);
+
+        responseJson.put("message", "선택된 댓글이 삭제되었습니다");
+        responseJson.put("user_comments",user.getComments());   //사용자 comments 보내주기
+        return ResponseEntity.status(HttpStatus.OK).body(responseJson);
+    }
+
     public ResponseEntity<Map<String, Object>> recommendComment(String userId, String commentId) {
         Map<String, Object> responseJson = new HashMap<>();
         Comment comment = commentRepository.findById(commentId)

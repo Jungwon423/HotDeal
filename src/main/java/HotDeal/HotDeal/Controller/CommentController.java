@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -48,5 +49,11 @@ public class CommentController {
         String userId = (String) request.getAttribute("userId");
         Validator.checkIfLogin(userId);
         return commentService.disrecommendComment(userId, commentId);
+    }
+    @PostMapping("deleteSelected")
+    public ResponseEntity<Map<String, Object>> deleteSelectedComments(HttpServletRequest request, @RequestBody Map<String, List<String>> selectedComments ) {
+        String userId = (String) request.getAttribute("userId");
+        Validator.checkIfLogin(userId);
+        return commentService.deleteSelectedComments(userId, selectedComments.get("comments"));
     }
 }
