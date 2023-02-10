@@ -7,19 +7,12 @@ import HotDeal.HotDeal.Dto.WishListDto;
 import HotDeal.HotDeal.Exception.*;
 import HotDeal.HotDeal.Repository.ProductRepository;
 import HotDeal.HotDeal.Repository.UserRepository;
-import com.taobao.api.ApiException;
-import com.taobao.api.DefaultTaobaoClient;
-import com.taobao.api.TaobaoClient;
-import com.taobao.api.request.AliexpressAffiliateProductQueryRequest;
-import com.taobao.api.response.AliexpressAffiliateProductQueryResponse;
 import lombok.RequiredArgsConstructor;
-import org.json.simple.parser.ParseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static HotDeal.HotDeal.Exception.Validator.*;
@@ -60,7 +53,7 @@ public class ProductService {
     public ResponseEntity<Map<String, Object>> getTop3ProductsByMarketName(String marketName) {
         Map<String, Object> responseJson = new HashMap<>();
         if (marketName.equals("all")) {
-            List<Product> Top3Products = sortProduct(productRepository.findAll()).subList(0,3);
+            List<Product> Top3Products = sortProduct(productRepository.findAll()).subList(0, 3);
             responseJson.put("result", Top3Products);
             return ResponseEntity.status(HttpStatus.OK).body(responseJson);
         }
@@ -106,7 +99,7 @@ public class ProductService {
         }
     }
 
-    public ResponseEntity<Map<String, Object>> getProductsByCategoryAndMarkets(String categoryName, Integer pageNumber, Map<String,Boolean> marketMap) {
+    public ResponseEntity<Map<String, Object>> getProductsByCategoryAndMarkets(String categoryName, Integer pageNumber, Map<String, Boolean> marketMap) {
         Map<String, Object> responseJson = new HashMap<>();
         validateNullObject(marketMap);
         String categoryNameKr = categoryMap.get(categoryName);
@@ -121,7 +114,8 @@ public class ProductService {
         responseJson.put("productCount", newProductList.size());
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
-    public List<Product> getProductListsByMarketCheck(String categoryNameKr, Map<String,Boolean> marketMap){
+
+    public List<Product> getProductListsByMarketCheck(String categoryNameKr, Map<String, Boolean> marketMap) {
         Set<String> marketList = marketMap.keySet();   //marketList는 set임
         Set<Product> productSet = new HashSet<>();
         if (categoryNameKr.equals("전체")) {
@@ -131,8 +125,7 @@ public class ProductService {
                     productSet.addAll(productList);
                 }
             }
-        }
-        else {
+        } else {
             for (String market : marketList) {
                 if (marketMap.get(market)) {
                     List<Product> productList = productRepository.findByCategoryNameAndMarketName(categoryNameKr, market);
@@ -183,6 +176,7 @@ public class ProductService {
         responseJson.put("result", product); // Product 페이지 정보를 가져온다. (link 가져오고 상품디테일)
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
+
     public ResponseEntity<Map<String, Object>> clickProduct(String productId, String userId) {
         Map<String, Object> responseJson = new HashMap<>();
         Product product = productRepository.findById(productId)
@@ -197,11 +191,11 @@ public class ProductService {
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
 
-    public void userPlusCount(String id, User user){
-        Map<String,Integer> userMap =  user.getProductCount();
+    public void userPlusCount(String id, User user) {
+        Map<String, Integer> userMap = user.getProductCount();
 
         userMap.putIfAbsent(id, 0);  //없으면 productId에 put 0
-        userMap.put(id, userMap.get(id)+1);
+        userMap.put(id, userMap.get(id) + 1);
         user.setProductCount(userMap);
         userRepository.save(user);
     }
@@ -216,40 +210,40 @@ public class ProductService {
         Product product = productRepository.findById(productId)
                 .orElseThrow(ProductNotFound::new);
         boolean checkIfWish = product.getWishUserList().contains(userId);
-        if (!checkIfWish){
-            wish(userId,product);
+        if (!checkIfWish) {
+            wish(userId, product);
             User user = userRepository.findById(userId)
                     .orElseThrow(UserNotFound::new);
             responseJson.put("wishList", user.getWishLists());
-            responseJson.put("users",product.getWishUserList());
+            responseJson.put("users", product.getWishUserList());
             responseJson.put("checked", true);
             responseJson.put("message", "찜목록이 user 객체에 저장되었습니다.");
             responseJson.put("message2", "userID가 product 객체에 저장되었습니다.");
             return ResponseEntity.status(HttpStatus.OK).body(responseJson);
-        }
-        else{                  //추가되어 있으므로 삭제 진행
-            unwish(userId,product);
+        } else {                  //추가되어 있으므로 삭제 진행
+            unwish(userId, product);
             User user = userRepository.findById(userId)
                     .orElseThrow(UserNotFound::new);
             responseJson.put("wishList", user.getWishLists());
-            responseJson.put("users",product.getWishUserList());
+            responseJson.put("users", product.getWishUserList());
             responseJson.put("checked", false);
-            responseJson.put("message","유저정보에서 찜목록이 삭제되었습니다");
-            responseJson.put("message2","제품정보에서 찜목록이 삭제되었습니다");
+            responseJson.put("message", "유저정보에서 찜목록이 삭제되었습니다");
+            responseJson.put("message2", "제품정보에서 찜목록이 삭제되었습니다");
             return ResponseEntity.status(HttpStatus.OK).body(responseJson);
         }
     }
+
     public void wish(String userId, Product product) {
         WishListDto wishListDto = WishListDto.from(product);
         //validateNullList(product.getWishUserList());   //객체의 list값은 초기화 안하면 null값이 참조됨
-        if (!product.getWishUserList().contains(userId)){ //제품 객체가 userId 안 갖고있으면
+        if (!product.getWishUserList().contains(userId)) { //제품 객체가 userId 안 갖고있으면
             product.getWishUserList().add(userId);  //제품객체에 userId 저장
         }
         productRepository.save(product);
 
         User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFound::new);
-        if (!user.getWishLists().contains(wishListDto)){ //유저 객체가 wishList객체 안 갖고있으면
+        if (!user.getWishLists().contains(wishListDto)) { //유저 객체가 wishList객체 안 갖고있으면
             user.getWishLists().add(wishListDto);  //유저 객체에 wishList객체 저장
         }
         userRepository.save(user);
@@ -283,28 +277,28 @@ public class ProductService {
         product.setName(encoding(product.getName()));
         boolean checkIfGood = product.getGood().contains(userId);
         if (!checkIfGood) {
-            recommend(userId,product);
+            recommend(userId, product);
             responseJson.put("message", "추천 객체가 user 객체에 저장되었습니다.");
             responseJson.put("message2", "추천 유저 ID가 product 객체에 저장되었습니다.");
-        }
-        else{                    //good일 때는 추가되어 있으므로 삭제 진행
-            disrecommend(userId,product);
+        } else {                    //good일 때는 추가되어 있으므로 삭제 진행
+            disrecommend(userId, product);
             responseJson.put("message", "유저정보에서 추천목록 삭제되었습니다");
             responseJson.put("message2", "제품정보에서 추천목록이 삭제되었습니다");
         }
-        responseJson.put("users",product.getGood());
+        responseJson.put("users", product.getGood());
         responseJson.put("recommendChecked", !checkIfGood);
-        responseJson.put("product",product);
+        responseJson.put("product", product);
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
 
-    public String encoding(String beforeEncode){
+    public String encoding(String beforeEncode) {
         String AfterEncode;
-        AfterEncode = beforeEncode.replaceAll("\\.","%2E");
-        AfterEncode = AfterEncode.replaceAll("/","%2E");
+        AfterEncode = beforeEncode.replaceAll("\\.", "%2E");
+        AfterEncode = AfterEncode.replaceAll("/", "%2E");
         return AfterEncode;
     }
-    public void recommend(String userId, Product product){
+
+    public void recommend(String userId, Product product) {
         GoodDto goodProduct = GoodDto.from(product);
 
         if (!product.getGood().contains(userId)) {
@@ -322,7 +316,7 @@ public class ProductService {
         userRepository.save(user);
     }
 
-    public void disrecommend(String userId, Product product){
+    public void disrecommend(String userId, Product product) {
         User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFound::new);
         List<GoodDto> goods = user.getGoods();
@@ -333,102 +327,29 @@ public class ProductService {
         product.getGood().remove(userId);
         productRepository.save(product);
     }
-    public ResponseEntity<Map<String, Object>> disrecommendProduct(String userId, String productId){
+
+    public ResponseEntity<Map<String, Object>> disrecommendProduct(String userId, String productId) {
         Map<String, Object> responseJson = new HashMap<>();
         Product product = productRepository.findById(productId)
                 .orElseThrow(ProductNotFound::new);
         boolean checkIfBad = product.getBad().contains(userId);
         if (!checkIfBad) {
             product.getBad().add(userId); //제품 Bad에 userId 추가
-            responseJson.put("message","유저 id를 제품 비추천목록에 추가");
-        }else {
+            responseJson.put("message", "유저 id를 제품 비추천목록에 추가");
+        } else {
             product.getBad().remove(userId);
-            responseJson.put("message","유저 id를 제품 비추천목록에서 삭제");
+            responseJson.put("message", "유저 id를 제품 비추천목록에서 삭제");
         }
         productRepository.save(product);
-        responseJson.put("users",product.getBad());
-        responseJson.put("disrecommendChecked",!checkIfBad);
+        responseJson.put("users", product.getBad());
+        responseJson.put("disrecommendChecked", !checkIfBad);
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
 
-    public ResponseEntity<Map<String, Object>> searchProduct(String keyword, Integer pageNumber){
-        Map<String, Object> responseJson = new HashMap<>();
-        List<Product> products1= productRepository.findByCategoryNameContaining(keyword);
-        List<Product> products2 = productRepository.findByCategoryName2Containing(keyword);
-        List<Product> products3= productRepository.findByNameContaining(keyword);
-        Set<Product> productSet = new HashSet<>(products1);
-        productSet.addAll(products2);
-        productSet.addAll(products3);
-
-        if(Pattern.matches("^[a-zA-Z0-9]*$", keyword)){    //영숫자
-            TranslateService translateService = new TranslateService();
-            String translatedKeyword = translateService.translate(keyword);
-            List<Product> products4= productRepository.findByCategoryNameContaining(translatedKeyword);
-            List<Product> products5 = productRepository.findByCategoryName2Containing(translatedKeyword);
-            List<Product> products6= productRepository.findByNameContaining(translatedKeyword);
-            productSet.addAll(products4);
-            productSet.addAll(products5);
-            productSet.addAll(products6);
-        }
-        List<Product> totalProduct = new ArrayList<>(productSet);
-        List<Product> productList = sortProduct(totalProduct);
-        responseJson.put("result", productList.subList((pageNumber - 1) * 10, Math.min(productList.size(), pageNumber * 10)));
-        responseJson.put("totalPage", (productList.size() % 10 == 0) ? productList.size() / 10 : productList.size() / 10 + 1);
-        responseJson.put("productCount",productSet.size());
-        return ResponseEntity.status(HttpStatus.OK).body(responseJson);
-    }
     public List<Product> sortProduct(List<Product> products) {
         return products.stream()
                 .sorted(Comparator.comparingInt(
                         Product::getReview).reversed())
                 .collect(Collectors.toList());
-    }
-
-    public ResponseEntity<Map<String, Object>> searchProductAli(String keyword, Integer pageNumber) throws ApiException, ParseException {
-        Map<String, Object> responseJson = new HashMap<>();
-        TranslateService translateService = new TranslateService();
-        String translatedKeyword = translateService.translateKoToEn(keyword);
-        TaobaoClient client = new DefaultTaobaoClient("http://api.taobao.com/router/rest", "34272625", "9eb7f31401f66e9f636acbcc5e02e1d5");
-        AliexpressAffiliateProductQueryRequest req = new AliexpressAffiliateProductQueryRequest();
-        req.setKeywords(translatedKeyword);
-        req.setTargetCurrency("KRW");
-        req.setTargetLanguage("KO");
-        req.setPageSize(10L);
-        AliexpressAffiliateProductQueryResponse response = client.execute(req);
-        List<AliexpressAffiliateProductQueryResponse.Product> products = new ArrayList<>(response.getRespResult().getResult().getProducts());
-        List<Product> productList = new ArrayList<>();
-        PriceComparisonService priceComparisonService =new PriceComparisonService();
-        for (AliexpressAffiliateProductQueryResponse.Product now : products){
-            Product product = priceComparisonService.comparePrice(convert(now));
-            if (product != null) productList.add(product);
-        }
-        responseJson.put("result", productList.subList((pageNumber - 1) * 10, Math.min(productList.size(), pageNumber * 10)));
-        responseJson.put("totalPage", (productList.size() % 10 == 0) ? productList.size() / 10 : productList.size() / 10 + 1);
-        responseJson.put("productCount",productList.size());
-        return ResponseEntity.status(HttpStatus.OK).body(responseJson);
-    }
-
-    public Product convert(AliexpressAffiliateProductQueryResponse.Product now){
-        Product product = new Product();
-        product.setName(now.getProductTitle());
-        product.setImageUrl(now.getProductMainImageUrl());
-        product.setLocale("kr");
-        product.setPrice(Double.parseDouble(now.getTargetAppSalePrice()));
-        product.setSubImageUrl(now.getProductSmallImageUrls());
-        product.setCurrency("KRW");
-        String rating = now.getEvaluateRate();
-        if(rating!=null) {
-            rating = rating.substring(0, rating.length() - 1);
-            double a = Double.parseDouble(rating);
-            double b = 20d;
-            a= a/b;
-            a= (double) Math.round(a*10d)/10d;
-            product.setRating(a);
-        }
-        else product.setRating(-1d);
-        product.setMarketName("AliExpress");
-        product.setLink(now.getPromotionLink());
-        product.setDirect_shippingFee(0d);
-        return product;
     }
 }

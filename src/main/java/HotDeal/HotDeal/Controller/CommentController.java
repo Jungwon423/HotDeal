@@ -1,6 +1,5 @@
 package HotDeal.HotDeal.Controller;
 
-import HotDeal.HotDeal.Domain.Comment;
 import HotDeal.HotDeal.Exception.Validator;
 import HotDeal.HotDeal.Service.CommentService;
 import lombok.RequiredArgsConstructor;
@@ -24,28 +23,30 @@ public class CommentController {
     }
 
     @PutMapping("{commentId}/edit")
-    public ResponseEntity<Map<String, Object>> editCommentToProduct(HttpServletRequest request, @PathVariable("commentId") String commentId, @RequestBody  Map<String, String> comment) {
+    public ResponseEntity<Map<String, Object>> editCommentToProduct(HttpServletRequest request, @PathVariable("commentId") String commentId, @RequestBody Map<String, String> comment) {
         String userId = (String) request.getAttribute("userId");
         Validator.checkIfLogin(userId);
         return commentService.editCommentToProduct(userId, commentId, comment.get("comment"));
     }
 
     @DeleteMapping("{commentId}/delete")
-    public ResponseEntity<Map<String, Object>> deleteCommentToProduct(HttpServletRequest request,@PathVariable("commentId") String commentId) {
+    public ResponseEntity<Map<String, Object>> deleteCommentToProduct(HttpServletRequest request, @PathVariable("commentId") String commentId) {
         String userId = (String) request.getAttribute("userId");
         Validator.checkIfLogin(userId);
-        return commentService.deleteCommentToProduct(userId,  commentId);
+        return commentService.deleteCommentToProduct(userId, commentId);
     }
+
     @PostMapping("{commentId}/recommend")
-    public ResponseEntity<Map<String, Object>> recommendComment(HttpServletRequest request,@PathVariable("commentId") String commentId) {
+    public ResponseEntity<Map<String, Object>> recommendComment(HttpServletRequest request, @PathVariable("commentId") String commentId) {
         String userId = (String) request.getAttribute("userId");
         Validator.checkIfLogin(userId);
-        return commentService.recommendComment(userId,  commentId);
+        return commentService.recommendComment(userId, commentId);
     }
+
     @PostMapping("{commentId}/disrecommend")
-    public ResponseEntity<Map<String, Object>> disrecommendComment(HttpServletRequest request,@PathVariable("commentId") String commentId) {
+    public ResponseEntity<Map<String, Object>> disrecommendComment(HttpServletRequest request, @PathVariable("commentId") String commentId) {
         String userId = (String) request.getAttribute("userId");
         Validator.checkIfLogin(userId);
-        return commentService.disrecommendComment(userId,  commentId);
+        return commentService.disrecommendComment(userId, commentId);
     }
 }

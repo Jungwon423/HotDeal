@@ -23,7 +23,7 @@ public class CategoryController {
     }
 
     @PostMapping("{categoryName}/{pageNumber}/list")
-    public ResponseEntity<Map<String, Object>> getProductsByCategoryAndMarkets(@PathVariable("categoryName") String categoryName,@PathVariable("pageNumber") Integer pageNumber, @RequestBody Map<String, Boolean> marketMap) {
+    public ResponseEntity<Map<String, Object>> getProductsByCategoryAndMarkets(@PathVariable("categoryName") String categoryName, @PathVariable("pageNumber") Integer pageNumber, @RequestBody Map<String, Boolean> marketMap) {
         return productService.getProductsByCategoryAndMarkets(categoryName, pageNumber, marketMap);
     }
     //
@@ -36,9 +36,9 @@ public class CategoryController {
     @PostMapping("{categoryId}/click")
     public ResponseEntity<Map<String, Object>> clickCategory(HttpServletRequest request, @PathVariable String categoryId) {
         String userId = (String) request.getAttribute("userId");
-        if (userId==null){
+        if (userId == null) {
             return categoryService.clickCategory(categoryId);
-        }else return categoryService.clickCategory(categoryId, userId);
+        } else return categoryService.clickCategory(categoryId, userId);
     }
 
 }

@@ -49,8 +49,6 @@ public class UserService {
         //responseJson.put("object", savedUser);
         responseJson.put("userid",savedUser.getId());
         System.out.println(jwtToken);
-        //envValue.onApplicationEvent(new ApplicationStartedEvent());
-        //System.out.println(envService.getPropertyData());
 
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
