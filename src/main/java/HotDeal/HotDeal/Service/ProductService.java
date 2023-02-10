@@ -285,9 +285,12 @@ public class ProductService {
             responseJson.put("message", "유저정보에서 추천목록 삭제되었습니다");
             responseJson.put("message2", "제품정보에서 추천목록이 삭제되었습니다");
         }
+        User user = userRepository.findById(userId)
+                .orElseThrow(UserNotFound::new);
         responseJson.put("users", product.getGood());
         responseJson.put("recommendChecked", !checkIfGood);
         responseJson.put("product", product);
+        responseJson.put("recommends", user.getGoods());
         return ResponseEntity.status(HttpStatus.OK).body(responseJson);
     }
 
