@@ -2,7 +2,6 @@ package HotDeal.HotDeal.Controller;
 
 import HotDeal.HotDeal.Exception.Validator;
 import HotDeal.HotDeal.Service.AdminService;
-import HotDeal.HotDeal.Service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +28,7 @@ public class AdminController {
         Validator.checkIfLogin(userId);
         return adminService.handleAdminUserCheckRequest(userId);
     }
+
     @GetMapping("/users")
     public ResponseEntity<Map<String, Object>> getUsers() {
         //public ResponseEntity<Map<String, Object>> getUsers(HttpServletRequest request) {

@@ -2,6 +2,7 @@ package HotDeal.HotDeal.Controller;
 
 import HotDeal.HotDeal.Exception.Validator;
 import HotDeal.HotDeal.Service.ProductService;
+import HotDeal.HotDeal.Service.SearchService;
 import com.taobao.api.ApiException;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.parser.ParseException;
@@ -18,9 +19,10 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ProductController {
 
-    private final Logger logger = LoggerFactory.getLogger("LoggerController 의 로그");
+    //private final Logger logger = LoggerFactory.getLogger("LoggerController 의 로그");
 
     private final ProductService productService;
+    private final SearchService searchService;
 
     @PostMapping("click")
     public ResponseEntity<Map<String, Object>> clickProduct(HttpServletRequest request, @RequestParam String productId) {
@@ -66,6 +68,6 @@ public class ProductController {
     }
     @PostMapping("{pageNumber}/search")
     public ResponseEntity<Map<String, Object>> searchProduct(@PathVariable("pageNumber") Integer pageNumber,@RequestParam String keyword) throws ParseException, ApiException {
-        return productService.searchProductAli(keyword,pageNumber);
+        return searchService.searchProductAli(keyword,pageNumber);
     }
 }
