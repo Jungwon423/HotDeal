@@ -40,7 +40,7 @@ public class ProductController {
         return productService.getProductDetail(name);
     }
 
-    @PostMapping("wishlist")   //테스트용 : Amazon Essentials 남아 및 유아용 방수 스노우 턱받이
+    @PostMapping("wishlist")
     public ResponseEntity<Map<String, Object>> setProductToWishlist(HttpServletRequest request, @RequestParam String productId) {
         String userId = (String) request.getAttribute("userId");
         Validator.checkIfLogin(userId);
