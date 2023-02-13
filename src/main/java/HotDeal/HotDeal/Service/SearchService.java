@@ -1,6 +1,7 @@
 package HotDeal.HotDeal.Service;
 
 import HotDeal.HotDeal.Domain.Product;
+import HotDeal.HotDeal.Exception.Validator;
 import HotDeal.HotDeal.Repository.ProductRepository;
 import com.taobao.api.ApiException;
 import com.taobao.api.DefaultTaobaoClient;
@@ -34,6 +35,8 @@ public class SearchService {
         req.setPageSize(10L);
         AliexpressAffiliateProductQueryResponse response = client.execute(req);
         List<AliexpressAffiliateProductQueryResponse.Product> products = new ArrayList<>(response.getRespResult().getResult().getProducts());
+        Validator.validateNullEmptyList(products);
+
         List<Product> productList = new ArrayList<>();
         PriceComparisonService priceComparisonService = new PriceComparisonService();
         for (AliexpressAffiliateProductQueryResponse.Product now : products) {
